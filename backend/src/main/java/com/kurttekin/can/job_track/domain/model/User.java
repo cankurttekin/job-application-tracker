@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Table(name = "app_user")
 @Getter
 @Setter
 public class User {

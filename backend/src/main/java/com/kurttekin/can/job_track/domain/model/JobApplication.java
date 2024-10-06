@@ -19,9 +19,11 @@ public class JobApplication {
     private LocalDate applicationDate;
     private LocalDate responseDate;
     private String platform;
+    private String jobUrl;
+    private String description;
     private String comments;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }
