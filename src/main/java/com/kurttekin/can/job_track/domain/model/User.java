@@ -1,15 +1,15 @@
 package com.kurttekin.can.job_track.domain.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "app_user")
-@Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<JobApplication> jobApplications;
 
-
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

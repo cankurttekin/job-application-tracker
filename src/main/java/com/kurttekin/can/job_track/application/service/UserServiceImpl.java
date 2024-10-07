@@ -1,12 +1,15 @@
 package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
+import com.kurttekin.can.job_track.domain.model.Role;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.model.User;
 import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setRole(Role.USER);
 
         userRepository.save(user);
     }
