@@ -15,6 +15,15 @@
 - Postgres DB
 - React
 
+## Structure
+<img src="/unclebob.svg"
+     alt="unclebob"
+     >
+     
+<img src="/sequence-diagram.png"
+     alt="sequence"
+     height="309">
+
 ## Building
 ```
 # add -DskipTests to skip tests
