@@ -31,6 +31,6 @@ docker-compose up --build
 I would happily accept any help, PRs and suggestions.
 
 ### Resources I have been using during the development phase:
-https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
-https://www.geeksforgeeks.org/hibernate-different-cascade-types/
-https://www.baeldung.com/spring-data-rest-relationships
+- [Jackson – Bidirectional Relationships (baeldung)](https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion)
+- [Hibernate – Different Cascade Types (geeksforgeeks)](https://www.geeksforgeeks.org/hibernate-different-cascade-types/)
+- [Working with Relationships in Spring Data REST (baeldung)](https://www.baeldung.com/spring-data-rest-relationships)
