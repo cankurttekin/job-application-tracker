@@ -1,7 +1,6 @@
-package com.kurttekin.can.job_track.application.service;
+package com.kurttekin.can.job_track.application;
 
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
-import com.kurttekin.can.job_track.domain.model.JobApplication;
 import com.kurttekin.can.job_track.domain.model.Role;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.model.User;

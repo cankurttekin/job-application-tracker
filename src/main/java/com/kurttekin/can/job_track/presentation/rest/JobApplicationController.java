@@ -1,6 +1,5 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
-import com.kurttekin.can.job_track.application.service.CustomUserDetailsService;
 import com.kurttekin.can.job_track.domain.model.JobApplication;
 import com.kurttekin.can.job_track.domain.model.User;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
@@ -8,7 +7,6 @@ import com.kurttekin.can.job_track.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

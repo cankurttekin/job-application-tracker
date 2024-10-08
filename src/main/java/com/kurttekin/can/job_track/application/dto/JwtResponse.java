@@ -1,4 +1,4 @@
-package com.kurttekin.can.job_track.presentation.rest.dto;
+package com.kurttekin.can.job_track.application.dto;
 
 import lombok.Getter;
 
