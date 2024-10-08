@@ -1,10 +1,12 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
+import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.infrastructure.security.jwt.JwtProvider;
 import com.kurttekin.can.job_track.presentation.rest.dto.JwtResponse;
 import com.kurttekin.can.job_track.presentation.rest.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -36,5 +41,15 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateToken(authentication);
         return new JwtResponse(token);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest userRequest) {
+        try {
+            userService.registerUser(userRequest);
+            return ResponseEntity.ok("User registered successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }
