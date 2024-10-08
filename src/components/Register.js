@@ -1,60 +1,49 @@
-import React, { useState } from 'react';
-import authService from '../services/authService';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useState } from 'react';
+import api from '../api';
 
-const Register = () => {
+function Register() {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    
-    authService.register(username, email, password).then(
-      () => {
-        toast.success('Registration successful!');
-        navigate('/login'); // Redirect to login page after registration
-      },
-      (error) => {
-        toast.error('Registration failed!');
-      }
-    );
+    try {
+      await api.post('/auth/register', { username, password, email });
+      setMessage('User registered successfully');
+    } catch (error) {
+      setMessage('Registration failed');
+    }
   };
 
   return (
     <div>
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+	<input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button type="submit">Register</button>
       </form>
+      <p>{message}</p>
     </div>
   );
-};
+}
 
 export default Register;
