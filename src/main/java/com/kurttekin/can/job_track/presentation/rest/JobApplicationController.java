@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,47 +24,36 @@ public class JobApplicationController {
     private JobApplicationService jobApplicationService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UserService userService;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-/*
     @PostMapping
-    public ResponseEntity<JobApplication> createJobApplication(@RequestBody JobApplication jobApplication) {
-        return ResponseEntity.ok(jobApplicationService.createJobApplication(jobApplication));
-    }
-*/
+    public ResponseEntity<JobApplication> createJobApplication(
+            @RequestBody JobApplication jobApplication,
+            //Authentication authentication,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        // Get the authenticated user from the SecurityContext
+        String username = userDetails.getUsername();
 
-    @PostMapping
-    public ResponseEntity<JobApplication> createJobApplication(@RequestBody JobApplication jobApplication, Authentication authentication) {
-        String username = authentication.getName(); // Get the username from the Authentication
+        //String username = authentication.getName(); // Get the username from the Authentication
+        // User user = userService.findUserByUsername(username)
+        //        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Find the user in the database
         User user = userService.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
 
         jobApplication.setUser(user); // Set the user on the job application
         JobApplication createdJobApplication = jobApplicationService.createJobApplication(jobApplication);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdJobApplication);
     }
 
-
-
     @GetMapping
     public ResponseEntity<List<JobApplication>> getJobApplications(Authentication authentication) {
         String username = authentication.getName(); // Get the username from authentication
-
-        // Fetch the user by username
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found")); // Handle user not found
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Fetch and return the job applications for that user
-        List<JobApplication> jobApplications = jobApplicationService.findJobApplicationByUserId(user.getId());
+        List<JobApplication> jobApplications = jobApplicationService.findAllByUserId(user.getId());
         return ResponseEntity.ok(jobApplications);
     }
 }

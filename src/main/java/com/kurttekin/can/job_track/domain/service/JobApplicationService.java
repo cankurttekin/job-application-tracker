@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface JobApplicationService {
     JobApplication createJobApplication(JobApplication jobApplication);
-    List<JobApplication> findJobApplicationByUserId(Long userId);
+    List<JobApplication> findAllByUserId(Long userId);
 }

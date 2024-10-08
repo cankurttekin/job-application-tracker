@@ -20,7 +20,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    public List<JobApplication> findJobApplicationByUserId(Long userId) {
+    public List<JobApplication> findAllByUserId(Long userId) {
         return jobApplicationRepository.findAllByUserId(userId);
     }
 }

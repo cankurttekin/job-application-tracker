@@ -1,6 +1,7 @@
 package com.kurttekin.can.job_track.domain.service;
 
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
+import com.kurttekin.can.job_track.domain.model.JobApplication;
 import com.kurttekin.can.job_track.domain.model.User;
 
 import java.util.Optional;

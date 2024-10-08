@@ -1,6 +1,7 @@
 package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
+import com.kurttekin.can.job_track.domain.model.JobApplication;
 import com.kurttekin.can.job_track.domain.model.Role;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.model.User;
@@ -47,4 +48,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+
 }
