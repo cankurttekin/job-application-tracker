@@ -1,22 +1,46 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Register from './components/Register';
+import React, { useState } from 'react';
+import Sidebar from './components/Sidebar';
+import Home from './components/Home';
+import styled from 'styled-components';
+import GlobalStyle from './styles/globalStyles';
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Login from './components/Login';
+import Register from './components/Register';
 import JobApplications from './components/JobApplications';
 import AddJobApplication from './components/AddJobApplication';
 
-function App() {
+const Container = styled.div`
+  display: flex;
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  padding: 20px;
+  //border-radius: 20px;
+  background-color: #ffff;
+  //margin-left: 16px;
+    //margin-top: 28px;
+`;
+
+
+
+const App = () => {
+  const [page, setPage] = useState('home');
+
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/applications" element={<JobApplications />} />
-          <Route path="/add-application" element={<AddJobApplication />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Sidebar setPage={setPage} />
+        <MainContent>
+          {page === 'home' && <Home />}
+          {page === 'jobApplications' && <JobApplications />}
+        </MainContent>
+      </Container>
+    </>
   );
-}
+};
 
 export default App;
