@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
 
 const SidebarContainer = styled.div`
-    width: 300px;
-    height: 100vh;
+    position: fixed; /* Make sidebar fixed */
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    width: 280px;
+    height: 98vh; /* Full height */
     background-color: #f5f5f5;
     padding: 20px;
     color: black;
@@ -12,6 +15,10 @@ const SidebarContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     border-radius: 0 0.675rem 0.675rem 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
+    z-index: 1000; /* Ensure it stays on top */
+    margin-top: 10px;
+
 `;
 
 const SidebarItem = styled.div`

@@ -22,6 +22,7 @@ const MainContent = styled.div`
   background-color: #ffff;
   //margin-left: 16px;
     //margin-top: 28px;
+    margin-left: 280px; /* Match the sidebar width */
 `;
 
 
