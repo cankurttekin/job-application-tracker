@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
@@ -6,7 +5,7 @@ import AddJobApplication from './AddJobApplication';
 const SidebarContainer = styled.div`
     position: fixed;
     top: 0;
-    left: ${(props) => (props.isHidden ? '-280px' : '0')}; /* Toggle visibility with slide effect */
+    left: ${(props) => (props.isHidden ? '-280px' : '0')}; /* toggle visibility with slide effect */
     width: 280px;
     height: 98vh;
     background-color: #f5f5f5;
@@ -18,7 +17,7 @@ const SidebarContainer = styled.div`
     border-radius: 0 0.675rem 0.675rem 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    transition: left 0.3s ease; /* Smooth transition for show/hide */
+    transition: left 0.3s ease; /* transition for show/hide */
 `;
 
 const HamburgerIcon = styled.div`
@@ -72,9 +71,9 @@ const ProfileButton = styled.button`
     }
 `;
 const HorizontalLine = styled.hr`
-    margin: 20px 0; /* Space around the line */
+    margin: 20px 0;
     border: 0;
-    border-top: 1px solid #ccc; /* Line color */
+    border-top: 1px solid #ccc;
 `;
 
 
@@ -83,7 +82,7 @@ const AppName = styled.div`
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
-    padding-left: 20px; /* Adjust spacing from top */
+    padding-left: 20px;
 `;
 
 const Sidebar = ({ setPage }) => {
@@ -130,8 +129,7 @@ const Sidebar = ({ setPage }) => {
                     <ProfileContainer>
                         {isLoggedIn ? (
                             <>
-                                <HorizontalLine /> {/* Horizontal line after Home button */}
-
+                                <HorizontalLine />
                                 <SidebarItem onClick={() => setPage('jobApplications')}>
                                     <span className="material-icons">work</span>
                                     Applications
@@ -156,7 +154,6 @@ const Sidebar = ({ setPage }) => {
                     </ProfileContainer>
                 </div>
 
-                {/* Add Job Application Modal */}
                 <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
                 {/* Bottom Profile Section */}
@@ -173,6 +170,5 @@ const Sidebar = ({ setPage }) => {
         </>
     );
 };
-
 
 export default Sidebar;

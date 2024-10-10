@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -15,7 +14,6 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
-      // Optionally, fetch user info here
     }
   }, []);
 
@@ -25,7 +23,6 @@ export const AuthProvider = ({ children }) => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       setIsAuthenticated(true);
-      // Optionally, fetch user info here
     } catch (error) {
       console.error('Login failed', error);
     }
@@ -38,8 +35,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+        {children}
+      </AuthContext.Provider>
   );
 };

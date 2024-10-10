@@ -56,12 +56,12 @@
 
 .illustration-item {
     text-align: center;
-    flex: 1; /* Each item takes equal space */
-    margin: 0 5px; /* Add some margin between items */
+    flex: 1;
+    margin: 0 5px;
 }
 
 .illustration {
-    width: 60%; /* Adjust as needed */
+    width: 60%;
     height: auto;
 }
 
@@ -74,10 +74,4 @@
 .footer {
     margin-top: 40px;
     font-size: 0.9em;
-}
-
-.gpl-logo {
-    width: 100px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-top: 10px; /* Space above the image */
 }

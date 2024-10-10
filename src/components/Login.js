@@ -12,8 +12,7 @@ const Login = ({ setPage }) => {
       // Check if response contains token
       if (response.token) {
         console.log(response);
-	//setPage('Login');
-	window.location.reload(false); // temporary 
+        window.location.reload(false); // temporary
       } else {
         console.error("No token received");
       }
@@ -24,14 +23,14 @@ const Login = ({ setPage }) => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-        <button type="submit" style={{ backgroundColor: 'white', color: 'black' }}>Login</button>
-      </form>
-    </div>
+      <div style={{ padding: '20px' }}>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+          <button type="submit" style={{ backgroundColor: 'white', color: 'black' }}>Login</button>
+        </form>
+      </div>
   );
 };
 

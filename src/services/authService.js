@@ -16,11 +16,11 @@ export const register = async (username, email, password) => {
 
 export const logout = () => {
   localStorage.removeItem("token");
-/*
-  return axios.post(API_URL + "signout").then((response) => {
-    return response.data;
-  });
-*/
+  /*
+    return axios.post(API_URL + "signout").then((response) => {
+      return response.data;
+    });
+  */
 };
 
 export const getCurrentUser = () => {
