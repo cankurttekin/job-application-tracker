@@ -4,8 +4,6 @@ import Home from './components/Home';
 import styled from 'styled-components';
 import GlobalStyle from './styles/globalStyles';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
 import JobApplications from './components/JobApplications';
