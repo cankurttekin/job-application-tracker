@@ -13,6 +13,7 @@ import java.time.LocalDate;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")*/
 public class JobApplication {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

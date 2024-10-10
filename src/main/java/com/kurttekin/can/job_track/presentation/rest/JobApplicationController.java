@@ -77,6 +77,7 @@ public class JobApplicationController {
         jobApplication.setJobTitle(updatedJobApplication.getJobTitle());
         jobApplication.setApplicationDate(updatedJobApplication.getApplicationDate());
         jobApplication.setStatus(updatedJobApplication.getStatus());
+        jobApplication.setComments(updatedJobApplication.getComments());
 
         JobApplication savedJobApplication = jobApplicationService.updateJobApplication(jobApplication);
         return ResponseEntity.ok(savedJobApplication);
