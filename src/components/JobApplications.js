@@ -55,8 +55,8 @@ const StatusCell = styled.td`
   padding: 10px;
   border: 1px solid #ddd;
   background-color: ${({ status }) => getStatusBackgroundColor(status)};
-  color: white; /* Text color for contrast */
-  border-radius: 5px; /* Rounded corners */
+  color: white;
+  border-radius: 5px;
 `;
 
 const StarCell = styled.td`
@@ -85,7 +85,7 @@ const JobApplications = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [expandedComments, setExpandedComments] = useState({}); // Track expanded comments
+  const [expandedComments, setExpandedComments] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,7 +145,7 @@ const JobApplications = () => {
   const handleToggleStar = async (id,e) => {
     e.stopPropagation();
     const updatedApplication = jobApplications.find(app => app.id === id);
-    updatedApplication.starred = !updatedApplication.starred; // Toggle the starred status
+    updatedApplication.starred = !updatedApplication.starred;
 
     const token = localStorage.getItem("token");
     await axios.put(`http://localhost:8080/api/job-applications/${id}`, updatedApplication, {
@@ -251,7 +251,7 @@ const JobApplications = () => {
                         ) : (
                             <Comment>No comments available.</Comment>
                         )}
-                        {/* Optionally, you can add a form to add new comments here */}
+                        {/* a form can be added to add new comments here */}
                       </td>
                     </tr>
                 )}
