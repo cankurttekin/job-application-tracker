@@ -1,11 +1,15 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 const JobApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
   const [sortColumn, setSortColumn] = useState('companyName');
   const [sortOrder, setSortOrder] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedApplication, setSelectedApplication] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +26,44 @@ const JobApplications = () => {
   const handleSort = (column) => {
     setSortColumn(column);
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
+  const handleRowClick = (application) => {
+    setSelectedApplication(application);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedApplication(null);
+  };
+
+  const handleDelete = async (id, e) => {
+    e.stopPropagation(); // Prevent the event from triggering row click
+    const token = localStorage.getItem("token");
+    await axios.delete(`http://localhost:8080/api/job-applications/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setJobApplications(prev => prev.filter(app => app.id !== id));
+  };
+
+  const handleSaveChanges = async () => {
+    const token = localStorage.getItem("token");
+    await axios.put(`http://localhost:8080/api/job-applications/${selectedApplication.id}`, selectedApplication, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setJobApplications(prev => 
+      prev.map(app => app.id === selectedApplication.id ? selectedApplication : app)
+    );
+    closeModal();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedApplication(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const sortedApplications = [...jobApplications].sort((a, b) => {
@@ -59,21 +101,99 @@ const JobApplications = () => {
                 )}
               </th>
             ))}
+            <th> </th>
           </tr>
         </thead>
         <tbody>
           {filteredApplications.map(app => (
-            <tr key={app.id} style={styles.tableRow}>
+            <tr key={app.id} style={styles.tableRow} onClick={() => handleRowClick(app)}>
               <td style={styles.tableCell}>{app.companyName}</td>
               <td style={styles.tableCell}>{app.jobTitle}</td>
               <td style={{ ...styles.tableCell, color: getStatusColor(app.status) }}>{app.status}</td>
               <td style={styles.tableCell}>{new Date(app.applicationDate).toLocaleDateString()}</td>
               <td style={styles.tableCell}>{new Date(app.responseDate).toLocaleDateString()}</td>
               <td style={styles.tableCell}>{app.platform}</td>
+              <td style={styles.tableCell}>
+                <span 
+                  className="material-icons"
+                  style={styles.deleteIcon} 
+                  onClick={(e) => handleDelete(app.id, e)}
+                >
+                  delete
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Edit Modal */}
+      {isModalOpen && selectedApplication && (
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          style={styles.modal}
+          contentLabel="Edit Job Application"
+        >
+          <h2>Edit Job Application</h2>
+          <label>
+            Company Name:
+            <input
+              type="text"
+              name="companyName"
+              value={selectedApplication.companyName}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Job Title:
+            <input
+              type="text"
+              name="jobTitle"
+              value={selectedApplication.jobTitle}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Status:
+            <input
+              type="text"
+              name="status"
+              value={selectedApplication.status}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Application Date:
+            <input
+              type="date"
+              name="applicationDate"
+              value={selectedApplication.applicationDate}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Response Date:
+            <input
+              type="date"
+              name="responseDate"
+              value={selectedApplication.responseDate}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Platform:
+            <input
+              type="text"
+              name="platform"
+              value={selectedApplication.platform}
+              onChange={handleInputChange}
+            />
+          </label>
+          <button onClick={handleSaveChanges}>Save</button>
+          <button onClick={closeModal}>Cancel</button>
+        </Modal>
+      )}
     </div>
   );
 };
@@ -120,6 +240,7 @@ const styles = {
     backgroundColor: '#f2f2f2',
   },
   tableRow: {
+    cursor: 'pointer',
     '&:nth-child(even)': {
       backgroundColor: '#f9f9f9',
     },
@@ -129,9 +250,19 @@ const styles = {
   },
   tableCell: {
     padding: '10px',
-    border: '1px solid #ddd', // Added border for table cells
+    border: '1px solid #ddd', 
   },
+  deleteIcon: {
+    color: 'grey',
+    cursor: 'pointer',
+  },
+  modal: {
+    content: {
+      padding: '20px',
+      width: '500px',
+      margin: 'auto',
+    }
+  }
 };
 
 export default JobApplications;
-
