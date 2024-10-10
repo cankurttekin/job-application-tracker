@@ -142,7 +142,8 @@ const JobApplications = () => {
     }));
   };
 
-  const handleToggleStar = async (id) => {
+  const handleToggleStar = async (id,e) => {
+    e.stopPropagation();
     const updatedApplication = jobApplications.find(app => app.id === id);
     updatedApplication.starred = !updatedApplication.starred; // Toggle the starred status
 
@@ -189,7 +190,7 @@ const JobApplications = () => {
         <table style={styles.table}>
           <thead>
           <tr>
-            <th>Star</th>
+            <th></th>
             {['Company', 'Position', 'Status', 'Application Date', 'Response Date', 'Platform', 'Url', 'Comments'].map((column) => (
                 <th key={column} onClick={() => handleSort(column)} style={styles.tableHeader}>
                   {column.charAt(0).toUpperCase() + column.slice(1)}
@@ -207,9 +208,9 @@ const JobApplications = () => {
           {filteredApplications.map(app => (
               <React.Fragment key={app.id}>
                 <tr style={styles.tableRow} onClick={() => handleRowClick(app)}>
-                  <StarCell onClick={() => handleToggleStar(app.id)}>
+                  <StarCell onClick={(e) => handleToggleStar(app.id, e)}>
                     {app.starred ? (
-                        <span className="material-icons" style={{ color: 'gold' }}>star</span>
+                        <span className="material-icons" style={{color: 'gold'}}>star</span>
                     ) : (
                         <span className="material-icons">star_border</span>
                     )}
@@ -222,8 +223,12 @@ const JobApplications = () => {
                   <td style={styles.tableCell}>{new Date(app.applicationDate).toLocaleDateString()}</td>
                   <td style={styles.tableCell}>{new Date(app.responseDate).toLocaleDateString()}</td>
                   <td style={styles.tableCell}>{app.platform}</td>
-                  <td style={styles.tableCell}>{app.jobUrl}</td>
-                  <CommentCell onClick={(e) => handleToggleComments(app.id,e)}>
+                  <td style={styles.tableCell}>
+                    <a href={app.jobUrl} target="_blank" rel="noopener noreferrer">
+                      {app.jobUrl.length > 15 ? `${app.jobUrl.substring(12, 38)}...` : app.jobUrl}
+                    </a>
+                  </td>
+                  <CommentCell onClick={(e) => handleToggleComments(app.id, e)}>
                     {expandedComments[app.id] ? 'Hide' : 'Show'}
                   </CommentCell>
                   <td style={styles.tableCell}>
@@ -340,6 +345,15 @@ const JobApplications = () => {
                       onChange={handleInputChange}
                   />
                 </label>
+                <label>
+                  Comments:
+                  <Input
+                      type="text"
+                      name="comments"
+                      value={selectedApplication.comments}
+                      onChange={handleInputChange}
+                  />
+                </label>
                 <Button onClick={handleSaveChanges}>Save Changes</Button>
               </ModalContent>
             </Modal>
@@ -401,7 +415,7 @@ const styles = {
     border: '1px solid #ddd',
   },
   deleteIcon: {
-    color: 'red',
+    color: 'grey',
     cursor: 'pointer',
   },
   commentRow: {
