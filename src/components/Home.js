@@ -1,10 +1,9 @@
 import React from 'react';
-import '../styles/Home.css'; // Import a CSS file for styles
-import organizeImage from '../assets/organize.png'; // Import the image
-import filterImage from '../assets/filter.png'; // Import the image
-import starsImage from '../assets/stars.png'; // Import the image
-import goalsImage from '../assets/goal.png'; // Import the image
-import glpImage from '../assets/gplv3.png'; // Import the image
+import '../styles/Home.css';
+import organizeImage from '../assets/organize.png';
+import filterImage from '../assets/filter.png';
+import starsImage from '../assets/stars.png';
+import goalsImage from '../assets/goal.png';
 
 const Home = () => {
     return (
@@ -23,7 +22,7 @@ const Home = () => {
             <div className="illustrations-container">
                 <div className="illustration-item">
                     <img src={organizeImage} alt="Illustration 1" className="illustration" />
-                    <p className="illustration-text">Add jobs from anywhere you want(LinkedIn, Kariyer, Emails..)</p>
+                    <p className="illustration-text">Add jobs from any source you want(LinkedIn, Kariyer.net, Indeed, Emails...)</p>
                 </div>
                 <div className="illustration-item">
                     <img src={starsImage} alt="Illustration 2" className="illustration" />
@@ -31,7 +30,7 @@ const Home = () => {
                 </div>
                 <div className="illustration-item">
                     <img src={filterImage} alt="Illustration 3" className="illustration" />
-                    <p className="illustration-text">Use filters to view your all of your applications</p>
+                    <p className="illustration-text">Use filters to view your applications</p>
                 </div>
                 <div className="illustration-item">
                     <img src={goalsImage} alt="Illustration 4" className="illustration" />
@@ -53,9 +52,6 @@ const Home = () => {
                     <a href="https://github.com/cankurttekin/job-application-tracker" target="_blank" rel="noopener noreferrer">
                         Source Code
                     </a>
-                </p>
-                <p>
-                    <img src={require('../assets/gplv3.png')} alt="GPL v3 License" className="gpl-logo"/>
                 </p>
             </footer>
         </div>
