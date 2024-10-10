@@ -27,9 +27,7 @@ public class JobApplicationController {
     @PostMapping
     public ResponseEntity<JobApplication> createJobApplication(
             @RequestBody JobApplication jobApplication,
-            //Authentication authentication,
             @AuthenticationPrincipal UserDetails userDetails) {
-        // Get the authenticated user from the SecurityContext
         String username = userDetails.getUsername();
 
         //String username = authentication.getName(); // Get the username from the Authentication
@@ -53,5 +51,69 @@ public class JobApplicationController {
 
         List<JobApplication> jobApplications = jobApplicationService.findAllByUserId(user.getId());
         return ResponseEntity.ok(jobApplications);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<JobApplication> updateJobApplication(
+            @PathVariable Long id,
+            @RequestBody JobApplication updatedJobApplication,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        // Find the user in the database
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        JobApplication jobApplication = jobApplicationService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job Application not found"));
+
+        // Ensure the job application belongs to the user
+        if (!jobApplication.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        // Update the job application details
+        jobApplication.setCompanyName(updatedJobApplication.getCompanyName());
+        jobApplication.setJobTitle(updatedJobApplication.getJobTitle());
+        jobApplication.setApplicationDate(updatedJobApplication.getApplicationDate());
+        jobApplication.setStatus(updatedJobApplication.getStatus());
+
+        JobApplication savedJobApplication = jobApplicationService.updateJobApplication(jobApplication);
+        return ResponseEntity.ok(savedJobApplication);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteJobApplication(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        // Find the user in the database
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        JobApplication jobApplication = jobApplicationService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job Application not found"));
+
+        // Ensure the job application belongs to the user
+        if (!jobApplication.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        jobApplicationService.deleteJobApplication(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Delete all job applications for the authenticated user
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllJobApplications(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        // Find the user in the database
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        jobApplicationService.deleteAllByUserId(user.getId());
+        return ResponseEntity.noContent().build();
     }
 }
