@@ -25,13 +25,15 @@ const HamburgerIcon = styled.div`
     position: fixed;
     top: 10px;
     left: 10px;
-    font-size: 30px;
+    font-size: 26px;
     cursor: pointer;
     z-index: 1100;
     background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 50%;
+    border: solid 1px grey;
+    padding: 4px;
+    border-radius: 18%;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    color: grey;
 `;
 
 const SidebarItem = styled.div`
@@ -159,11 +161,13 @@ const Sidebar = ({ setPage }) => {
 
                 {/* Bottom Profile Section */}
                 <ProfileContainer>
+                    <HorizontalLine />
+                    {isLoggedIn && <div>Logged in as User</div>}
                     <ProfileButton onClick={isLoggedIn ? handleLogout : () => setPage('Login')}>
                         <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
                         {isLoggedIn ? 'Logout' : 'Login'}
                     </ProfileButton>
-                    {isLoggedIn && <div>Logged in as User</div>}
+
                 </ProfileContainer>
             </SidebarContainer>
         </>

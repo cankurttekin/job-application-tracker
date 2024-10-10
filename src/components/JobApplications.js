@@ -1,7 +1,82 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
+import styled from "styled-components";
+
+const ModalContent = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+const Input = styled.input`
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+`;
+
+const Button = styled.button`
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: none;
+  border: 1px solid #333;
+  color: #333;
+  font-size: 26px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+`;
+
+const StatusCell = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: ${({ status }) => getStatusBackgroundColor(status)};
+  color: white; /* Text color for contrast */
+  border-radius: 5px; /* Rounded corners */
+`;
+
+const StarCell = styled.td`
+  cursor: pointer;
+`;
+
+const CommentCell = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+`;
+
+const Comment = styled.div`
+  padding: 10px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  font-style: oblique;
+  position: relative;
+`;
 
 const JobApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -10,6 +85,7 @@ const JobApplications = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [expandedComments, setExpandedComments] = useState({}); // Track expanded comments
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +115,7 @@ const JobApplications = () => {
   };
 
   const handleDelete = async (id, e) => {
-    e.stopPropagation(); // Prevent the event from triggering row click
+    e.stopPropagation();
     const token = localStorage.getItem("token");
     await axios.delete(`http://localhost:8080/api/job-applications/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -52,8 +128,8 @@ const JobApplications = () => {
     await axios.put(`http://localhost:8080/api/job-applications/${selectedApplication.id}`, selectedApplication, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    setJobApplications(prev => 
-      prev.map(app => app.id === selectedApplication.id ? selectedApplication : app)
+    setJobApplications(prev =>
+        prev.map(app => app.id === selectedApplication.id ? selectedApplication : app)
     );
     closeModal();
   };
@@ -66,6 +142,28 @@ const JobApplications = () => {
     }));
   };
 
+  const handleToggleStar = async (id) => {
+    const updatedApplication = jobApplications.find(app => app.id === id);
+    updatedApplication.starred = !updatedApplication.starred; // Toggle the starred status
+
+    const token = localStorage.getItem("token");
+    await axios.put(`http://localhost:8080/api/job-applications/${id}`, updatedApplication, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    setJobApplications(prev =>
+        prev.map(app => app.id === id ? updatedApplication : app)
+    );
+  };
+
+  const handleToggleComments = (id, e) => {
+    e.stopPropagation();
+    setExpandedComments(prev => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   const sortedApplications = [...jobApplications].sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) return sortOrder === 'asc' ? -1 : 1;
     if (a[sortColumn] > b[sortColumn]) return sortOrder === 'asc' ? 1 : -1;
@@ -73,159 +171,213 @@ const JobApplications = () => {
   });
 
   const filteredApplications = sortedApplications.filter(app =>
-    Object.values(app).some(value => 
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
+      Object.values(app).some(value =>
+          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
   );
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Job Applications</h2>
-      <input 
-        type="text" 
-        placeholder="Search..." 
-        value={searchTerm} 
-        onChange={(e) => setSearchTerm(e.target.value)} 
-        style={styles.searchInput}
-      />
-      <table style={styles.table}>
-        <thead>
+      <div style={styles.container}>
+        <h2 style={styles.header}>Job Applications</h2>
+        <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={styles.searchInput}
+        />
+        <table style={styles.table}>
+          <thead>
           <tr>
-            {['Company', 'Title', 'Status', 'Application Date', 'Response Date', 'Platform'].map((column) => (
-              <th key={column} onClick={() => handleSort(column)} style={styles.tableHeader}>
-                {column.charAt(0).toUpperCase() + column.slice(1)} 
-                {sortColumn === column && (
-                  <span className="material-icons">
+            <th>Star</th>
+            {['Company', 'Position', 'Status', 'Application Date', 'Response Date', 'Platform', 'Url', 'Comments'].map((column) => (
+                <th key={column} onClick={() => handleSort(column)} style={styles.tableHeader}>
+                  {column.charAt(0).toUpperCase() + column.slice(1)}
+                  {sortColumn === column && (
+                      <span className="material-icons">
                     {sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}
                   </span>
-                )}
-              </th>
+                  )}
+                </th>
             ))}
             <th> </th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {filteredApplications.map(app => (
-            <tr key={app.id} style={styles.tableRow} onClick={() => handleRowClick(app)}>
-              <td style={styles.tableCell}>{app.companyName}</td>
-              <td style={styles.tableCell}>{app.jobTitle}</td>
-              <td style={{ ...styles.tableCell, color: getStatusColor(app.status) }}>{app.status}</td>
-              <td style={styles.tableCell}>{new Date(app.applicationDate).toLocaleDateString()}</td>
-              <td style={styles.tableCell}>{new Date(app.responseDate).toLocaleDateString()}</td>
-              <td style={styles.tableCell}>{app.platform}</td>
-              <td style={styles.tableCell}>
-                <span 
-                  className="material-icons"
-                  style={styles.deleteIcon} 
-                  onClick={(e) => handleDelete(app.id, e)}
-                >
-                  delete
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <React.Fragment key={app.id}>
+                <tr style={styles.tableRow} onClick={() => handleRowClick(app)}>
+                  <StarCell onClick={() => handleToggleStar(app.id)}>
+                    {app.starred ? (
+                        <span className="material-icons" style={{ color: 'gold' }}>star</span>
+                    ) : (
+                        <span className="material-icons">star_border</span>
+                    )}
+                  </StarCell>
+                  <td style={styles.tableCell}>{app.companyName}</td>
+                  <td style={styles.tableCell}>{app.jobTitle}</td>
+                  <StatusCell status={app.status}>
+                    {app.status}
+                  </StatusCell>
+                  <td style={styles.tableCell}>{new Date(app.applicationDate).toLocaleDateString()}</td>
+                  <td style={styles.tableCell}>{new Date(app.responseDate).toLocaleDateString()}</td>
+                  <td style={styles.tableCell}>{app.platform}</td>
+                  <td style={styles.tableCell}>{app.jobUrl}</td>
+                  <CommentCell onClick={(e) => handleToggleComments(app.id,e)}>
+                    {expandedComments[app.id] ? 'Hide' : 'Show'}
+                  </CommentCell>
+                  <td style={styles.tableCell}>
+                  <span
+                      className="material-icons"
+                      style={styles.deleteIcon}
+                      onClick={(e) => handleDelete(app.id, e)}
+                  >
+                    delete
+                  </span>
+                  </td>
+                </tr>
+                {expandedComments[app.id] && (
+                    <tr>
+                      <td colSpan="8" style={styles.commentRow}>
+                        {/* Display comments here */}
+                        {app.comments.length > 0 ? (
+                            <Comment>{app.comments}</Comment>
 
-      {/* Edit Modal */}
-      {isModalOpen && selectedApplication && (
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          style={styles.modal}
-          contentLabel="Edit Job Application"
-        >
-          <h2>Edit Job Application</h2>
-          <label>
-            Company Name:
-            <input
-              type="text"
-              name="companyName"
-              value={selectedApplication.companyName}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Job Title:
-            <input
-              type="text"
-              name="jobTitle"
-              value={selectedApplication.jobTitle}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Status:
-            <input
-              type="text"
-              name="status"
-              value={selectedApplication.status}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Application Date:
-            <input
-              type="date"
-              name="applicationDate"
-              value={selectedApplication.applicationDate}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Response Date:
-            <input
-              type="date"
-              name="responseDate"
-              value={selectedApplication.responseDate}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Platform:
-            <input
-              type="text"
-              name="platform"
-              value={selectedApplication.platform}
-              onChange={handleInputChange}
-            />
-          </label>
-          <button onClick={handleSaveChanges}>Save</button>
-          <button onClick={closeModal}>Cancel</button>
-        </Modal>
-      )}
-    </div>
+                        ) : (
+                            <Comment>No comments available.</Comment>
+                        )}
+                        {/* Optionally, you can add a form to add new comments here */}
+                      </td>
+                    </tr>
+                )}
+              </React.Fragment>
+          ))}
+          </tbody>
+        </table>
+
+        {/* Edit Modal */}
+        {isModalOpen && selectedApplication && (
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                style={{
+                  overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                  },
+                  content: {
+                    top: '50%',
+                    left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -50%)',
+                  },
+                }}
+            >
+              <CloseButton onClick={closeModal}>×</CloseButton>
+              <ModalContent>
+                <h2>Edit Job Application</h2>
+                <label>
+                  Company Name:
+                  <Input
+                      type="text"
+                      name="companyName"
+                      value={selectedApplication.companyName}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Position:
+                  <Input
+                      type="text"
+                      name="jobTitle"
+                      value={selectedApplication.jobTitle}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Status:
+                  <Input
+                      type="text"
+                      name="status"
+                      value={selectedApplication.status}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Application Date:
+                  <Input
+                      type="date"
+                      name="applicationDate"
+                      value={new Date(selectedApplication.applicationDate).toISOString().split('T')[0]}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Response Date:
+                  <Input
+                      type="date"
+                      name="responseDate"
+                      value={new Date(selectedApplication.responseDate).toISOString().split('T')[0]}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Platform:
+                  <Input
+                      type="text"
+                      name="platform"
+                      value={selectedApplication.platform}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Job URL:
+                  <Input
+                      type="url"
+                      name="jobUrl"
+                      value={selectedApplication.jobUrl}
+                      onChange={handleInputChange}
+                  />
+                </label>
+                <Button onClick={handleSaveChanges}>Save Changes</Button>
+              </ModalContent>
+            </Modal>
+        )}
+      </div>
   );
 };
 
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'Applied':
-      return 'blue';
-    case 'Interview':
-      return 'orange';
-    case 'Rejected':
-      return 'red';
-    case 'Accepted':
-      return 'green';
+// Function to get background color based on status
+const getStatusBackgroundColor = (status) => {
+  switch (status.toLowerCase()) {
+    case 'applied':
+      return '#7F8C8D';
+    case 'interview':
+      return '#E67E22';
+    case 'rejected':
+      return '#C0392B';
+    case 'ats reject':
+      return '#E74C3C';
+    case 'hired':
+      return '#2ECC71';
     default:
-      return 'black';
+      return 'grey';
   }
 };
 
-// CSS-in-JS styles
 const styles = {
   container: {
-    padding: '20px',
+    margin: '20px',
   },
   header: {
-    marginBottom: '20px',
+    textAlign: 'center',
   },
   searchInput: {
     padding: '10px',
     marginBottom: '20px',
+    borderRadius: '5px',
     border: '1px solid #ccc',
-    borderRadius: '4px',
     width: '100%',
   },
   table: {
@@ -233,36 +385,28 @@ const styles = {
     borderCollapse: 'collapse',
   },
   tableHeader: {
-    padding: '10px',
-    textAlign: 'left',
-    border: '1px solid #ddd',
     cursor: 'pointer',
-    backgroundColor: '#f2f2f2',
+    //backgroundColor: '#333',
+    color: '#333',
+    padding: '10px',
   },
   tableRow: {
     cursor: 'pointer',
-    '&:nth-child(even)': {
-      backgroundColor: '#f9f9f9',
-    },
     '&:hover': {
       backgroundColor: '#f1f1f1',
     },
   },
   tableCell: {
     padding: '10px',
-    border: '1px solid #ddd', 
+    border: '1px solid #ddd',
   },
   deleteIcon: {
-    color: 'grey',
+    color: 'red',
     cursor: 'pointer',
   },
-  modal: {
-    content: {
-      padding: '20px',
-      width: '500px',
-      margin: 'auto',
-    }
-  }
+  commentRow: {
+    backgroundColor: '#f9f9f9',
+  },
 };
 
 export default JobApplications;

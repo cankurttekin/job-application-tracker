@@ -17,12 +17,14 @@ const Container = styled.div`
 
 const MainContent = styled.div`
   flex: 1;
-  padding: 20px;
+  //padding: 20px;
+    padding-left: 34px;
+    //margin-top: 26px;
   //border-radius: 20px;
   background-color: #ffff;
   //margin-left: 16px;
     //margin-top: 28px;
-    margin-left: 280px; /* Match the sidebar width */
+    //margin-left: 28px; /* Match the sidebar width */
 `;
 
 
