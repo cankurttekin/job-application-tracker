@@ -1,13 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
 
 const SidebarContainer = styled.div`
-    position: fixed; /* Make sidebar fixed */
-    top: 0; /* Align to top */
-    left: 0; /* Align to left */
+    position: fixed;
+    top: 0;
+    left: ${(props) => (props.isHidden ? '-280px' : '0')}; /* Toggle visibility with slide effect */
     width: 280px;
-    height: 98vh; /* Full height */
+    height: 98vh;
     background-color: #f5f5f5;
     padding: 20px;
     color: black;
@@ -15,10 +16,22 @@ const SidebarContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     border-radius: 0 0.675rem 0.675rem 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
-    z-index: 1000; /* Ensure it stays on top */
-    margin-top: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: left 0.3s ease; /* Smooth transition for show/hide */
+`;
 
+const HamburgerIcon = styled.div`
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1100;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const SidebarItem = styled.div`
@@ -34,88 +47,128 @@ const SidebarItem = styled.div`
     }
 
     & > .material-icons {
-        margin-right: 10px; /* Space between icon and text */
+        margin-right: 10px;
     }
 `;
 
 const ProfileContainer = styled.div`
-    margin-top: auto; /* Push to bottom */
     text-align: center;
-    color: #aaa; /* Light text color */
+    color: black;
+    margin-bottom: 30px;
 `;
 
 const ProfileButton = styled.button`
     background: none;
     border: none;
-    color: #aaa;
+    color: black;
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
 
     &:hover {
-        color: black;
+        color: #333;
     }
+`;
+const HorizontalLine = styled.hr`
+    margin: 20px 0; /* Space around the line */
+    border: 0;
+    border-top: 1px solid #ccc; /* Line color */
+`;
+
+
+const AppName = styled.div`
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-left: 20px; /* Adjust spacing from top */
 `;
 
 const Sidebar = ({ setPage }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks login state
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isHidden, setIsHidden] = useState(false); // Controls sidebar visibility
+
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token); // Set login status based on token presence
+        setIsLoggedIn(!!token);
     }, []);
 
     const handleAddJobClick = () => {
         setIsModalOpen(true);
     };
-    
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
         setPage('login');
     };
 
+    const toggleSidebar = () => {
+        setIsHidden(!isHidden); // Toggles sidebar visibility
+    };
+
     return (
-        <SidebarContainer>
-            <div>
-                <SidebarItem onClick={() => setPage('home')}>
-                    <span className="material-icons">home</span>
-                    Home
-                </SidebarItem>
-	    {isLoggedIn && (
-                    <>
-                <SidebarItem onClick={() => setPage('jobApplications')}>
-                    <span className="material-icons">work</span>
-                    Applications
-                </SidebarItem>
+        <>
+            {/* Hamburger Menu Icon */}
+            <HamburgerIcon className="material-icons" onClick={toggleSidebar}>
+                menu
+            </HamburgerIcon>
 
-                <SidebarItem onClick={handleAddJobClick}>
-                    <span className="material-icons">add</span>
-                    Add Job Application
-                </SidebarItem>
-		</>
-	    )}
-            </div>
+            {/* Sidebar */}
+            <SidebarContainer isHidden={isHidden}>
+                <div>
+                    <AppName>ATSFS</AppName>
+                    <SidebarItem onClick={() => setPage('home')}>
+                        <span className="material-icons">home</span>
+                        Home
+                    </SidebarItem>
 
-            <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                    {/* Profile Section */}
+                    <ProfileContainer>
+                        {isLoggedIn ? (
+                            <>
+                                <HorizontalLine /> {/* Horizontal line after Home button */}
 
-            <ProfileContainer>
-	    {isLoggedIn ? (
-		    <ProfileButton onClick={handleLogout}>
-                        <span className="material-icons">logout</span>
-                        Logout
+                                <SidebarItem onClick={() => setPage('jobApplications')}>
+                                    <span className="material-icons">work</span>
+                                    Applications
+                                </SidebarItem>
+                                <SidebarItem onClick={handleAddJobClick}>
+                                    <span className="material-icons">add</span>
+                                    Add Job Application
+                                </SidebarItem>
+                                <SidebarItem onClick={() => setPage('myResume')}>
+                                    <span className="material-icons">assignment_ind</span>
+                                    My Resume
+                                </SidebarItem>
+                                <SidebarItem onClick={() => setPage('exportData')}>
+                                    <span className="material-icons">file_download</span>
+                                    Export My Data
+                                </SidebarItem>
+                            </>
+                        ) : (
+                            //<p>Login to start tracking your jobs!</p>
+                            <p></p>
+                        )}
+                    </ProfileContainer>
+                </div>
+
+                {/* Add Job Application Modal */}
+                <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+                {/* Bottom Profile Section */}
+                <ProfileContainer>
+                    <ProfileButton onClick={isLoggedIn ? handleLogout : () => setPage('Login')}>
+                        <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
+                        {isLoggedIn ? 'Logout' : 'Login'}
                     </ProfileButton>
-                ) : (
-                <ProfileButton onClick={() => setPage('Login')}>
-                    <span className="material-icons">login</span>
-                    Login
-                </ProfileButton>
-		)}
-<div>{isLoggedIn ? 'Logged in as User' : ''}</div>
-            </ProfileContainer>
-        </SidebarContainer>
+                    {isLoggedIn && <div>Logged in as User</div>}
+                </ProfileContainer>
+            </SidebarContainer>
+        </>
     );
 };
 
-export default Sidebar;
 
+export default Sidebar;
