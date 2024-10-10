@@ -1,25 +1,30 @@
-
 import React, { useState } from 'react';
 import { login } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setPage }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // useNavigate instead of useHistory
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(username, password);
-      navigate("/job-applications"); // navigate after successful login
+      const response = await login(username, password);
+      // Check if response contains token
+      if (response.token) {
+        console.log(response);
+	//setPage('Login');
+	window.location.reload(false); // temporary 
+      } else {
+        console.error("No token received");
+      }
     } catch (error) {
-      console.error("Invalid credentials");
+      // Log error details
+      console.error("Error during login:", error.response ? error.response.data : error.message);
     }
   };
 
   return (
-    <div style={{ backgroundColor: 'black', color: 'white', padding: '20px' }}>
+    <div style={{ padding: '20px' }}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
@@ -31,3 +36,4 @@ const Login = () => {
 };
 
 export default Login;
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
 
@@ -59,9 +59,20 @@ const ProfileButton = styled.button`
 
 const Sidebar = ({ setPage }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks login state
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token); // Set login status based on token presence
+    }, []);
 
     const handleAddJobClick = () => {
         setIsModalOpen(true);
+    };
+    
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        setPage('login');
     };
 
     return (
@@ -71,23 +82,36 @@ const Sidebar = ({ setPage }) => {
                     <span className="material-icons">home</span>
                     Home
                 </SidebarItem>
+	    {isLoggedIn && (
+                    <>
                 <SidebarItem onClick={() => setPage('jobApplications')}>
                     <span className="material-icons">work</span>
                     Applications
                 </SidebarItem>
+
                 <SidebarItem onClick={handleAddJobClick}>
                     <span className="material-icons">add</span>
                     Add Job Application
                 </SidebarItem>
+		</>
+	    )}
             </div>
+
             <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
             <ProfileContainer>
-                <ProfileButton onClick={() => setPage('profile')}>
-                    <span className="material-icons">person</span>
-                    Profile
+	    {isLoggedIn ? (
+		    <ProfileButton onClick={handleLogout}>
+                        <span className="material-icons">logout</span>
+                        Logout
+                    </ProfileButton>
+                ) : (
+                <ProfileButton onClick={() => setPage('Login')}>
+                    <span className="material-icons">login</span>
+                    Login
                 </ProfileButton>
-                <div>info</div>
+		)}
+<div>{isLoggedIn ? 'Logged in as User' : ''}</div>
             </ProfileContainer>
         </SidebarContainer>
     );

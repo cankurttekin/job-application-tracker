@@ -38,6 +38,7 @@ const App = () => {
         <MainContent>
           {page === 'home' && <Home />}
           {page === 'jobApplications' && <JobApplications />}
+	  {page === 'Login' && <Login />}
         </MainContent>
       </Container>
     </>
