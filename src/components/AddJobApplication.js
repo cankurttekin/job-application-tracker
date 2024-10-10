@@ -8,7 +8,7 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative; /* Required for absolute positioning of the close button */
+  position: relative; /* for absolute positioning of the close button */
 `;
 
 const Input = styled.input`
@@ -16,7 +16,7 @@ const Input = styled.input`
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 100%; /* Full width */
+  width: 100%;
 `;
 
 const TextArea = styled.textarea`
@@ -24,55 +24,54 @@ const TextArea = styled.textarea`
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 100%; /* Full width */
+  width: 100%;
 `;
 
 const Button = styled.button`
-  background-color: #333; /* Button background color */
-  color: white; /* Button text color */
+  background-color: #333;
+  color: white;
   padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%; /* Full width */
+  width: 100%;
 `;
 
 const FormRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Space between elements */
-  width: 100%; /* Full width */
-  margin-bottom: 10px; /* Space between rows */
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
 `;
 
 const FormGroup = styled.div`
   flex: 1; /* Take equal space */
-  margin: 5px; /* Margin around fields */
-  min-width: 180px; /* Minimum width for fields */
+  margin: 5px;
+  min-width: 180px;
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 2px; /* Increased from 10px to 20px */
+  top: 2px;
   right: 2px;
   background: none;
-  border: 1px solid #333; /* Border color */
-  color: #333; /* Text color */
-  font-size: 26px; /* Size of the close button */
-  width: 30px; /* Width of the button */
-  height: 30px; /* Height of the button */
-  border-radius: 50%; /* Circular border */
+  border: 1px solid #333;
+  color: #333;
+  font-size: 26px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   display: flex;
-  align-items: center; /* Center text vertically */
-  justify-content: center; /* Center text horizontally */
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 
   &:hover {
-    background-color: black; /* Light background on hover */
-    color: white; /* Change color on hover */
+    background-color: black;
+    color: white;
   }
 `;
-
 
 const AddJobApplication = ({ isOpen, onClose }) => {
   const [companyName, setCompanyName] = useState('');
@@ -103,16 +102,18 @@ const AddJobApplication = ({ isOpen, onClose }) => {
     };
 
     try {
-      const token = localStorage.getItem('token'); // Get JWT token from localStorage
+      // Get JWT token from localStorage
+      const token = localStorage.getItem('token');
       const response = await axios.post('http://localhost:8080/api/job-applications', jobApplication, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      //if (response.status === 201) {
-        //navigate('/job-applications'); // Redirect to job applications page on success
-      //}
+      /*
+      if (response.status === 201) {
+        navigate('/job-applications'); // Redirect to job applications page on success
+      }
+      */
     } catch (error) {
       console.error('Error adding job application:', error);
       setErrorMessage('Failed to add job application. Please try again.');
@@ -137,8 +138,8 @@ const AddJobApplication = ({ isOpen, onClose }) => {
               width: '400px',
               padding: '20px',
               borderRadius: '10px',
-              backgroundColor: '#f5f5f5', // Modal background color
-              color: '#333', // Text color in the modal
+              backgroundColor: '#f5f5f5',
+              color: '#333',
             },
           }}
       >
@@ -211,19 +212,18 @@ const AddJobApplication = ({ isOpen, onClose }) => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              rows="4" // Number of rows for the textarea
+              rows="4"
           />
           <TextArea
               placeholder="Comments"
               value={comments}
               onChange={(e) => setComments(e.target.value)}
-              rows="4" // Number of rows for the textarea
+              rows="4"
           />
           <Button onClick={handleSubmit}>Submit</Button>
         </ModalContent>
       </Modal>
   );
 };
-
 
 export default AddJobApplication;
