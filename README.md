@@ -6,6 +6,12 @@
 - List jobs with status filtering(APPLIED, INTERVIEW, REJECTED, CANCEL...)
 - ...will be listed here
 
+<img src="/screenshot-atsfs-home.png"
+alt="homepage">
+
+<img src="/screenshot-atsfs.png"
+alt="homepage">
+
 ## Stack
 - Java 17
 - Spring Boot 3
