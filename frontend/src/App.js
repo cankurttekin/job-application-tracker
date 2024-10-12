@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import styled from 'styled-components';
 import GlobalStyle from './styles/globalStyles';
-
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import JobApplications from './components/JobApplications';
-import AddJobApplication from './components/AddJobApplication';
+import { AuthProvider } from './contexts/AuthContext';
+
+const PrivateRoute = ({ isLoggedIn, children }) => {
+    return isLoggedIn ? children : <Navigate to="/login" />;
+};
 
 const Container = styled.div`
     display: flex;
@@ -15,31 +19,38 @@ const Container = styled.div`
 
 const MainContent = styled.div`
     flex: 1;
-    //padding: 20px;
     padding-left: 34px;
-    //margin-top: 26px;
-    //border-radius: 20px;
     background-color: #ffff;
-    //margin-left: 16px;
-    //margin-top: 28px;
-    //margin-left: 28px; /* Match the sidebar width */
 `;
 
 const App = () => {
-    const [page, setPage] = useState('home');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) setIsLoggedIn(true);
+    }, []);
 
     return (
-        <>
-            <GlobalStyle />
-            <Container>
-                <Sidebar setPage={setPage} />
-                <MainContent>
-                    {page === 'home' && <Home />}
-                    {page === 'jobApplications' && <JobApplications />}
-                    {page === 'Login' && <Login />}
-                </MainContent>
-            </Container>
-        </>
+        <AuthProvider>
+            <Router>
+                <GlobalStyle />
+                <Container>
+                    <Sidebar />
+                    <MainContent>
+                        <Routes>
+                            <Route path="/" element={isLoggedIn ? <Navigate to="/job-applications" /> : <Home />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route
+                                path="/job-applications"
+                                element={<PrivateRoute isLoggedIn={isLoggedIn}><JobApplications /></PrivateRoute>}
+                            />
+                        </Routes>
+                    </MainContent>
+                </Container>
+            </Router>
+        </AuthProvider>
     );
 };
 

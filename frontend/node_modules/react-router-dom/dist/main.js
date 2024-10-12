@@ -1,5 +1,5 @@
 /**
- * React Router DOM v6.26.2
+ * React Router DOM v6.27.0
  *
  * Copyright (c) Remix Software Inc.
  *

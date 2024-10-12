@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
-
+import {AuthContext} from '../contexts/AuthContext';
 const SidebarContainer = styled.div`
     position: fixed;
     top: 0;
@@ -70,12 +71,12 @@ const ProfileButton = styled.button`
         color: #333;
     }
 `;
+
 const HorizontalLine = styled.hr`
     margin: 20px 0;
     border: 0;
     border-top: 1px solid #ccc;
 `;
-
 
 const AppName = styled.div`
     font-size: 24px;
@@ -85,14 +86,16 @@ const AppName = styled.div`
     padding-left: 20px;
 `;
 
-const Sidebar = ({ setPage }) => {
+const Sidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext); // Use global isLoggedIn
     const [isHidden, setIsHidden] = useState(false); // Controls sidebar visibility
+
+    const navigate = useNavigate(); // Use navigate for routing
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token);
+        setIsLoggedIn(!!token); // Update the state based on token presence
     }, []);
 
     const handleAddJobClick = () => {
@@ -100,9 +103,9 @@ const Sidebar = ({ setPage }) => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('token'); // Remove token from localStorage
         setIsLoggedIn(false);
-        setPage('login');
+        navigate('/login'); // Navigate to login after logout
     };
 
     const toggleSidebar = () => {
@@ -120,7 +123,7 @@ const Sidebar = ({ setPage }) => {
             <SidebarContainer isHidden={isHidden}>
                 <div>
                     <AppName>ATSFS</AppName>
-                    <SidebarItem onClick={() => setPage('home')}>
+                    <SidebarItem onClick={() => navigate('/')}>
                         <span className="material-icons">home</span>
                         Home
                     </SidebarItem>
@@ -130,7 +133,7 @@ const Sidebar = ({ setPage }) => {
                         {isLoggedIn ? (
                             <>
                                 <HorizontalLine />
-                                <SidebarItem onClick={() => setPage('jobApplications')}>
+                                <SidebarItem onClick={() => navigate('/job-applications')}>
                                     <span className="material-icons">work</span>
                                     Applications
                                 </SidebarItem>
@@ -138,17 +141,16 @@ const Sidebar = ({ setPage }) => {
                                     <span className="material-icons">add</span>
                                     Add Job Application
                                 </SidebarItem>
-                                <SidebarItem onClick={() => setPage('myResume')}>
+                                <SidebarItem onClick={() => navigate('/myResume')}>
                                     <span className="material-icons">assignment_ind</span>
                                     My Resume
                                 </SidebarItem>
-                                <SidebarItem onClick={() => setPage('exportData')}>
+                                <SidebarItem onClick={() => navigate('/exportData')}>
                                     <span className="material-icons">file_download</span>
                                     Export My Data
                                 </SidebarItem>
                             </>
                         ) : (
-                            //<p>Login to start tracking your jobs!</p>
                             <p></p>
                         )}
                     </ProfileContainer>
@@ -160,11 +162,10 @@ const Sidebar = ({ setPage }) => {
                 <ProfileContainer>
                     <HorizontalLine />
                     {isLoggedIn && <div>Logged in as User</div>}
-                    <ProfileButton onClick={isLoggedIn ? handleLogout : () => setPage('Login')}>
+                    <ProfileButton onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
                         <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
                         {isLoggedIn ? 'Logout' : 'Login'}
                     </ProfileButton>
-
                 </ProfileContainer>
             </SidebarContainer>
         </>

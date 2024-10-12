@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../styles/Home.css';
 import organizeImage from '../assets/organize.png';
 import filterImage from '../assets/filter.png';
 import starsImage from '../assets/stars.png';
 import goalsImage from '../assets/goal.png';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext'; // Assuming you have AuthContext set up
 
 const Home = () => {
+    const navigate = useNavigate();
+    const { isLoggedIn } = useContext(AuthContext); // Access the isLoggedIn state from AuthContext
+
+    const handleRegisterClick = () => {
+        navigate('/register');
+    };
+
     return (
         <div className="home-container">
             <div className="header-container">
@@ -15,14 +24,18 @@ const Home = () => {
                 </div>
                 <div className="right-column">
                     <h3 className="small-text">Make your job hunt more organized — in one place.</h3>
-                    <a href="/register" className="register-button">Register</a>
+                    {!isLoggedIn && (  // Conditionally render the Register button
+                        <button className="register-button" onClick={handleRegisterClick}>
+                            Register
+                        </button>
+                    )}
                 </div>
             </div>
 
             <div className="illustrations-container">
                 <div className="illustration-item">
                     <img src={organizeImage} alt="Illustration 1" className="illustration" />
-                    <p className="illustration-text">Add jobs from any source you want(LinkedIn, Kariyer.net, Indeed, Emails...)</p>
+                    <p className="illustration-text">Add jobs from any source you want (LinkedIn, Kariyer.net, Indeed, Emails...)</p>
                 </div>
                 <div className="illustration-item">
                     <img src={starsImage} alt="Illustration 2" className="illustration" />
@@ -39,7 +52,9 @@ const Home = () => {
             </div>
 
             <footer className="footer">
-                <p><a href="https://can.kurttekin.com" target="_blank" rel="noopener noreferrer">cankurttekin</a></p>
+                <p>
+                    <a href="https://can.kurttekin.com" target="_blank" rel="noopener noreferrer">cankurttekin</a>
+                </p>
                 <br/>
                 <p>
                     This software is free and open-source, licensed under the terms of the&nbsp;
