@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
 export const login = async (username, password) => {
-  const response = await axios.post(`${API_URL}/auth/login`, { username, password });
+  const response = await axios.post(`${REACT_APP_BACKEND_URL}/auth/login`, { username, password });
   if (response.data.token) {
     localStorage.setItem("token", response.data.token);
   }
@@ -11,13 +11,13 @@ export const login = async (username, password) => {
 };
 
 export const register = async (username, email, password) => {
-  return axios.post(`${API_URL}/auth/register`, { username, email, password });
+  return axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, { username, email, password });
 };
 
 export const logout = () => {
   localStorage.removeItem("token");
   /*
-    return axios.post(API_URL + "signout").then((response) => {
+    return axios.post(REACT_APP_BACKEND_URL + "signout").then((response) => {
       return response.data;
     });
   */

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import styled from "styled-components";
 
-const API_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
 const ModalContent = styled.div`
   padding: 20px;
@@ -92,7 +92,7 @@ const JobApplications = () => {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${API_URL}/job-applications`, {
+      const response = await axios.get(`${REACT_APP_BACKEND_URL}/job-applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setJobApplications(response.data);
@@ -119,7 +119,7 @@ const JobApplications = () => {
   const handleDelete = async (id, e) => {
     e.stopPropagation();
     const token = localStorage.getItem("token");
-    await axios.delete(`${API_URL}/job-applications/${id}`, {
+    await axios.delete(`${REACT_APP_BACKEND_URL}/job-applications/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     setJobApplications(prev => prev.filter(app => app.id !== id));
@@ -127,7 +127,7 @@ const JobApplications = () => {
 
   const handleSaveChanges = async () => {
     const token = localStorage.getItem("token");
-    await axios.put(`${API_URL}/job-applications/${selectedApplication.id}`, selectedApplication, {
+    await axios.put(`${REACT_APP_BACKEND_URL}/job-applications/${selectedApplication.id}`, selectedApplication, {
       headers: { Authorization: `Bearer ${token}` }
     });
     setJobApplications(prev =>
@@ -150,7 +150,7 @@ const JobApplications = () => {
     updatedApplication.starred = !updatedApplication.starred;
 
     const token = localStorage.getItem("token");
-    await axios.put(`${API_URL}/job-applications/${id}`, updatedApplication, {
+    await axios.put(`${REACT_APP_BACKEND_URL}/job-applications/${id}`, updatedApplication, {
       headers: { Authorization: `Bearer ${token}` }
     });
 

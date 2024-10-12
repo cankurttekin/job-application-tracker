@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
 
 // Reuse the same styled components from Login for consistency
@@ -78,7 +78,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${API_URL}/auth/register`, {
+            await axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, {
                 username,
                 email,
                 password,
