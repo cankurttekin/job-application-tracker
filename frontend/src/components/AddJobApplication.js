@@ -3,6 +3,8 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 
+const API_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+
 const ModalContent = styled.div`
   padding: 20px;
   display: flex;
@@ -104,7 +106,7 @@ const AddJobApplication = ({ isOpen, onClose }) => {
     try {
       // Get JWT token from localStorage
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8080/api/job-applications', jobApplication, {
+      const response = await axios.post('${API_URL}/job-applications', jobApplication, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
