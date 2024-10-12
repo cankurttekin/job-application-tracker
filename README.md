@@ -6,10 +6,10 @@
 - List jobs with status filtering(APPLIED, INTERVIEW, REJECTED, CANCEL...)
 - ...will be listed here
 
-<img src="/screenshot-atsfs-home.png"
+<img src="/assets/screenshot-atsfs-home.png"
 alt="homepage">
 
-<img src="/screenshot-atsfs.png"
+<img src="/assets/screenshot-atsfs.png"
 alt="homepage">
 
 ## Stack
@@ -22,11 +22,11 @@ alt="homepage">
 - React
 
 ## Structure
-<img src="/unclebob.svg"
+<img src="/assets/unclebob.svg"
      alt="unclebob"
      >
      
-<img src="/sequence-diagram.png"
+<img src="/assets/sequence-diagram.png"
      alt="sequence"
      height="309">
 
