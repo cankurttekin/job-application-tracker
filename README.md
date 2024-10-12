@@ -30,17 +30,12 @@ alt="homepage">
      alt="sequence"
      height="309">
 
-## Building
-```
-# add -DskipTests to skip tests
-mvn clean package
-```
-
 ## Docker
 ```
 docker-compose up --build
 ```
-> localhost:8080
+> localhost:8080 backend
+> localhost:3000 frontend
 
 ## Contributing
 I would happily accept any help, PRs and suggestions.
