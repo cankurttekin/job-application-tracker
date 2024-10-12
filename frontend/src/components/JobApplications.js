@@ -92,7 +92,7 @@ const JobApplications = () => {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      const response = await axios.get("${API_URL}/job-applications", {
+      const response = await axios.get(`${API_URL}/job-applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setJobApplications(response.data);
