@@ -1,16 +1,28 @@
 # ATSFS
-[frontend](https://github.com/cankurttekin/job-application-tracker/tree/frontend)
-> Kepp track of your job applications in one place
+
+ <p align="center">
+  <img height="64" width="64"  src="/assets/atsfs.png">
+</p>
+
+> Keep Track of Your Job Applications in one place
+
 ## Features
 - Add jobs and details
-- List jobs with status filtering(APPLIED, INTERVIEW, REJECTED, CANCEL...)
-- ...will be listed here
+- Write comments on jobs
+- Filter and sort your applications
+- ...
+
+[job-application-tracker-silk.vercel.app](https://job-application-tracker-silk.vercel.app/)
+<br />
 
 <img src="/assets/screenshot-atsfs-home.png"
 alt="homepage">
 
 <img src="/assets/screenshot-atsfs.png"
-alt="homepage">
+alt="applications">
+
+<img src="/assets/screenshot-atsfs-charts.png"
+alt="graphs">
 
 ## Stack
 - Java 17
