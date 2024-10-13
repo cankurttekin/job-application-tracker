@@ -1,7 +1,7 @@
 .home-container {
     text-align: center;
     padding: 20px;
-    margin-top: 40px;
+    margin-top: 100px;
 }
 
 .header-container {
@@ -21,18 +21,18 @@
     flex: 1;
     max-width: 400px;
     padding: 10px;
+    margin-left: 120px;
 }
 
 .big-text {
-    font-size: 2.2em;
+    font-size: 3em;
     margin: 10px 0;
     text-align: left;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .big-text2 {
     font-size: 1.5em;
-    margin: 10px 0;
     text-align: left;
     color: #666;
 }
@@ -45,14 +45,14 @@
 .register-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #333;
+    background-color: black;
+    border: none;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
 }
 
 .register-button:hover {
-    background-color: black; 
+    background-color: #333;
 }
 
 .illustrations-container {
@@ -80,7 +80,7 @@
 
 .footer {
     margin-top: 40px;
-    font-size: 0.9em;
+    font-size: 0.7em;
     color: #666;
 }
 

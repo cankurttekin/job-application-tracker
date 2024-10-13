@@ -19,7 +19,7 @@ const Container = styled.div`
 
 const MainContent = styled.div`
     flex: 1;
-    padding-left: 34px;
+    padding-left: 280px;
     background-color: #ffff;
 `;
 

@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Fira Sans', sans-serif;
     background-color: #ffffff;
     color: #0d0d0d;
   }

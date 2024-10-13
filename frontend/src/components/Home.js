@@ -35,19 +35,19 @@ const Home = () => {
             <div className="illustrations-container">
                 <div className="illustration-item">
                     <img src={organizeImage} alt="Illustration 1" className="illustration" />
-                    <p className="illustration-text">Add jobs from any source you want (LinkedIn, Kariyer.net, Indeed, Emails...)</p>
+                    <p className="illustration-text">Add jobs from any source you want</p>
                 </div>
                 <div className="illustration-item">
                     <img src={starsImage} alt="Illustration 2" className="illustration" />
-                    <p className="illustration-text">Add comments on your job applications like rating interview questions, your answers, what would you want to change etc.</p>
+                    <p className="illustration-text">Comment on your applications, star your favorites</p>
                 </div>
                 <div className="illustration-item">
                     <img src={filterImage} alt="Illustration 3" className="illustration" />
-                    <p className="illustration-text">Use filters to view your applications</p>
+                    <p className="illustration-text">Filter and/or sort to view your applications</p>
                 </div>
                 <div className="illustration-item">
                     <img src={goalsImage} alt="Illustration 4" className="illustration" />
-                    <p className="illustration-text">Achieve Your Goals</p>
+                    <p className="illustration-text">Land a job (hopefully)</p>
                 </div>
             </div>
 
