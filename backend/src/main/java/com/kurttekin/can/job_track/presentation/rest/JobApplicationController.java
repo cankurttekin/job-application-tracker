@@ -12,7 +12,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/job-applications")
@@ -116,5 +120,32 @@ public class JobApplicationController {
 
         jobApplicationService.deleteAllByUserId(user.getId());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Object>> getJobApplicationStats(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        // Find the user in the database
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Get all job applications for the user
+        List<JobApplication> jobApplications = jobApplicationService.findAllByUserId(user.getId());
+
+        // Calculate statistics
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalApplications", jobApplications.size());
+
+        Map<LocalDate, Long> applicationsByDay = jobApplications.stream()
+                .filter(application -> application.getApplicationDate() != null)
+                .collect(Collectors.groupingBy(
+                        jobApplication -> jobApplication.getApplicationDate(),
+                        Collectors.counting()
+                ));
+
+        stats.put("applicationsByDay", applicationsByDay);
+
+        return ResponseEntity.ok(stats);
     }
 }

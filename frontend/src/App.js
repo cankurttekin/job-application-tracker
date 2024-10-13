@@ -8,6 +8,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import JobApplications from './components/JobApplications';
 import { AuthProvider } from './contexts/AuthContext';
+import Charts from './components/Charts';
 
 const PrivateRoute = ({ isLoggedIn, children }) => {
     return isLoggedIn ? children : <Navigate to="/login" />;
@@ -46,6 +47,7 @@ const App = () => {
                                 path="/job-applications"
                                 element={<PrivateRoute isLoggedIn={isLoggedIn}><JobApplications /></PrivateRoute>}
                             />
+                            <Route path="/charts" element={<PrivateRoute isLoggedIn={isLoggedIn}><Charts /></PrivateRoute>} />
                         </Routes>
                     </MainContent>
                 </Container>

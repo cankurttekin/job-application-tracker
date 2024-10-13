@@ -6,7 +6,9 @@ import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -43,5 +45,18 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Override
     public void deleteAllByUserId(Long userId) {
         jobApplicationRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    public Map<String, Integer> getJobApplicationStats(Long userId) {
+        Map<String, Integer> stats = new HashMap<>();
+
+        List<JobApplication> applications = jobApplicationRepository.findByUserId(userId);
+        for (JobApplication application : applications) {
+            String date = application.getApplicationDate().toString();
+            stats.put(date, stats.getOrDefault(date, 0) + 1); // Increment the count for the date
+        }
+
+        return stats;
     }
 }

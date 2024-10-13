@@ -119,6 +119,10 @@ const Sidebar = () => {
                                 <span className="material-icons">add</span>
                                 Add Job Application
                             </SidebarItem>
+                            <SidebarItem onClick={() => navigate('/charts')}>
+                                <span className="material-icons">bar_chart</span>
+                                Charts
+                            </SidebarItem>
                             <SidebarItem onClick={() => navigate('/myResume')}>
                                 <span className="material-icons">assignment_ind</span>
                                 My Resume

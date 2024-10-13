@@ -3,6 +3,7 @@ package com.kurttekin.can.job_track.domain.service;
 import com.kurttekin.can.job_track.domain.model.JobApplication;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface JobApplicationService {
@@ -12,4 +13,5 @@ public interface JobApplicationService {
     JobApplication updateJobApplication(JobApplication jobApplication);
     void deleteJobApplication(Long id);
     void deleteAllByUserId(Long userId);
+    Map<String, Integer> getJobApplicationStats(Long userId);
 }
