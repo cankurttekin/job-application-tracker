@@ -1,7 +1,7 @@
 # ATSFS
 
  <p align="center">
-  <img height="64" width="64"  src="/assets/atsfs.png">
+  <img height="64" src="/assets/atsfs.png">
 </p>
 
 > Keep Track of Your Job Applications in one place
@@ -23,6 +23,44 @@ alt="applications">
 
 <img src="/assets/screenshot-atsfs-charts.png"
 alt="graphs">
+
+## Endpoints
+<details>
+  <summary>List of endpoints:</summary>
+<br>
+ 
+POST
+/api/auth/register 
+
+POST
+/api/auth/login
+login and get new jwt token
+
+POST
+/api/job-applications (JWT Auth)
+Create job application
+
+GET
+/api/job-applications (JWT Auth)
+Get job applications for user
+
+GET
+/api/job-applications/stats (JWT Auth)
+Returns number of applications on application dates
+
+PUT
+/api/job-applications (JWT Auth)
+Update existing job application fields 
+
+DELETE
+/api/job-applications/{id} (JWT Auth)
+Delete single job application
+
+DELETE
+/api/job-applications/all (JWT Auth)
+Delete all job applications
+</details>
+
 
 ## Stack
 - Java 17
