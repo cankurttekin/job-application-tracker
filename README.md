@@ -61,6 +61,13 @@ DELETE
 Delete all job applications
 </details>
 
+## Docker
+```
+docker-compose up --build
+```
+> localhost:8080 backend
+> 
+> localhost:3000 frontend
 
 ## Stack
 - Java 17
@@ -79,13 +86,6 @@ Delete all job applications
 <img src="/assets/sequence-diagram.png"
      alt="sequence"
      height="309">
-
-## Docker
-```
-docker-compose up --build
-```
-> localhost:8080 backend
-> localhost:3000 frontend
 
 ## Contributing
 I would happily accept any help, PRs and suggestions.
