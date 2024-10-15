@@ -41,6 +41,11 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Override
     public JobApplication updateJobApplication(JobApplication jobApplication) {
+        // Check if the job application exists
+        jobApplicationRepository.findById(jobApplication.getId())
+                .orElseThrow(() -> new JobApplicationNotFoundException("Job Application not found"));
+
+        // If it exists, save and return the updated application
         return jobApplicationRepository.save(jobApplication);
     }
 
@@ -51,8 +56,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                 .orElseThrow(() -> new JobApplicationNotFoundException("Job Application not found for ID: " + id));
 
         // If found, proceed with deletion
-        jobApplicationRepository.delete(jobApplication);
+        jobApplicationRepository.deleteById(id);
     }
+
 
     @Override
     public void deleteAllByUserId(Long userId) {
@@ -64,6 +70,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         Map<String, Integer> stats = new HashMap<>();
 
         List<JobApplication> applications = jobApplicationRepository.findByUserId(userId);
+
+        stats.put("totalApplications", applications.size());
+
         for (JobApplication application : applications) {
             String date = application.getApplicationDate().toString();
             stats.put(date, stats.getOrDefault(date, 0) + 1); // Increment the count for the date
