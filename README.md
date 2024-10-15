@@ -1,5 +1,8 @@
 # ATSFS
-
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CI/CD Pipeline](https://github.com/cankurttekin/job-application-tracker/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/cankurttekin/job-application-tracker/actions/workflows/ci-cd-pipeline.yml)
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/job-application-tracker-silk)
+![Website Deploy](https://deploy-badge.vercel.app/?url=https%3A%2F%2Frender.com%2F&logo=Render&name=backend)
  <p align="center">
   <img height="64" src="/assets/atsfs.png">
 </p>
