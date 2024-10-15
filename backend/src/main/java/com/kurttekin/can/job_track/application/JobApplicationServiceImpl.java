@@ -1,5 +1,6 @@
 package com.kurttekin.can.job_track.application;
 
+import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
 import com.kurttekin.can.job_track.domain.model.JobApplication;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
 import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepository;
@@ -24,7 +25,13 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Override
     public List<JobApplication> findAllByUserId(Long userId) {
-        return jobApplicationRepository.findAllByUserId(userId);
+        List<JobApplication> applications = jobApplicationRepository.findAllByUserId(userId);
+
+        if (applications.isEmpty()) {
+            throw new JobApplicationNotFoundException("Job Applications not found for user ID: " + userId);
+        }
+
+        return applications;
     }
 
     @Override
@@ -39,7 +46,12 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Override
     public void deleteJobApplication(Long id) {
-        jobApplicationRepository.deleteById(id);
+        // Check if the job application exists
+        JobApplication jobApplication = jobApplicationRepository.findById(id)
+                .orElseThrow(() -> new JobApplicationNotFoundException("Job Application not found for ID: " + id));
+
+        // If found, proceed with deletion
+        jobApplicationRepository.delete(jobApplication);
     }
 
     @Override

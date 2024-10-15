@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface JobApplicationService {
+    // TO DO custom exceptions
     JobApplication createJobApplication(JobApplication jobApplication);
     List<JobApplication> findAllByUserId(Long userId);
     Optional<JobApplication> findById(Long id);
