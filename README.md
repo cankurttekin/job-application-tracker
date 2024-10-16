@@ -79,6 +79,10 @@ docker-compose up --build
 - React
 
 ## Structure
+<img src="/assets/structure.png"
+     alt="tests"
+     >
+     
 <img src="/assets/unclebob.svg"
      alt="unclebob"
      >
