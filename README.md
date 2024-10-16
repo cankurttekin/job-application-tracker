@@ -7,12 +7,16 @@
   <img height="64" src="/assets/atsfs.png">
 </p>
 
+# 
+
 > Keep Track of Your Job Applications in one place
 
 ## Features
 - Add jobs and details
 - Write comments on jobs
 - Filter and sort your applications
+- Use graphs to observe your data
+- Edit/update currently added applications
 - ...
 
 [job-application-tracker-silk.vercel.app](https://job-application-tracker-silk.vercel.app/)
@@ -34,34 +38,34 @@ alt="graphs">
   <summary>List of endpoints:</summary>
 <br>
  
-POST
+`POST`
 /api/auth/register 
 
-POST
+`POST`
 /api/auth/login
 login and get new jwt token
 
-POST
+`POST`
 /api/job-applications (JWT Auth)
 Create job application
 
-GET
+`GET`
 /api/job-applications (JWT Auth)
 Get job applications for user
 
-GET
+`GET`
 /api/job-applications/stats (JWT Auth)
 Returns number of applications on application dates
 
-PUT
+`PUT`
 /api/job-applications (JWT Auth)
 Update existing job application fields 
 
-DELETE
+`DELETE`
 /api/job-applications/{id} (JWT Auth)
 Delete single job application
 
-DELETE
+`DELETE`
 /api/job-applications/all (JWT Auth)
 Delete all job applications
 </details>
@@ -94,12 +98,15 @@ docker-compose up --build
      
 <img src="/assets/sequence-diagram.png"
      alt="sequence"
-     height="309">
-
-## Contributing
-I would happily accept any help, PRs and suggestions.
+     height="500">
 
 ### Resources I have been using during the development phase:
 - [Jackson – Bidirectional Relationships (baeldung)](https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion)
 - [Hibernate – Different Cascade Types (geeksforgeeks)](https://www.geeksforgeeks.org/hibernate-different-cascade-types/)
 - [Working with Relationships in Spring Data REST (baeldung)](https://www.baeldung.com/spring-data-rest-relationships)
+- [Spring Boot Testing (baeldung)](https://www.baeldung.com/spring-boot-testing)
+- [JUnit Annotations (JUnit Documentation)](https://junit.org/junit5/docs/current/user-guide/#writing-tests-annotations)
+- [Java Configuration (Spring Docs)](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html)
+
+## Contributing
+I would happily accept any help, PRs and suggestions.
