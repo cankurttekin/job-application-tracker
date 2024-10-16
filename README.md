@@ -16,6 +16,8 @@
 - ...
 
 [job-application-tracker-silk.vercel.app](https://job-application-tracker-silk.vercel.app/)
+> Note: Because its deployed on free tier on vercel for frontend and render for backend, instance spins down with inactivity, which can delay requests by 50 seconds or more. I dont recommend using it from deployment since its not very reliable, if you want to use it follow Docker section to run locally.
+
 <br />
 
 <img src="/assets/screenshot-atsfs-home.png"
