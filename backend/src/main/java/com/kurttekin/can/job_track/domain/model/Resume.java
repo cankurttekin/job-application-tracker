@@ -3,6 +3,8 @@ package com.kurttekin.can.job_track.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Data
 public class Resume {
@@ -18,5 +20,9 @@ public class Resume {
     private String education;
     private String location;
     private String experience;
+
+    private Date createdAt;
+
+    private Date updatedAt;
 
 }
