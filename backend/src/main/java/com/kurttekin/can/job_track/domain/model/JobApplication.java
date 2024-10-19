@@ -8,15 +8,12 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-/*
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")*/
 public class JobApplication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String companyName;
     private String jobTitle;
     private String status;
@@ -24,7 +21,11 @@ public class JobApplication {
     private LocalDate responseDate;
     private String platform;
     private String jobUrl;
+
+    @Lob // This annotation indicates a large object (TEXT in PostgreSQL)
     private String description;
+
+    @Lob // This annotation indicates a large object (TEXT in PostgreSQL)
     private String comments;
 
     @ManyToOne(fetch = FetchType.EAGER)

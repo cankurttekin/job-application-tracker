@@ -1,6 +1,6 @@
 package com.kurttekin.can.job_track.application;
 
-import com.kurttekin.can.job_track.domain.service.InterviewService;
+import com.kurttekin.can.job_track.domain.service.LlmService;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InterviewServiceImpl implements InterviewService {
+public class LlmServiceImpl implements LlmService {
 
     @Value("${gemini.api.key}")
     private String geminiApiKey;
@@ -43,10 +43,33 @@ public class InterviewServiceImpl implements InterviewService {
 
             // Execute the request
             Response response = client.newCall(request).execute();
-            return response.body().string();
+
+            // Log the response body
+            String responseBody = response.body().string();
+            System.out.println("API Response: " + responseBody); // Log the full response
+
+            // Parse the response to extract the questions
+            JSONObject responseJson = new JSONObject(responseBody);
+
+            // Check if "candidates" exists
+            if (responseJson.has("candidates") && !responseJson.getJSONArray("candidates").isEmpty()) {
+                JSONArray parts = responseJson.getJSONArray("candidates")
+                        .getJSONObject(0) // Get the first candidate
+                        .getJSONObject("content") // Access content
+                        .getJSONArray("parts"); // Get the parts
+
+                StringBuilder questions = new StringBuilder();
+                for (int i = 0; i < parts.length(); i++) {
+                    questions.append(parts.getJSONObject(i).getString("text")).append("\n");
+                }
+
+                return questions.toString();
+            } else {
+                return "No interview questions were generated.";
+            }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // imp exc handling
             return "Error generating questions.";
         }
     }

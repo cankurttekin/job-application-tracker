@@ -1,5 +1,5 @@
 package com.kurttekin.can.job_track.domain.service;
 
-public interface InterviewService {
+public interface LlmService {
     String generateInterviewQuestions(String jobDescription, String jobTitle);
 }

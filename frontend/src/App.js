@@ -9,6 +9,7 @@ import Register from './components/Register';
 import JobApplications from './components/JobApplications';
 import { AuthProvider } from './contexts/AuthContext';
 import Charts from './components/Charts';
+import AITools from './components/AITools'; // Import the AITools component
 
 const PrivateRoute = ({ isLoggedIn, children }) => {
     return isLoggedIn ? children : <Navigate to="/login" />;
@@ -48,6 +49,7 @@ const App = () => {
                                 element={<PrivateRoute isLoggedIn={isLoggedIn}><JobApplications /></PrivateRoute>}
                             />
                             <Route path="/charts" element={<PrivateRoute isLoggedIn={isLoggedIn}><Charts /></PrivateRoute>} />
+                            <Route path="/ai-tools" element={<PrivateRoute isLoggedIn={isLoggedIn}><AITools /></PrivateRoute>} />
                         </Routes>
                     </MainContent>
                 </Container>

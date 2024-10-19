@@ -6,6 +6,7 @@ import com.kurttekin.can.job_track.domain.service.JobApplicationService;
 import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +19,13 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
 
+    @Transactional
     @Override
     public JobApplication createJobApplication(JobApplication jobApplication) {
         return jobApplicationRepository.save(jobApplication);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<JobApplication> findAllByUserId(Long userId) {
         List<JobApplication> applications = jobApplicationRepository.findAllByUserId(userId);
@@ -34,11 +37,13 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return applications;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<JobApplication> findById(Long id) {
         return jobApplicationRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public JobApplication updateJobApplication(JobApplication jobApplication) {
         // Check if the job application exists
@@ -49,6 +54,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return jobApplicationRepository.save(jobApplication);
     }
 
+    @Transactional
     @Override
     public void deleteJobApplication(Long id) {
         // Check if the job application exists
@@ -59,12 +65,13 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         jobApplicationRepository.deleteById(id);
     }
 
-
+    @Transactional
     @Override
     public void deleteAllByUserId(Long userId) {
         jobApplicationRepository.deleteByUserId(userId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Map<String, Integer> getJobApplicationStats(Long userId) {
         Map<String, Integer> stats = new HashMap<>();
