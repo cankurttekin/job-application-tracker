@@ -5,54 +5,6 @@ import styled from "styled-components";
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
-const ModalContent = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
-
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-`;
-
-const Button = styled.button`
-  background-color: #333;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background: none;
-  border: 1px solid #333;
-  color: #333;
-  font-size: 26px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  &:hover {
-    background-color: black;
-    color: white;
-  }
-`;
-
 const StatusCell = styled.td`
   padding: 10px;
   border: 1px solid #ddd;
@@ -82,8 +34,8 @@ const Comment = styled.div`
 
 const JobApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
-  const [sortColumn, setSortColumn] = useState('companyName');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortColumn, setSortColumn] = useState('applicationDate');
+  const [sortOrder, setSortOrder] = useState('desc');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -91,18 +43,38 @@ const JobApplications = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/job-applications`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setJobApplications(response.data);
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${REACT_APP_BACKEND_URL}/job-applications`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data) {
+          setJobApplications(response.data);
+        } else {
+          setJobApplications([]); // set to an empty array if the response is empty
+        }
+      } catch (error) {
+        console.error("Error fetching job applications:", error);
+      }
     };
-
     fetchData();
   }, []);
 
+  const columnMap = {
+    Company: 'companyName',
+    Position: 'jobTitle',
+    Status: 'status',
+    'Application Date': 'applicationDate',
+    'Response Date': 'responseDate',
+    Platform: 'platform',
+    Url: 'jobUrl',
+    Comments: 'comments',
+  };
+
+
   const handleSort = (column) => {
-    setSortColumn(column);
+    const dataKey = columnMap[column]; // Get the corresponding data key
+    setSortColumn(dataKey);
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
@@ -168,14 +140,23 @@ const JobApplications = () => {
   };
 
   const sortedApplications = [...jobApplications].sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) return sortOrder === 'asc' ? -1 : 1;
-    if (a[sortColumn] > b[sortColumn]) return sortOrder === 'asc' ? 1 : -1;
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    }
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+    if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+    if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
     return 0;
   });
 
   const filteredApplications = sortedApplications.filter(app =>
       Object.values(app).some(value =>
-          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+          value ? value.toString().toLowerCase().includes(searchTerm.toLowerCase()) : false
       )
   );
 
@@ -184,7 +165,7 @@ const JobApplications = () => {
         <h2 style={styles.header}>Job Applications</h2>
         <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search anything..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={styles.searchInput}
@@ -196,14 +177,14 @@ const JobApplications = () => {
             {['Company', 'Position', 'Status', 'Application Date', 'Response Date', 'Platform', 'Url', 'Comments'].map((column) => (
                 <th key={column} onClick={() => handleSort(column)} style={styles.tableHeader}>
                   {column.charAt(0).toUpperCase() + column.slice(1)}
-                  {sortColumn === column && (
-                      <span className="material-icons">
-                    {sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}
-                  </span>
+                  {sortColumn === columnMap[column] && (
+                      <span className="material-icons" style={{fontSize: '16px', marginLeft: '4px'}}>
+            {sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}
+          </span>
                   )}
                 </th>
             ))}
-            <th> </th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -227,7 +208,7 @@ const JobApplications = () => {
                   <td style={styles.tableCell}>{app.platform}</td>
                   <td style={styles.tableCell}>
                     <a href={app.jobUrl} target="_blank" rel="noopener noreferrer">
-                      {app.jobUrl.length > 15 ? `${app.jobUrl.substring(12, 38)}...` : app.jobUrl}
+                      {app.jobUrl.length > 15 ? `${app.jobUrl.substring(0, 20)}...` : app.jobUrl}
                     </a>
                   </td>
                   <CommentCell onClick={(e) => handleToggleComments(app.id, e)}>
@@ -278,86 +259,81 @@ const JobApplications = () => {
                     bottom: 'auto',
                     marginRight: '-50%',
                     transform: 'translate(-50%, -50%)',
+                    padding: '20px',
+                    borderRadius: '10px',
+                    backgroundColor: '#f5f5f5',
+                    color: '#333',
                   },
                 }}
             >
-              <CloseButton onClick={closeModal}>×</CloseButton>
-              <ModalContent>
-                <h2>Edit Job Application</h2>
-                <label>
-                  Company Name:
-                  <Input
-                      type="text"
-                      name="companyName"
-                      value={selectedApplication.companyName}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Position:
-                  <Input
-                      type="text"
-                      name="jobTitle"
-                      value={selectedApplication.jobTitle}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Status:
-                  <Input
-                      type="text"
-                      name="status"
-                      value={selectedApplication.status}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Application Date:
-                  <Input
-                      type="date"
-                      name="applicationDate"
-                      value={new Date(selectedApplication.applicationDate).toISOString().split('T')[0]}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Response Date:
-                  <Input
-                      type="date"
-                      name="responseDate"
-                      value={new Date(selectedApplication.responseDate).toISOString().split('T')[0]}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Platform:
-                  <Input
-                      type="text"
-                      name="platform"
-                      value={selectedApplication.platform}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Job URL:
-                  <Input
-                      type="url"
-                      name="jobUrl"
-                      value={selectedApplication.jobUrl}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Comments:
-                  <Input
-                      type="text"
-                      name="comments"
-                      value={selectedApplication.comments}
-                      onChange={handleInputChange}
-                  />
-                </label>
-                <Button onClick={handleSaveChanges}>Save Changes</Button>
-              </ModalContent>
+
+              <modal-content>
+                <close-button onClick={closeModal}>&times;</close-button>
+                <h2 style={styles.header}>Edit Job Application</h2>
+                <input
+                    type="text"
+                    name="companyName"
+                    placeholder="Company Name"
+                    value={selectedApplication.companyName}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="text"
+                    name="jobTitle"
+                    placeholder="Job Title"
+                    value={selectedApplication.jobTitle}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="text"
+                    name="status"
+                    placeholder="Status"
+                    value={selectedApplication.status}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="date"
+                    name="applicationDate"
+                    placeholder="Application Date"
+                    value={new Date(selectedApplication.applicationDate).toISOString().split('T')[0]}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="date"
+                    name="responseDate"
+                    placeholder="Response Date"
+                    value={new Date(selectedApplication.responseDate).toISOString().split('T')[0]}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="text"
+                    name="platform"
+                    placeholder="Platform"
+                    value={selectedApplication.platform}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="url"
+                    name="jobUrl"
+                    placeholder="Job Url"
+                    value={selectedApplication.jobUrl}
+                    onChange={handleInputChange}
+                />
+                <textarea
+                    placeholder="Description"
+                    value={selectedApplication.description}
+                    onChange={handleInputChange}
+                    rows="4"
+                />
+                <textarea
+                    name="comments"
+                    placeholder="Comments"
+                    rows="4"
+                    value={selectedApplication.comments}
+                    onChange={handleInputChange}
+                />
+                <button onClick={handleSaveChanges}>Save Changes</button>
+              </modal-content>
             </Modal>
         )}
       </div>

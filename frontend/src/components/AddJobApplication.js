@@ -1,79 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
-import styled from 'styled-components';
+import '../styles/AddJobApplication.css';
+import { useNavigate } from 'react-router-dom';
 
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
-
-const ModalContent = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative; /* for absolute positioning of the close button */
-`;
-
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-`;
-
-const TextArea = styled.textarea`
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-`;
-
-const Button = styled.button`
-  background-color: #333;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-`;
-
-const FormRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 10px;
-`;
-
-const FormGroup = styled.div`
-  flex: 1; /* Take equal space */
-  margin: 5px;
-  min-width: 180px;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background: none;
-  border: 1px solid #333;
-  color: #333;
-  font-size: 26px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  &:hover {
-    background-color: black;
-    color: white;
-  }
-`;
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + '/api';
 
 const AddJobApplication = ({ isOpen, onClose }) => {
   const [companyName, setCompanyName] = useState('');
@@ -86,10 +17,16 @@ const AddJobApplication = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState('');
   const [comments, setComments] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message
+
+    if (!companyName || !jobTitle || !status || !applicationDate) {
+      setErrorMessage('Please fill in all required fields.');
+      return;
+    }
 
     const jobApplication = {
       companyName,
@@ -104,22 +41,34 @@ const AddJobApplication = ({ isOpen, onClose }) => {
     };
 
     try {
-      // Get JWT token from localStorage
       const token = localStorage.getItem('token');
       const response = await axios.post(`${REACT_APP_BACKEND_URL}/job-applications`, jobApplication, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      /*
+
       if (response.status === 201) {
+        onClose(); // Close modal on success
         navigate('/job-applications'); // Redirect to job applications page on success
-      }3
-      */
+        resetForm(); // Clear the form fields
+      }
     } catch (error) {
       console.error('Error adding job application:', error);
       setErrorMessage('Failed to add job application. Please try again.');
     }
+  };
+
+  const resetForm = () => {
+    setCompanyName('');
+    setJobTitle('');
+    setStatus('');
+    setApplicationDate('');
+    setResponseDate('');
+    setPlatform('');
+    setJobUrl('');
+    setDescription('');
+    setComments('');
   };
 
   return (
@@ -145,87 +94,102 @@ const AddJobApplication = ({ isOpen, onClose }) => {
             },
           }}
       >
-        <ModalContent>
-          <CloseButton onClick={onClose}>&times;</CloseButton>
-          <h2>Add Job Application</h2>
-          <FormRow>
-            <FormGroup>
-              <Input
+        <modal-content>
+          <close-button onClick={onClose}>&times;</close-button>
+          <h2 style={styles.header}>Add Job Application</h2>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          <div className="form-row">
+            <div className="form-group">
+              <input
                   type="text"
                   placeholder="Company Name"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
               />
-            </FormGroup>
-            <FormGroup>
-              <Input
+            </div>
+            <div className="form-group">
+              <input
                   type="text"
                   placeholder="Job Title"
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
               />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                  type="text"
-                  placeholder="Status"
+            </div>
+            <div className="form-group">
+              <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-              />
-            </FormGroup>
-          </FormRow>
-          <FormRow>
-            <FormGroup>
-              <Input
+              >
+                <option value="" disabled>Select Status</option>
+                <option value="Applied">Applied</option>
+                <option value="Interviewing">Interviewing</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Offered">Offered</option>
+                <option value="ATS Reject">ATS Reject</option>
+              </select>
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <input
                   type="date"
                   placeholder="Application Date"
                   value={applicationDate}
                   onChange={(e) => setApplicationDate(e.target.value)}
               />
-            </FormGroup>
-            <FormGroup>
-              <Input
+            </div>
+            <div className="form-group">
+              <input
                   type="date"
                   placeholder="Response Date"
                   value={responseDate}
                   onChange={(e) => setResponseDate(e.target.value)}
               />
-            </FormGroup>
-          </FormRow>
-          <FormRow>
-            <FormGroup>
-              <Input
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <input
                   type="text"
                   placeholder="Platform"
                   value={platform}
                   onChange={(e) => setPlatform(e.target.value)}
               />
-            </FormGroup>
-            <FormGroup>
-              <Input
+            </div>
+            <div className="form-group">
+              <input
                   type="url"
                   placeholder="Job URL"
                   value={jobUrl}
                   onChange={(e) => setJobUrl(e.target.value)}
               />
-            </FormGroup>
-          </FormRow>
-          <TextArea
+            </div>
+          </div>
+          <textarea
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows="4"
           />
-          <TextArea
+          <textarea
               placeholder="Comments"
               value={comments}
               onChange={(e) => setComments(e.target.value)}
               rows="4"
           />
-          <Button onClick={handleSubmit}>Submit</Button>
-        </ModalContent>
+          <button onClick={handleSubmit}>Submit</button>
+        </modal-content>
       </Modal>
   );
 };
+
+const styles = {
+  header: {
+    textAlign: 'center',
+    marginBottom: '10px',
+  },
+
+};
+
 
 export default AddJobApplication;

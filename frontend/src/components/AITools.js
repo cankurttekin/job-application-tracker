@@ -6,19 +6,10 @@ const Container = styled.div`
     padding: 20px;
 `;
 
-const Button = styled.button`
-    background-color: black;
-    color: white;
-    padding: 10px 20px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-
-    &:hover {
-        background-color: #333;
-    }
+const SelectionContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 `;
 
 const Dropdown = styled.select`
@@ -27,9 +18,8 @@ const Dropdown = styled.select`
     border-radius: 5px;
     margin-top: 10px;
     margin-right: 10px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 16px;
+    //width: 100%;
+    //max-width: 400px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -73,13 +63,20 @@ const AITools = () => {
 
     useEffect(() => {
         const fetchJobApplications = async () => {
-            const token = localStorage.getItem("token");
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/job-applications`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setJobApplications(response.data);
-            if (response.data.length > 0) {
-                setSelectedJobApplication(response.data[0]); // Set the first job application as selected
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/job-applications`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setJobApplications(response.data);
+                if (response.data) {
+                    setSelectedJobApplication(response.data[0]); // Set the first job application as selected
+                } else {
+                    setSelectedJobApplication([]);
+                }
+
+            } catch (error) {
+                console.error("Error fetching job applications:", error);
             }
         };
 
@@ -177,6 +174,7 @@ const AITools = () => {
 
             {jobApplications.length > 0 && (
                 <>
+                    <SelectionContainer>
                     <Dropdown
                         onChange={(e) => setSelectedJobApplication(jobApplications[e.target.value])}
                         value={jobApplications.indexOf(selectedJobApplication)}
@@ -188,8 +186,9 @@ const AITools = () => {
                         ))}
                     </Dropdown>
 
-                    <Button onClick={handleGenerateQuestions}>Generate Interview Questions</Button>
-                    <Button onClick={handleGenerateQuiz}>Generate Quiz</Button>
+                    <button onClick={handleGenerateQuestions}>Interview Questions</button>
+                    <button onClick={handleGenerateQuiz}>Generate Quiz</button>
+                    </SelectionContainer>
                 </>
             )}
 
@@ -235,7 +234,7 @@ const AITools = () => {
                     <div>
                         <p><br/><i>ANSWER CHECK FUNCTIONALITY NEEDS TO BE IMPLEMENTED, CURRENTLY NOT WORKING</i></p>
                     </div>
-                    <Button onClick={checkAnswers}>Check Answers</Button>
+                    <button onClick={checkAnswers}>Check Answers</button>
                     {resultMessage && <ResultMessage>{resultMessage}</ResultMessage>}
                 </QuestionsContainer>
             )}

@@ -1,43 +1,21 @@
 import React, { createContext, useState, useEffect } from 'react';
-
-// Create a Context
-export const AuthContext = createContext();
-
-// Create a provider component
-export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // Check for token in localStorage to set the initial state
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  return (
-      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-        {children}
-      </AuthContext.Provider>
-  );
-};
-
-
-/*
-import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Create context
 export const AuthContext = createContext();
 
 // Provider component
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
   // Check authentication status on initial load
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setIsAuthenticated(true);
+      setIsLoggedIn(true);
+      // Decode the JWT to extract the username
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      setUser(decodedToken.sub); // Set the username from the sub field
     }
   }, []);
 
@@ -46,7 +24,11 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post('http://localhost:8080/api/login', credentials);
       const { token } = response.data;
       localStorage.setItem('token', token);
-      setIsAuthenticated(true);
+      setIsLoggedIn(true);
+
+      // Decode the JWT to get the username
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      setUser(decodedToken.sub); // Set the username from the sub field
     } catch (error) {
       console.error('Login failed', error);
     }
@@ -54,14 +36,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
-    setIsAuthenticated(false);
+    setIsLoggedIn(false);
     setUser(null);
   };
 
   return (
-      <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, login, logout }}>
         {children}
       </AuthContext.Provider>
   );
 };
-*/

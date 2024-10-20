@@ -17,13 +17,12 @@ const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    //box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #ccc;
     z-index: 1000;
 `;
 
 const SidebarItem = styled.div`
-    margin: 20px 0;
+    margin: 10px 0;
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
@@ -42,7 +41,6 @@ const SidebarItem = styled.div`
 const ProfileContainer = styled.div`
     text-align: center;
     color: #2f2f2f;
-    margin-bottom: 30px;
 `;
 
 const ProfileButton = styled.button`
@@ -75,13 +73,13 @@ const AppName = styled.div`
 
 const Sidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext); // Use global isLoggedIn
+    const { isLoggedIn, user, logout } = useContext(AuthContext); // Correctly destructured properties
 
-    const navigate = useNavigate(); // Use navigate for routing
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token); // Update the state based on token presence
+        // Use the existing state instead of trying to set it here
     }, []);
 
     const handleAddJobClick = () => {
@@ -89,9 +87,8 @@ const Sidebar = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Remove token from localStorage
-        setIsLoggedIn(false);
-        navigate('/login'); // Navigate to login after logout
+        logout(); // Use logout from context
+        navigate('/login');
     };
 
     return (
@@ -147,12 +144,12 @@ const Sidebar = () => {
             {/* Bottom Profile Section */}
             <ProfileContainer>
                 <HorizontalLine />
-                {isLoggedIn && <div>Logged in as User</div>}
-                <SidebarItem onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
+                {isLoggedIn && <div>Logged in as <strong>{user}</strong></div>}                <SidebarItem onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
                     <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
                     {isLoggedIn ? 'Logout' : 'Login'}
                 </SidebarItem>
             </ProfileContainer>
+
         </SidebarContainer>
     );
 };

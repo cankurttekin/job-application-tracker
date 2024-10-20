@@ -45,14 +45,8 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 100%;
-  padding: 12px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
+  background-color: #333;
+  margin: 0;
 
   &:hover {
     background-color: black;

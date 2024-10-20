@@ -1,0 +1,30 @@
+.button {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.button:hover {
+    background-color: #333;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-group {
+    flex: 1; /* Take equal space */
+    min-width: 180px;
+}
+
+
+.error-message {
+    color: red;
+}

@@ -5,11 +5,11 @@ import filterImage from '../assets/filter.png';
 import starsImage from '../assets/stars.png';
 import goalsImage from '../assets/goal.png';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext'; // Assuming you have AuthContext set up
+import { AuthContext } from '../contexts/AuthContext';
 
 const Home = () => {
     const navigate = useNavigate();
-    const { isLoggedIn } = useContext(AuthContext); // Access the isLoggedIn state from AuthContext
+    const { isLoggedIn } = useContext(AuthContext);
 
     const handleRegisterClick = () => {
         navigate('/register');

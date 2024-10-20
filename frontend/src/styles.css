@@ -1,0 +1,163 @@
+/* SIDEBAR */
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: #ebebeb;
+    padding: 20px;
+    color: #2f2f2f;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #ccc;
+    z-index: 1000;
+}
+
+.sidebar-item {
+    margin: 20px 0;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-item:hover {
+    background-color: #dedede;
+}
+
+.sidebar-item .material-icons {
+    margin-right: 10px;
+}
+
+.profile-container {
+    text-align: center;
+    color: #2f2f2f;
+    margin-bottom: 30px;
+}
+
+.profile-button {
+    background: none;
+    border: none;
+    color: #2f2f2f;
+    cursor: pointer;
+    padding: 1px;
+}
+
+.profile-button:hover {
+    color: #333;
+}
+
+.horizontal-line {
+    margin: 12px 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+.app-name {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* REGISTER */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 400px;
+    padding: 0 20px;
+}
+
+.title {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.info {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: #fff;
+}
+
+.button {
+    width: 100%;
+    padding: 12px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: black;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+/* JOBAPPLICATIONS */
+
+.table-header {
+    cursor: pointer;
+}
+
+.table-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.star-cell {
+    cursor: pointer;
+}
+
+.comment-cell {
+    cursor: pointer;
+}
+
+.comment {
+    padding: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    font-style: oblique;
+}
+
+.delete-icon {
+    cursor: pointer;
+    color: red;
+}

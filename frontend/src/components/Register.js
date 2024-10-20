@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
-
-// Reuse the same styled components from Login for consistency
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -33,9 +31,7 @@ const Info = styled.h2`
 
 const Input = styled.input`
   width: 100%;
-  padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
   background-color: #f9f9f9;
@@ -48,14 +44,8 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 100%;
-  padding: 12px;
   background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
+  margin: 0;
 
   &:hover {
     background-color: black;
