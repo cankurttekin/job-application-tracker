@@ -388,6 +388,7 @@ const styles = {
   },
   header: {
     textAlign: 'center',
+    marginBottom: '10px',
   },
   searchInput: {
     padding: '10px',

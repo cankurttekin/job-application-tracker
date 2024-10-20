@@ -127,7 +127,7 @@ const Sidebar = () => {
                                 <span className="material-icons">build</span>
                                 AI Tools
                             </SidebarItem>
-                            <SidebarItem onClick={() => navigate('/myResume')}>
+                            <SidebarItem onClick={() => navigate('/resume')}>
                                 <span className="material-icons">assignment_ind</span>
                                 My Resume
                             </SidebarItem>

@@ -1,4 +1,3 @@
-// src/components/AITools.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ const Button = styled.button`
     background-color: black;
     color: white;
     padding: 10px 20px;
+    margin-right: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -27,9 +27,9 @@ const Dropdown = styled.select`
     border-radius: 5px;
     margin-top: 10px;
     margin-right: 10px;
-    width: 100%; /* Makes the dropdown full width */
-    max-width: 400px; /* Limits the max width */
-    font-size: 16px; /* Increases font size for better readability */
+    width: 100%;
+    max-width: 400px;
+    font-size: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -42,26 +42,34 @@ const QuestionsContainer = styled.div`
 `;
 
 const QuestionList = styled.ul`
-    list-style-type: none; /* Remove default bullet points */
-    padding: 0; /* Remove default padding */
+    list-style-type: none;
+    padding: 0;
 `;
 
 const QuestionItem = styled.li`
-    padding: 8px; /* Add padding for each question */
-    border-bottom: 1px solid #eee; /* Add a bottom border to separate questions */
+    padding: 8px;
+    border-bottom: 1px solid #eee;
     &:last-child {
-        border-bottom: none; /* Remove border for the last item */
+        border-bottom: none;
     }
 `;
 
 const JobDetails = styled.h3`
-    margin-bottom: 24px; /* Adds space between job details and questions */
+    margin-bottom: 24px;
+`;
+
+const ResultMessage = styled.p`
+    margin-top: 20px;
+    font-weight: bold;
 `;
 
 const AITools = () => {
     const [jobApplications, setJobApplications] = useState([]);
     const [interviewQuestions, setInterviewQuestions] = useState([]);
+    const [quizQuestions, setQuizQuestions] = useState([]); // State for quiz questions
     const [selectedJobApplication, setSelectedJobApplication] = useState(null);
+    const [selectedAnswers, setSelectedAnswers] = useState({}); // State for selected answers
+    const [resultMessage, setResultMessage] = useState(""); // State for result message
 
     useEffect(() => {
         const fetchJobApplications = async () => {
@@ -95,24 +103,77 @@ const AITools = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            console.log("Response Data:", response.data);
+            console.log("Interview Response Data:", response.data);
 
-            // Check if 'questions' property exists in the response
-            if (response.data.questions && Array.isArray(response.data.questions)) {
-                setInterviewQuestions(response.data.questions); // Set questions directly from the response
+            // Ensure response data is an array
+            if (Array.isArray(response.data.questions)) {
+                setInterviewQuestions(response.data.questions);
             } else {
-                console.error("No questions found in response:", response.data);
-                setInterviewQuestions([]); // Clear questions if none found
+                console.error("No interview questions found in response:", response.data);
+                setInterviewQuestions([]);
             }
         } catch (error) {
             console.error("Error generating questions:", error);
-            setInterviewQuestions([]); // Clear questions on error
+            setInterviewQuestions([]);
         }
+    };
+
+    const handleGenerateQuiz = async () => {
+        if (!selectedJobApplication) {
+            console.error("No job application selected.");
+            return;
+        }
+
+        const { jobDescription, jobTitle } = selectedJobApplication;
+
+        const token = localStorage.getItem("token");
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/llm/generate-quiz`, {
+                jobDescription,
+                jobTitle
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            console.log("Quiz Response Data:", response.data);
+
+            // Ensure response data is an array of QuizQuestion objects
+            if (Array.isArray(response.data)) {
+                const formattedQuestions = response.data.map((q) => ({
+                    questionText: q.questionText,
+                    options: q.options,
+                    correctAnswer: q.correctAnswer,
+                }));
+                setQuizQuestions(formattedQuestions);
+                setSelectedAnswers({}); // Reset selected answers
+                setResultMessage(""); // Clear previous results
+            } else {
+                console.error("Expected an array of quiz questions, but got:", response.data);
+                setQuizQuestions([]); // Clear quiz if response is not an array
+            }
+        } catch (error) {
+            console.error("Error generating quiz:", error);
+            setQuizQuestions([]); // Clear quiz on error
+        }
+    };
+
+    const handleAnswerSelect = (questionIndex, answer) => {
+        setSelectedAnswers((prev) => ({ ...prev, [questionIndex]: answer }));
+    };
+
+    const checkAnswers = () => {
+        let score = 0;
+        quizQuestions.forEach((question, index) => {
+            if (selectedAnswers[index] === question.correctAnswer) {
+                score++;
+            }
+        });
+        setResultMessage(`You scored ${score} out of ${quizQuestions.length}.`);
     };
 
     return (
         <Container>
-            <h2>Generate Interview Questions</h2>
+            <h2>AI Tools</h2>
 
             {jobApplications.length > 0 && (
                 <>
@@ -122,26 +183,60 @@ const AITools = () => {
                     >
                         {jobApplications.map((job, index) => (
                             <option key={index} value={index}>
-                                {job.jobTitle} - {job.companyName} {/* Adjust to match your job application structure */}
+                                {job.jobTitle} - {job.companyName}
                             </option>
                         ))}
                     </Dropdown>
 
-                    <Button onClick={handleGenerateQuestions}>Generate</Button>
+                    <Button onClick={handleGenerateQuestions}>Generate Interview Questions</Button>
+                    <Button onClick={handleGenerateQuiz}>Generate Quiz</Button>
                 </>
             )}
 
-            {interviewQuestions && interviewQuestions.length > 0 && (
+            {interviewQuestions.length > 0 && (
                 <QuestionsContainer>
                     <JobDetails>
                         {selectedJobApplication.jobTitle} at {selectedJobApplication.companyName}
                     </JobDetails>
-                    <h3>Generated Questions:</h3>
+                    <h3>Generated Interview Questions:</h3>
                     <QuestionList>
                         {interviewQuestions.map((question, index) => (
                             <QuestionItem key={index}>{question}</QuestionItem>
                         ))}
                     </QuestionList>
+                </QuestionsContainer>
+            )}
+
+            {quizQuestions.length > 0 && (
+                <QuestionsContainer>
+                    <JobDetails>
+                        {selectedJobApplication.jobTitle} at {selectedJobApplication.companyName}
+                    </JobDetails>
+                    <h3>Quiz Questions:</h3>
+                    <QuestionList>
+                        {quizQuestions.map((question, index) => (
+                            <QuestionItem key={index}>
+                                <p>{question.questionText}</p>
+                                {question.options.map((option, i) => (
+                                    <div key={i}>
+                                        <input
+                                            type="radio"
+                                            id={`question-${index}-option-${i}`}
+                                            name={`question-${index}`}
+                                            value={option}
+                                            onChange={() => handleAnswerSelect(index, option)}
+                                        />
+                                        <label htmlFor={`question-${index}-option-${i}`}>{option}</label>
+                                    </div>
+                                ))}
+                            </QuestionItem>
+                        ))}
+                    </QuestionList>
+                    <div>
+                        <p><br/><i>ANSWER CHECK FUNCTIONALITY NEEDS TO BE IMPLEMENTED, CURRENTLY NOT WORKING</i></p>
+                    </div>
+                    <Button onClick={checkAnswers}>Check Answers</Button>
+                    {resultMessage && <ResultMessage>{resultMessage}</ResultMessage>}
                 </QuestionsContainer>
             )}
         </Container>

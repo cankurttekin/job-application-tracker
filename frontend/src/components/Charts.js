@@ -105,7 +105,7 @@ const JobPositionPieChart = ({ jobPositions }) => {
     return (
         <ChartWrapper style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ flex: '0 0 300px' }}> {/* Fixed width for the pie chart */}
-                <PieChart width={300} height={300}>
+                <PieChart width={300} height={460}>
                     <Tooltip />
                     <Legend />
                     <Pie

@@ -9,12 +9,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
 
     @Autowired
     private ResumeRepository resumeRepository;
+
+    @Override
+    public Optional<Resume> findById(Long id) {
+        return resumeRepository.findById(id);
+    }
 
     @Override
     public Resume createResume(Resume resume) {

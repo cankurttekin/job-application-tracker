@@ -1,5 +1,6 @@
 package com.kurttekin.can.job_track.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,8 +13,11 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonManagedReference
+    private User user;
+
     private String title;
     private String summary;
     private String skills;
@@ -24,5 +28,4 @@ public class Resume {
     private Date createdAt;
 
     private Date updatedAt;
-
 }
