@@ -3,6 +3,7 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import '../styles/AddJobApplication.css';
 import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + '/api';
 
@@ -89,7 +90,7 @@ const AddJobApplication = ({ isOpen, onClose }) => {
               width: '400px',
               padding: '20px',
               borderRadius: '10px',
-              backgroundColor: '#f5f5f5',
+              backgroundColor: '#ffffff',
               color: '#333',
             },
           }}

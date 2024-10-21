@@ -50,8 +50,8 @@ const GlobalStyle = createGlobalStyle`
       position: absolute;
       top: 2px;
       right: 2px;
-      background: none;
-      border: 1px solid #333;
+      background: #ebebeb;
+      //border: 1px solid #333;
       color: #333;
       font-size: 26px;
       width: 30px;
@@ -64,8 +64,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   close-button:hover {
-      background-color: black;
-      color: white;
+      background-color: #dedede;
+      //color: white;
   }
 
   modal-content {

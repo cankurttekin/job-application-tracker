@@ -7,10 +7,10 @@ const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
 const StatusCell = styled.td`
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   background-color: ${({ status }) => getStatusBackgroundColor(status)};
   color: white;
-  border-radius: 5px;
+  border-radius: 0px;
 `;
 
 const StarCell = styled.td`
@@ -19,7 +19,7 @@ const StarCell = styled.td`
 
 const CommentCell = styled.td`
   padding: 10px;
-  border: 1px solid #ddd;
+  //border: 1px solid #ddd;
   cursor: pointer;
 `;
 
@@ -261,7 +261,8 @@ const JobApplications = () => {
                     transform: 'translate(-50%, -50%)',
                     padding: '20px',
                     borderRadius: '10px',
-                    backgroundColor: '#f5f5f5',
+                    //backgroundColor: '#f5f5f5',
+                    backgroundColor: '#ffffff',
                     color: '#333',
                   },
                 }}
@@ -345,6 +346,7 @@ const getStatusBackgroundColor = (status) => {
   switch (status.toLowerCase()) {
     case 'applied':
       return '#7F8C8D';
+    case 'interviewing':
     case 'interview':
       return '#E67E22';
     case 'rejected':
@@ -382,6 +384,7 @@ const styles = {
     //backgroundColor: '#333',
     color: '#333',
     padding: '10px',
+    textAlign: 'left',
   },
   tableRow: {
     cursor: 'pointer',
@@ -391,7 +394,7 @@ const styles = {
   },
   tableCell: {
     padding: '10px',
-    border: '1px solid #ddd',
+    //border: '1px solid #ddd',
   },
   deleteIcon: {
     color: 'grey',
