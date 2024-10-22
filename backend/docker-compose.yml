@@ -5,6 +5,7 @@ services:
     build: .
     ports:
       - "8080:8080"
+      - "443:443"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/job_app_tracker
       SPRING_DATASOURCE_USERNAME: admin

@@ -148,4 +148,5 @@ public class JobApplicationController {
 
         return ResponseEntity.ok(stats);
     }
+
 }

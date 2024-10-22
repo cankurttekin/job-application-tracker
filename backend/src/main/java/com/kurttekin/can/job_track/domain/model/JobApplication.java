@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,8 +29,9 @@ public class JobApplication {
     @Lob // This annotation indicates a large object (TEXT in PostgreSQL)
     private String comments;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id"/*, referencedColumnName = "id"*/)
     @JsonBackReference
     private User user;
+
 }
