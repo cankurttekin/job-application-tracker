@@ -1,15 +1,13 @@
 package com.kurttekin.can.job_track.application;
 
+import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.domain.exception.ResumeNotFoundException;
-import com.kurttekin.can.job_track.domain.model.Resume;
+import com.kurttekin.can.job_track.domain.exception.UserNotFoundException;
+import com.kurttekin.can.job_track.domain.model.resume.Resume;
 import com.kurttekin.can.job_track.domain.service.ResumeService;
 import com.kurttekin.can.job_track.infrastructure.repository.ResumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
@@ -18,34 +16,52 @@ public class ResumeServiceImpl implements ResumeService {
     private ResumeRepository resumeRepository;
 
     @Override
-    public Optional<Resume> findById(Long id) {
-        return resumeRepository.findById(id);
+    public ResumeDTO findById(Long id) {
+        Resume resume = resumeRepository.findById(id)
+                .orElseThrow(() -> new ResumeNotFoundException("Resume Not Found"));
+
+        return convertToDTO(resume);
     }
 
     @Override
-    public Resume createResume(Resume resume) {
+    public ResumeDTO createResume(Resume resume) {
+        Resume savedResume = resumeRepository.save(resume);
+        return ResumeDTO.fromResume(savedResume);
+    }
+
+    @Override
+    public Resume updateResume(Long userId, Resume resume) {
+        // Check if user exists
+        resumeRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        // Set userid on resume
+        resume.setId(userId);
+
+        // Save and return updated resume
         return resumeRepository.save(resume);
     }
 
     @Override
-    public List<Resume> getResumesByUserId(Long userId) {
-        return resumeRepository.findByUserId(userId);
-    }
-
-    @Override
-    public Resume updateResume(Long id, Resume resume) {
-        Resume existingResume = resumeRepository.findById(id).orElseThrow(() -> new ResumeNotFoundException("Resume not found"));
-        existingResume.setTitle(resume.getTitle());
-        existingResume.setSummary(resume.getSummary());
-        existingResume.setSkills(resume.getSkills());
-        existingResume.setEducation(resume.getEducation());
-        existingResume.setExperience(resume.getExperience());
-        existingResume.setUpdatedAt(new Date());
-        return resumeRepository.save(existingResume);
-    }
-
-    @Override
     public void deleteResume(Long id) {
+        // Check if resume exists
+        resumeRepository.findById(id)
+                .orElseThrow(() -> new ResumeNotFoundException("Resume not found"));
+
+        // If found proceed with deletion
         resumeRepository.deleteById(id);
     }
+
+    private ResumeDTO convertToDTO(Resume resume) {
+        ResumeDTO dto = new ResumeDTO();
+        dto.setId(resume.getId());
+        dto.setTitle(resume.getTitle());
+        dto.setSummary(resume.getSummary());
+        dto.setEducation(resume.getEducation());
+        dto.setLocation(resume.getLocation());
+        dto.setSkills(resume.getSkills());
+        //dto.setCreatedAt(resume.getCreatedAt());
+        return dto;
+    }
+
 }

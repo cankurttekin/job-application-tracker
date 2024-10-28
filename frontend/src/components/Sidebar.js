@@ -126,11 +126,11 @@ const Sidebar = () => {
                             </SidebarItem>
                             <SidebarItem onClick={() => navigate('/resume')}>
                                 <span className="material-icons">assignment_ind</span>
-                                My Resume
+                                Resume
                             </SidebarItem>
                             <SidebarItem onClick={() => navigate('/exportData')}>
                                 <span className="material-icons">file_download</span>
-                                Export My Data
+                                Export Data
                             </SidebarItem>
                         </>
                     ) : (
