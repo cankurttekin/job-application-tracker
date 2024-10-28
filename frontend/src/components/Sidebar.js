@@ -114,7 +114,7 @@ const Sidebar = () => {
                             </SidebarItem>
                             <SidebarItem onClick={handleAddJobClick}>
                                 <span className="material-icons">add</span>
-                                Add Job Application
+                                Add Application
                             </SidebarItem>
                             <SidebarItem onClick={() => navigate('/charts')}>
                                 <span className="material-icons">bar_chart</span>

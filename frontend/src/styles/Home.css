@@ -1,7 +1,7 @@
 .home-container {
     text-align: center;
     padding: 20px;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .header-container {
@@ -54,10 +54,12 @@
     background-color: #333;
 }
 
+
 .illustrations-container {
     display: flex; /* Use flexbox for side-by-side layout */
     justify-content: space-between; /* Equal spacing between items */
-    margin: 200px;
+    margin: 20px;
+    scale: 0.9;
 }
 
 .illustration-item {
@@ -75,6 +77,16 @@
     margin-top: 10px;
     font-size: 1em;
     font-weight: bold;
+}
+
+.support-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    scale: 0.9;
+    color: #666;
+    text-align: left;
+    align-items: center;
 }
 
 .footer {
