@@ -14,13 +14,15 @@ const Button = styled.button`
 
 const Resume = () => {
     const [resumeData, setResumeData] = useState({
-        id: null,
+        //id: null,
         title: "",
         summary: "",
+        education: "",
+        location: "",
         //workExperiences: [{ title: "", company: "", startDate: "", endDate: "", description: "" }],
         //projects: [{ title: "", description: "", link: "" }],
         skills: [""],
-        coverLetter: ""
+        //coverLetter: ""
     });
 
     useEffect(() => {
@@ -35,13 +37,15 @@ const Resume = () => {
 
                 // Check if response data has the required fields and provide defaults if necessary
                 const fetchedData = response.data || {
-                    id: null,
+                    //id: null,
                     title: "",
                     summary: "",
+                    education: "",
+                    location: "",
                     //workExperiences: [{ title: "", company: "", startDate: "", endDate: "", description: "" }],
                     //projects: [{ title: "", description: "", link: "" }],
                     skills: [""],
-                    coverLetter: ""
+                    //coverLetter: ""
                 };
 
                 setResumeData(fetchedData);
@@ -87,7 +91,8 @@ const Resume = () => {
             const token = localStorage.getItem("token");
             if (resumeData.id) {
                 // Update existing resume
-                await axios.put(`${REACT_APP_BACKEND_URL}/resumes/${resumeData.id}`, resumeData, {
+                //await axios.put(`${REACT_APP_BACKEND_URL}/resumes/${resumeData.id}`, resumeData, {
+                await axios.post(`${REACT_APP_BACKEND_URL}/resumes`, resumeData, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`

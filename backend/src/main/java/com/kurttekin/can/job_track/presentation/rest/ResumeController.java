@@ -23,6 +23,22 @@ public class ResumeController {
     private UserService userService;
 
     @PostMapping
+    public ResponseEntity<ResumeDTO> createOrUpdateResume(
+            @RequestBody Resume resume,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        resume.setUser(user); // Set the user on the resume
+        ResumeDTO createdOrUpdatedResume = resumeService.createOrUpdateResume(resume);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrUpdatedResume);
+    }
+
+    /*
+    @PostMapping
     public ResponseEntity<ResumeDTO> createResume(
             @RequestBody Resume resume,
             @AuthenticationPrincipal UserDetails userDetails) {
@@ -36,7 +52,7 @@ public class ResumeController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdResume);
     }
-
+*/
     @GetMapping
     public ResponseEntity<ResumeDTO> getResume(
             @AuthenticationPrincipal UserDetails userDetails) {
