@@ -1,6 +1,7 @@
 package com.kurttekin.can.job_track.application;
 
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
+import com.kurttekin.can.job_track.application.dto.WorkExperienceDTO;
 import com.kurttekin.can.job_track.domain.exception.ResumeNotFoundException;
 import com.kurttekin.can.job_track.domain.exception.UserNotFoundException;
 import com.kurttekin.can.job_track.domain.model.resume.Resume;
@@ -9,7 +10,9 @@ import com.kurttekin.can.job_track.infrastructure.repository.ResumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
@@ -29,26 +32,39 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public ResumeDTO createOrUpdateResume(Resume resume) {
         // Check if a resume already exists for the user
-        Optional<Resume> existingResume = resumeRepository.findByUserId(resume.getUser().getId());
+        Optional<Resume> existingResumeOpt = resumeRepository.findByUserId(resume.getUser().getId());
 
-        if (existingResume.isPresent()) {
+        if (existingResumeOpt.isPresent()) {
             // Update existing resume fields
-            Resume resumeToUpdate = existingResume.get();
-            resumeToUpdate.setTitle(resume.getTitle());
-            resumeToUpdate.setSummary(resume.getSummary());
-            resumeToUpdate.setEducation(resume.getEducation());
-            resumeToUpdate.setLocation(resume.getLocation());
-            resumeToUpdate.setSkills(resume.getSkills());
+            Resume existingResume = existingResumeOpt.get();
+            existingResume.setTitle(resume.getTitle());
+            existingResume.setSummary(resume.getSummary());
+            existingResume.setEducation(resume.getEducation());
+            existingResume.setLocation(resume.getLocation());
+            existingResume.setSkills(resume.getSkills());
 
-            // Save updated resume
-            Resume updatedResume = resumeRepository.save(resumeToUpdate);
+            // Update work experiences
+            existingResume.getWorkExperiences().clear();  // Clear existing work experiences
+            if (resume.getWorkExperiences() != null) {
+                // Set resume reference for each work experience and add to the list
+                resume.getWorkExperiences().forEach(workExperience -> workExperience.setResume(existingResume));
+                existingResume.getWorkExperiences().addAll(resume.getWorkExperiences());
+            }
+
+            // Save the updated resume
+            Resume updatedResume = resumeRepository.save(existingResume);
             return convertToDTO(updatedResume);
         } else {
             // If no resume exists for this user, create a new one
+            if (resume.getWorkExperiences() != null) {
+                // Set resume reference for each new work experience
+                resume.getWorkExperiences().forEach(workExperience -> workExperience.setResume(resume));
+            }
             Resume savedResume = resumeRepository.save(resume);
             return convertToDTO(savedResume);
         }
     }
+
 
 
     @Override
@@ -88,7 +104,13 @@ public class ResumeServiceImpl implements ResumeService {
         dto.setEducation(resume.getEducation());
         dto.setLocation(resume.getLocation());
         dto.setSkills(resume.getSkills());
-        //dto.setCreatedAt(resume.getCreatedAt());
+
+        // Convert work experiences
+        List<WorkExperienceDTO> workExperienceDTOs = resume.getWorkExperiences().stream()
+                .map(WorkExperienceDTO::fromWorkExperience)
+                .collect(Collectors.toList());
+        dto.setWorkExperiences(workExperienceDTOs);
+
         return dto;
     }
 

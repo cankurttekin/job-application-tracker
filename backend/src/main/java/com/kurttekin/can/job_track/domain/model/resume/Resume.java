@@ -29,7 +29,7 @@ public class Resume {
     private String location;
 
 
-    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkExperience> workExperiences;
 
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)

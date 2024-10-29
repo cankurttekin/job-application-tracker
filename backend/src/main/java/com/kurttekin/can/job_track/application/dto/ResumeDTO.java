@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -21,6 +23,7 @@ public class ResumeDTO {
     private String location;
     private Set<String> skills;
     private LocalDateTime createdAt;
+    private List<WorkExperienceDTO> workExperiences;
 
     // Factory method to create a ResumeDTO from a Resume entity
     public static ResumeDTO fromResume(Resume resume) {
@@ -31,7 +34,9 @@ public class ResumeDTO {
                 .education(resume.getEducation())
                 .location(resume.getLocation())
                 .skills(resume.getSkills())
-                //.createdAt(resume.getCreatedAt())
+                .workExperiences(resume.getWorkExperiences().stream()
+                        .map(WorkExperienceDTO::fromWorkExperience)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

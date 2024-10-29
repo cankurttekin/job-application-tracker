@@ -39,6 +39,7 @@ const Resume = () => {
         location: "",
         skills: [""],
         coverLetter: "",
+        workExperiences: [{ title: "", company: "", startDate: "", endDate: "", description: "" }],
     });
 
     useEffect(() => {
@@ -48,7 +49,18 @@ const Resume = () => {
                 const response = await axios.get(`${REACT_APP_BACKEND_URL}/resumes`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                const fetchedData = response.data || { title: "", summary: "", education: "", location: "", skills: [""], coverLetter: "" };
+
+                // Initialize workExperiences if it's not present
+                const fetchedData = {
+                    title: response.data.title || "",
+                    summary: response.data.summary || "",
+                    education: response.data.education || "",
+                    location: response.data.location || "",
+                    skills: response.data.skills || [""],
+                    coverLetter: response.data.coverLetter || "",
+                    workExperiences: response.data.workExperiences || [{ title: "", company: "", startDate: "", endDate: "", description: "" }],
+                };
+
                 setResumeData(fetchedData);
             } catch (error) {
                 console.error("Error fetching resume:", error);
@@ -71,10 +83,29 @@ const Resume = () => {
         setResumeData({ ...resumeData, skills: updatedSkills });
     };
 
+    const handleWorkExperienceChange = (e, index) => {
+        const { name, value } = e.target;
+        const updatedWorkExperiences = resumeData.workExperiences.map((experience, i) =>
+            i === index ? { ...experience, [name]: value } : experience
+        );
+        setResumeData({ ...resumeData, workExperiences: updatedWorkExperiences });
+    };
+
+    const addWorkExperience = () => {
+        setResumeData({
+            ...resumeData,
+            workExperiences: [
+                ...resumeData.workExperiences,
+                { title: "", company: "", startDate: "", endDate: "", description: "" }
+            ]
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const token = localStorage.getItem("token");
+            // Ensure the data includes workExperiences
             await axios.post(`${REACT_APP_BACKEND_URL}/resumes`, resumeData, {
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
             });
@@ -129,6 +160,50 @@ const Resume = () => {
                     onChange={handleChange}
                     rows={3}
                 />
+            </Section>
+
+            <Section>
+                <SectionTitle>Work Experience</SectionTitle>
+                {resumeData.workExperiences.map((experience, index) => (
+                    <div key={index} style={{ marginBottom: "20px" }}>
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="Job Title"
+                            value={experience.title}
+                            onChange={(e) => handleWorkExperienceChange(e, index)}
+                        />
+                        <input
+                            type="text"
+                            name="company"
+                            placeholder="Company Name"
+                            value={experience.company}
+                            onChange={(e) => handleWorkExperienceChange(e, index)}
+                        />
+                        <input
+                            type="date"
+                            name="startDate"
+                            placeholder="Start Date"
+                            value={experience.startDate}
+                            onChange={(e) => handleWorkExperienceChange(e, index)}
+                        />
+                        <input
+                            type="date"
+                            name="endDate"
+                            placeholder="End Date"
+                            value={experience.endDate}
+                            onChange={(e) => handleWorkExperienceChange(e, index)}
+                        />
+                        <textarea
+                            name="description"
+                            placeholder="Job Description"
+                            value={experience.description}
+                            onChange={(e) => handleWorkExperienceChange(e, index)}
+                            rows={3}
+                        />
+                    </div>
+                ))}
+                <button type="button" onClick={addWorkExperience}>Add Work Experience</button>
             </Section>
 
             <Section>
