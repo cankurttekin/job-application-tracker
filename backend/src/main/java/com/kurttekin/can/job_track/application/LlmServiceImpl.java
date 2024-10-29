@@ -1,5 +1,9 @@
 package com.kurttekin.can.job_track.application;
 
+import com.kurttekin.can.job_track.application.dto.ResumeDTO;
+import com.kurttekin.can.job_track.application.dto.WorkExperienceDTO;
+import com.kurttekin.can.job_track.domain.model.resume.Resume;
+import com.kurttekin.can.job_track.domain.model.resume.WorkExperience;
 import com.kurttekin.can.job_track.domain.service.LlmService;
 import okhttp3.*;
 import org.json.JSONArray;
@@ -16,10 +20,25 @@ public class LlmServiceImpl implements LlmService {
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
-    public String generateInterviewQuestions(String jobDescription, String jobTitle) {
+    public String generateInterviewQuestions(String jobDescription, String jobTitle, ResumeDTO resume) {
+        // Extract skills and work experience from ResumeDTO
+        String resumeSkills = String.join(", ", resume.getSkills());
+        StringBuilder workExperiences = new StringBuilder();
+
+        for (WorkExperienceDTO experience : resume.getWorkExperiences()) {
+            workExperiences.append(experience.getTitle()).append(" at ")
+                    .append(experience.getCompany()).append(" from ")
+                    .append(experience.getStartDate()).append(" to ")
+                    .append(experience.getEndDate()).append(". ")
+                    .append(experience.getDescription()).append("\n");
+        }
+
+        // Create the prompt
         String prompt = "You are an interviewer. Generate questions for a candidate applying for a "
                 + jobTitle + " position with the following job description: "
-                + jobDescription;
+                + jobDescription + "\n\n"
+                + "The candidate has the following skills: " + resumeSkills + ".\n"
+                + "Work Experience:\n" + workExperiences.toString();
 
         try {
             // Create the JSON body
@@ -51,26 +70,29 @@ public class LlmServiceImpl implements LlmService {
             // Parse the response to extract the questions
             JSONObject responseJson = new JSONObject(responseBody);
 
-            // Check if "candidates" exists
-            if (responseJson.has("candidates") && !responseJson.getJSONArray("candidates").isEmpty()) {
-                JSONArray parts = responseJson.getJSONArray("candidates")
-                        .getJSONObject(0) // Get the first candidate
-                        .getJSONObject("content") // Access content
-                        .getJSONArray("parts"); // Get the parts
-
-                StringBuilder questions = new StringBuilder();
-                for (int i = 0; i < parts.length(); i++) {
-                    questions.append(parts.getJSONObject(i).getString("text")).append("\n");
-                }
-
-                return questions.toString();
-            } else {
-                return "No interview questions were generated.";
-            }
+            return parseQuestions(responseJson);
 
         } catch (Exception e) {
-            // imp exc handling
+            // Exception handling
             return "Error generating questions.";
+        }
+    }
+
+    private String parseQuestions(JSONObject responseJson) {
+        if (responseJson.has("candidates") && !responseJson.getJSONArray("candidates").isEmpty()) {
+            JSONArray parts = responseJson.getJSONArray("candidates")
+                    .getJSONObject(0) // Get the first candidate
+                    .getJSONObject("content") // Access content
+                    .getJSONArray("parts"); // Get the parts
+
+            StringBuilder questions = new StringBuilder();
+            for (int i = 0; i < parts.length(); i++) {
+                questions.append(parts.getJSONObject(i).getString("text")).append("\n");
+            }
+
+            return questions.toString();
+        } else {
+            return "No interview questions were generated.";
         }
     }
 
@@ -104,7 +126,6 @@ public class LlmServiceImpl implements LlmService {
     }
 
     private JSONObject createJsonBody(String prompt) {
-        // Create the JSON body
         return new JSONObject()
                 .put("contents", new JSONArray()
                         .put(new JSONObject()
@@ -114,7 +135,6 @@ public class LlmServiceImpl implements LlmService {
     }
 
     private Request buildRequest(JSONObject jsonBody) {
-        // Build the request
         return new Request.Builder()
                 .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + geminiApiKey)
                 .post(RequestBody.create(jsonBody.toString(), MediaType.get("application/json")))
@@ -122,29 +142,7 @@ public class LlmServiceImpl implements LlmService {
                 .build();
     }
 
-    private String parseQuestions(String responseBody) {
-        // Parse the response to extract the questions
-        JSONObject responseJson = new JSONObject(responseBody);
-
-        if (responseJson.has("candidates") && !responseJson.getJSONArray("candidates").isEmpty()) {
-            JSONArray parts = responseJson.getJSONArray("candidates")
-                    .getJSONObject(0) // Get the first candidate
-                    .getJSONObject("content") // Access content
-                    .getJSONArray("parts"); // Get the parts
-
-            StringBuilder questions = new StringBuilder();
-            for (int i = 0; i < parts.length(); i++) {
-                questions.append(parts.getJSONObject(i).getString("text")).append("\n");
-            }
-
-            return questions.toString();
-        } else {
-            return "No interview questions were generated.";
-        }
-    }
-
     private String parseQuizQuestions(String responseBody) {
-        // Parse the response to extract the quiz questions
         JSONObject responseJson = new JSONObject(responseBody);
 
         if (responseJson.has("candidates") && !responseJson.getJSONArray("candidates").isEmpty()) {

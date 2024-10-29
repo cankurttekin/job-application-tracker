@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + "/api";
+
+
 const Container = styled.div`
     padding: 20px;
 `;
@@ -18,8 +21,6 @@ const Dropdown = styled.select`
     border-radius: 5px;
     margin-top: 10px;
     margin-right: 10px;
-    //width: 100%;
-    //max-width: 400px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -56,25 +57,22 @@ const ResultMessage = styled.p`
 const AITools = () => {
     const [jobApplications, setJobApplications] = useState([]);
     const [interviewQuestions, setInterviewQuestions] = useState([]);
-    const [quizQuestions, setQuizQuestions] = useState([]); // State for quiz questions
+    const [quizQuestions, setQuizQuestions] = useState([]);
     const [selectedJobApplication, setSelectedJobApplication] = useState(null);
-    const [selectedAnswers, setSelectedAnswers] = useState({}); // State for selected answers
-    const [resultMessage, setResultMessage] = useState(""); // State for result message
+    const [selectedAnswers, setSelectedAnswers] = useState({});
+    const [resultMessage, setResultMessage] = useState("");
 
     useEffect(() => {
         const fetchJobApplications = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/job-applications`, {
+                const response = await axios.get(`${REACT_APP_BACKEND_URL}/job-applications`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setJobApplications(response.data);
-                if (response.data) {
+                if (response.data.length > 0) {
                     setSelectedJobApplication(response.data[0]); // Set the first job application as selected
-                } else {
-                    setSelectedJobApplication([]);
                 }
-
             } catch (error) {
                 console.error("Error fetching job applications:", error);
             }
@@ -89,20 +87,30 @@ const AITools = () => {
             return;
         }
 
-        const { jobDescription, jobTitle } = selectedJobApplication;
+        const { description, jobTitle } = selectedJobApplication;
 
+        // Get the user's resume
         const token = localStorage.getItem("token");
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/llm/generate-interview`, {
-                jobDescription,
-                jobTitle
+            // Fetch user's resume
+            const resumeResponse = await axios.get(`${REACT_APP_BACKEND_URL}/resumes`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            console.log("description:", description);
+            console.log("jobTitle:", jobTitle);
+
+            const resume = resumeResponse.data; // Adjust based on your API response
+            const response = await axios.post(`${REACT_APP_BACKEND_URL}/llm/generate-interview`, {
+                description,
+                jobTitle,
+                resume // Include the resume in the payload
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
             console.log("Interview Response Data:", response.data);
 
-            // Ensure response data is an array
             if (Array.isArray(response.data.questions)) {
                 setInterviewQuestions(response.data.questions);
             } else {
@@ -121,12 +129,12 @@ const AITools = () => {
             return;
         }
 
-        const { jobDescription, jobTitle } = selectedJobApplication;
+        const { description, jobTitle } = selectedJobApplication;
 
         const token = localStorage.getItem("token");
         try {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/llm/generate-quiz`, {
-                jobDescription,
+                description,
                 jobTitle
             }, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -134,7 +142,6 @@ const AITools = () => {
 
             console.log("Quiz Response Data:", response.data);
 
-            // Ensure response data is an array of QuizQuestion objects
             if (Array.isArray(response.data)) {
                 const formattedQuestions = response.data.map((q) => ({
                     questionText: q.questionText,
@@ -142,15 +149,15 @@ const AITools = () => {
                     correctAnswer: q.correctAnswer,
                 }));
                 setQuizQuestions(formattedQuestions);
-                setSelectedAnswers({}); // Reset selected answers
-                setResultMessage(""); // Clear previous results
+                setSelectedAnswers({});
+                setResultMessage("");
             } else {
                 console.error("Expected an array of quiz questions, but got:", response.data);
-                setQuizQuestions([]); // Clear quiz if response is not an array
+                setQuizQuestions([]);
             }
         } catch (error) {
             console.error("Error generating quiz:", error);
-            setQuizQuestions([]); // Clear quiz on error
+            setQuizQuestions([]);
         }
     };
 
@@ -175,19 +182,19 @@ const AITools = () => {
             {jobApplications.length > 0 && (
                 <>
                     <SelectionContainer>
-                    <Dropdown
-                        onChange={(e) => setSelectedJobApplication(jobApplications[e.target.value])}
-                        value={jobApplications.indexOf(selectedJobApplication)}
-                    >
-                        {jobApplications.map((job, index) => (
-                            <option key={index} value={index}>
-                                {job.jobTitle} - {job.companyName}
-                            </option>
-                        ))}
-                    </Dropdown>
+                        <Dropdown
+                            onChange={(e) => setSelectedJobApplication(jobApplications[e.target.value])}
+                            value={jobApplications.indexOf(selectedJobApplication)}
+                        >
+                            {jobApplications.map((job, index) => (
+                                <option key={index} value={index}>
+                                    {job.jobTitle} - {job.companyName}
+                                </option>
+                            ))}
+                        </Dropdown>
 
-                    <button onClick={handleGenerateQuestions}>Interview Questions</button>
-                    <button onClick={handleGenerateQuiz}>Generate Quiz</button>
+                        <button onClick={handleGenerateQuestions}>Interview Questions</button>
+                        <button onClick={handleGenerateQuiz}>Generate Quiz</button>
                     </SelectionContainer>
                 </>
             )}
@@ -231,9 +238,6 @@ const AITools = () => {
                             </QuestionItem>
                         ))}
                     </QuestionList>
-                    <div>
-                        <p><br/><i>ANSWER CHECK FUNCTIONALITY NEEDS TO BE IMPLEMENTED, CURRENTLY NOT WORKING</i></p>
-                    </div>
                     <button onClick={checkAnswers}>Check Answers</button>
                     {resultMessage && <ResultMessage>{resultMessage}</ResultMessage>}
                 </QuestionsContainer>
