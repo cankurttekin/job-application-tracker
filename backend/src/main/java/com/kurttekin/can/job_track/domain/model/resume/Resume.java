@@ -3,6 +3,7 @@ package com.kurttekin.can.job_track.domain.model.resume;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kurttekin.can.job_track.domain.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.*;
@@ -38,6 +39,11 @@ public class Resume {
     @CollectionTable(name = "resume_skills", joinColumns = @JoinColumn(name = "resume_id"))
     @Column(name = "skill")
     private Set<String> skills = new HashSet<>();
+
+    @Size(max = 2000)
+    @Column(length = 2000)
+    private String coverLetter;
+
 
     private Date createdAt;
 

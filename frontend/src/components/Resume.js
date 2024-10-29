@@ -70,6 +70,12 @@ const Resume = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        // For coverLetter, enforce the length limit
+        if (name === "coverLetter" && value.length > 2000) {
+            return; // Prevents updating the state if the limit is exceeded
+        }
+
         setResumeData({ ...resumeData, [name]: value });
     };
 
@@ -273,6 +279,7 @@ const Resume = () => {
                     onChange={handleChange}
                     rows={5}
                 />
+                <p>{2000 - resumeData.coverLetter.length} characters remaining</p> {/* Character counter */}
             </Section>
 
             <button type="submit" onClick={handleSubmit}>Submit Resume</button>

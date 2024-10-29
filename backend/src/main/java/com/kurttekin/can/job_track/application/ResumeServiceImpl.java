@@ -3,6 +3,7 @@ package com.kurttekin.can.job_track.application;
 import com.kurttekin.can.job_track.application.dto.EducationDTO;
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.application.dto.WorkExperienceDTO;
+import com.kurttekin.can.job_track.domain.exception.CoverLetterTooLongException;
 import com.kurttekin.can.job_track.domain.exception.ResumeNotFoundException;
 import com.kurttekin.can.job_track.domain.exception.UserNotFoundException;
 import com.kurttekin.can.job_track.domain.model.resume.Resume;
@@ -35,12 +36,18 @@ public class ResumeServiceImpl implements ResumeService {
         // Check if a resume already exists for the user
         Optional<Resume> existingResumeOpt = resumeRepository.findByUserId(resume.getUser().getId());
 
+        // Validate the cover letter length
+        if (resume.getCoverLetter() != null && resume.getCoverLetter().length() > 2000) {
+            throw new CoverLetterTooLongException("Cover letter must not exceed 2000 characters.");
+        }
+
         if (existingResumeOpt.isPresent()) {
             // Update existing resume fields
             Resume existingResume = existingResumeOpt.get();
             existingResume.setTitle(resume.getTitle());
             existingResume.setSummary(resume.getSummary());
             existingResume.setLocation(resume.getLocation());
+            existingResume.setCoverLetter(resume.getCoverLetter());
             existingResume.setSkills(resume.getSkills());
 
             // Update work experiences
@@ -113,6 +120,7 @@ public class ResumeServiceImpl implements ResumeService {
         dto.setSummary(resume.getSummary());
         dto.setLocation(resume.getLocation());
         dto.setSkills(resume.getSkills());
+        dto.setCoverLetter(resume.getCoverLetter());
 
         // Convert work experiences
         List<WorkExperienceDTO> workExperienceDTOs = resume.getWorkExperiences().stream()

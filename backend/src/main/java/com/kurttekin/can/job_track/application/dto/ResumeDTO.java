@@ -21,6 +21,7 @@ public class ResumeDTO {
     private String summary;
     private String location;
     private Set<String> skills;
+    private String coverLetter;
     private LocalDateTime createdAt;
     private List<WorkExperienceDTO> workExperiences;
     private List<EducationDTO> educationList;
@@ -33,6 +34,7 @@ public class ResumeDTO {
                 .summary(resume.getSummary())
                 .location(resume.getLocation())
                 .skills(resume.getSkills())
+                .coverLetter(resume.getCoverLetter())
                 .workExperiences(resume.getWorkExperiences().stream()
                         .map(WorkExperienceDTO::fromWorkExperience)
                         .collect(Collectors.toList()))
