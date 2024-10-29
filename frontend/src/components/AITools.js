@@ -249,7 +249,7 @@ const AITools = () => {
             {/* Personalization Section */}
             <PersonalizationSection>
                 <PersonalizationHeader onClick={() => setShowPersonalization(!showPersonalization)}>
-                    Personalize your AI responses ✨
+                    Personalize your AI responses✨ ⤵
                 </PersonalizationHeader>
                 {showPersonalization && (
                     <>
