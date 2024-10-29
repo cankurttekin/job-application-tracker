@@ -27,13 +27,18 @@ public class LlmController {
         String jobTitle = (String) payload.get("jobTitle");
         ResumeDTO resume = parseResumeFromPayload(payload); // Update method to parse ResumeDTO
 
+        // Retrieve personalization preferences
+        Map<String, Object> personalization = (Map<String, Object>) payload.get("personalization");
+
 
         System.out.println("Received request for generating interview questions:");
         System.out.println("Job Title: " + jobTitle);
         System.out.println("Resume: " + resume);
+        System.out.println("Personalization: " + personalization);
 
         // Generate the interview questions
-        String questions = llmService.generateInterviewQuestions(jobDescription, jobTitle, resume);
+        //String questions = llmService.generateInterviewQuestions(jobDescription, jobTitle, resume);
+        String questions = llmService.generateInterviewQuestions(jobDescription, jobTitle, resume, personalization);
 
         // Split the questions string into a list
         List<String> questionList = Arrays.stream(questions.split("\n"))

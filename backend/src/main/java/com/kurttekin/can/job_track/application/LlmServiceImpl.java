@@ -11,6 +11,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 public class LlmServiceImpl implements LlmService {
 
@@ -20,7 +24,7 @@ public class LlmServiceImpl implements LlmService {
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
-    public String generateInterviewQuestions(String jobDescription, String jobTitle, ResumeDTO resume) {
+    public String generateInterviewQuestions(String jobDescription, String jobTitle, ResumeDTO resume, Map<String, Object> personalization) {
         // Extract skills and work experience from ResumeDTO
         String resumeSkills = String.join(", ", resume.getSkills());
         StringBuilder workExperiences = new StringBuilder();
@@ -33,13 +37,20 @@ public class LlmServiceImpl implements LlmService {
                     .append(experience.getDescription()).append("\n");
         }
 
-        // Create the prompt
-        String prompt = "You are an interviewer. Generate questions for a candidate applying for a "
-                + jobTitle + " position with the following job description: "
-                + jobDescription + "\n\n"
-                + "The candidate has the following skills: " + resumeSkills + ".\n"
-                + "Work Experience:\n" + workExperiences.toString();
+// Create the prompt
+        StringBuilder prompt = new StringBuilder("You are an interviewer. Generate questions for a candidate applying for a ")
+                .append(jobTitle).append(" position with the following job description: ")
+                .append(jobDescription).append("\n\n")
+                .append("The candidate has the following skills: ").append(resumeSkills).append(".\n")
+                .append("Work Experience:\n").append(workExperiences.toString());
 
+        // Add personalization to the prompt
+        if (personalization != null) {
+            addListToPrompt(prompt, personalization.get("tone"), "Preferred tones");
+            addListToPrompt(prompt, personalization.get("focusAreas"), "Focus areas");
+            addListToPrompt(prompt, personalization.get("questionTypes"), "Question types");
+            addStringToPrompt(prompt, personalization.get("experienceLevel"), "Experience level");
+        }
         try {
             // Create the JSON body
             JSONObject jsonBody = new JSONObject();
@@ -75,6 +86,25 @@ public class LlmServiceImpl implements LlmService {
         } catch (Exception e) {
             // Exception handling
             return "Error generating questions.";
+        }
+    }
+
+    /**
+     * Adds a section to the prompt for list-based personalization fields if the list is not empty.
+     */
+    private void addListToPrompt(StringBuilder prompt, Object listObj, String label) {
+        if (listObj instanceof List<?> list && list.stream().allMatch(item -> item instanceof String) && !list.isEmpty()) {
+            String joinedList = list.stream().map(String.class::cast).collect(Collectors.joining(", "));
+            prompt.append(label).append(": ").append(joinedList).append(".\n");
+        }
+    }
+
+    /**
+     * Adds a section to the prompt for string-based personalization fields if the string is non-null and non-empty.
+     */
+    private void addStringToPrompt(StringBuilder prompt, Object strObj, String label) {
+        if (strObj instanceof String str && !str.isBlank()) {
+            prompt.append(label).append(": ").append(str).append(".\n");
         }
     }
 

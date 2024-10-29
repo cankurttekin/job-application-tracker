@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + "/api";
 
-
 const Container = styled.div`
     padding: 20px;
 `;
@@ -54,6 +53,29 @@ const ResultMessage = styled.p`
     font-weight: bold;
 `;
 
+const PersonalizationSection = styled.div`
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+`;
+
+const PersonalizationElement = styled.div`
+    margin-bottom: 10px;
+`;
+
+const CheckboxLabel = styled.label`
+    //display: block;
+    display: inline-block;
+    margin: 0px 40px;
+`;
+
+const PersonalizationHeader = styled.h4`
+    cursor: pointer;
+    //text-decoration: underline;
+`;
+
 const AITools = () => {
     const [jobApplications, setJobApplications] = useState([]);
     const [interviewQuestions, setInterviewQuestions] = useState([]);
@@ -61,6 +83,13 @@ const AITools = () => {
     const [selectedJobApplication, setSelectedJobApplication] = useState(null);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [resultMessage, setResultMessage] = useState("");
+    const [showPersonalization, setShowPersonalization] = useState(false);
+    const [personalization, setPersonalization] = useState({
+        tone: [],
+        focusAreas: [],
+        questionTypes: [],
+        experienceLevel: ''
+    });
 
     useEffect(() => {
         const fetchJobApplications = async () => {
@@ -92,19 +121,16 @@ const AITools = () => {
         // Get the user's resume
         const token = localStorage.getItem("token");
         try {
-            // Fetch user's resume
             const resumeResponse = await axios.get(`${REACT_APP_BACKEND_URL}/resumes`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
-            console.log("description:", description);
-            console.log("jobTitle:", jobTitle);
 
             const resume = resumeResponse.data; // Adjust based on your API response
             const response = await axios.post(`${REACT_APP_BACKEND_URL}/llm/generate-interview`, {
                 description,
                 jobTitle,
-                resume // Include the resume in the payload
+                resume,
+                personalization // Include user personalization in the payload
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -175,6 +201,27 @@ const AITools = () => {
         setResultMessage(`You scored ${score} out of ${quizQuestions.length}.`);
     };
 
+    const handlePreferenceChange = (e) => {
+        const { name, value, checked } = e.target;
+        if (name === "focusAreas" || name === "questionTypes") {
+            setPersonalization((prev) => {
+                const newValues = checked
+                    ? [...prev[name], value]
+                    : prev[name].filter((item) => item !== value);
+                return { ...prev, [name]: newValues };
+            });
+        } else if (name === "tone") {
+            setPersonalization((prev) => {
+                const newValues = checked
+                    ? [...prev[name], value]
+                    : prev[name].filter((item) => item !== value);
+                return { ...prev, [name]: newValues };
+            });
+        } else {
+            setPersonalization((prev) => ({ ...prev, [name]: value }));
+        }
+    };
+
     return (
         <Container>
             <h2>AI Tools</h2>
@@ -198,6 +245,155 @@ const AITools = () => {
                     </SelectionContainer>
                 </>
             )}
+
+            {/* Personalization Section */}
+            <PersonalizationSection>
+                <PersonalizationHeader onClick={() => setShowPersonalization(!showPersonalization)}>
+                    Personalize your AI responses ✨
+                </PersonalizationHeader>
+                {showPersonalization && (
+                    <>
+                        <PersonalizationElement>
+                        <h4>Tone</h4>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="tone"
+                                value="friendly"
+                                onChange={handlePreferenceChange}
+                            />
+                            Friendly
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="tone"
+                                value="formal"
+                                onChange={handlePreferenceChange}
+                            />
+                            Formal
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="tone"
+                                value="casual"
+                                onChange={handlePreferenceChange}
+                            />
+                            Casual
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="tone"
+                                value="encouraging"
+                                onChange={handlePreferenceChange}
+                            />
+                            Encouraging
+                        </CheckboxLabel>
+                        </PersonalizationElement>
+                        <PersonalizationElement>
+                        <h4>Focus Areas</h4>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="focusAreas"
+                                value="teamwork"
+                                onChange={handlePreferenceChange}
+                            />
+                            Teamwork
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="focusAreas"
+                                value="leadership"
+                                onChange={handlePreferenceChange}
+                            />
+                            Leadership
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="focusAreas"
+                                value="communication"
+                                onChange={handlePreferenceChange}
+                            />
+                            Communication
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="focusAreas"
+                                value="problem-solving"
+                                onChange={handlePreferenceChange}
+                            />
+                            Problem Solving
+                        </CheckboxLabel>
+                        </PersonalizationElement>
+                        <PersonalizationElement>
+                        <h4>Question Types</h4>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="questionTypes"
+                                value="technical"
+                                onChange={handlePreferenceChange}
+                            />
+                            Technical
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="questionTypes"
+                                value="behavioral"
+                                onChange={handlePreferenceChange}
+                            />
+                            Behavioral
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="checkbox"
+                                name="questionTypes"
+                                value="situational"
+                                onChange={handlePreferenceChange}
+                            />
+                            Situational
+                        </CheckboxLabel>
+                        </PersonalizationElement>
+                        <PersonalizationElement>
+                        <h4>Experience Level</h4>
+                        <CheckboxLabel>
+                            <input
+                                type="radio"
+                                name="experienceLevel"
+                                value="junior"
+                                onChange={handlePreferenceChange}
+                            />
+                            Junior Level
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="radio"
+                                name="experienceLevel"
+                                value="mid"
+                                onChange={handlePreferenceChange}
+                            />
+                            Mid Level
+                        </CheckboxLabel>
+                        <CheckboxLabel>
+                            <input
+                                type="radio"
+                                name="experienceLevel"
+                                value="senior"
+                                onChange={handlePreferenceChange}
+                            />
+                            Senior Level
+                        </CheckboxLabel>
+                            </PersonalizationElement>
+                    </>
+                )}
+            </PersonalizationSection>
 
             {interviewQuestions.length > 0 && (
                 <QuestionsContainer>
