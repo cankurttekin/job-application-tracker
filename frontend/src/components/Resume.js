@@ -35,11 +35,11 @@ const Resume = () => {
     const [resumeData, setResumeData] = useState({
         title: "",
         summary: "",
-        education: "",
         location: "",
         skills: [""],
         coverLetter: "",
         workExperiences: [{ title: "", company: "", startDate: "", endDate: "", description: "" }],
+        educationList: [],
     });
 
     useEffect(() => {
@@ -50,15 +50,14 @@ const Resume = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
-                // Initialize workExperiences if it's not present
                 const fetchedData = {
                     title: response.data.title || "",
                     summary: response.data.summary || "",
-                    education: response.data.education || "",
                     location: response.data.location || "",
                     skills: response.data.skills || [""],
                     coverLetter: response.data.coverLetter || "",
                     workExperiences: response.data.workExperiences || [{ title: "", company: "", startDate: "", endDate: "", description: "" }],
+                    educationList: response.data.educationList || [{ institutionName: "", startDate: "", endDate: "", field: "", location: "" }], // Initialize educationList
                 };
 
                 setResumeData(fetchedData);
@@ -78,9 +77,19 @@ const Resume = () => {
         setResumeData({ ...resumeData, skills: [...resumeData.skills, ""] });
     };
 
+    const addEducation = () => {
+        setResumeData({ ...resumeData, educationList: [...resumeData.educationList, { schoolName: "", startDate: "", endDate: "", field: "", location: "" }] });
+    };
+
     const handleSkillChange = (e, index) => {
         const updatedSkills = resumeData.skills.map((skill, i) => (i === index ? e.target.value : skill));
         setResumeData({ ...resumeData, skills: updatedSkills });
+    };
+
+    const handleEducationChange = (e, index) => {
+        const { name, value } = e.target;
+        const updatedEducation = resumeData.educationList.map((edu, i) => (i === index ? { ...edu, [name]: value } : edu));
+        setResumeData({ ...resumeData, educationList: updatedEducation });
     };
 
     const handleWorkExperienceChange = (e, index) => {
@@ -153,14 +162,48 @@ const Resume = () => {
 
             <Section>
                 <SectionTitle>Education</SectionTitle>
-                <textarea
-                    name="education"
-                    placeholder="Education background"
-                    value={resumeData.education}
-                    onChange={handleChange}
-                    rows={3}
-                />
+                {resumeData.educationList.map((education, index) => (
+                    <div key={index} style={{ marginBottom: "20px" }}> {/* Add marginBottom to separate entries */}
+                        <input
+                            type="text"
+                            name="schoolName"
+                            placeholder="School Name"
+                            value={education.schoolName}
+                            onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <input
+                            type="date"
+                            name="startDate"
+                            placeholder="Start Date"
+                            value={education.startDate}
+                            onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <input
+                            type="date"
+                            name="endDate"
+                            placeholder="End Date"
+                            value={education.endDate}
+                            onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <input
+                            type="text"
+                            name="field"
+                            placeholder="Field/Major/Subject"
+                            value={education.field}
+                            onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <input
+                            type="text"
+                            name="location"
+                            placeholder="Location"
+                            value={education.location}
+                            onChange={(e) => handleEducationChange(e, index)}
+                        />
+                    </div>
+                ))}
+                <button type="button" onClick={addEducation}>Add Education</button>
             </Section>
+
 
             <Section>
                 <SectionTitle>Work Experience</SectionTitle>

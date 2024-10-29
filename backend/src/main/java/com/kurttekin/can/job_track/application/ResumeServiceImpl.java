@@ -1,5 +1,6 @@
 package com.kurttekin.can.job_track.application;
 
+import com.kurttekin.can.job_track.application.dto.EducationDTO;
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.application.dto.WorkExperienceDTO;
 import com.kurttekin.can.job_track.domain.exception.ResumeNotFoundException;
@@ -39,7 +40,6 @@ public class ResumeServiceImpl implements ResumeService {
             Resume existingResume = existingResumeOpt.get();
             existingResume.setTitle(resume.getTitle());
             existingResume.setSummary(resume.getSummary());
-            existingResume.setEducation(resume.getEducation());
             existingResume.setLocation(resume.getLocation());
             existingResume.setSkills(resume.getSkills());
 
@@ -51,6 +51,13 @@ public class ResumeServiceImpl implements ResumeService {
                 existingResume.getWorkExperiences().addAll(resume.getWorkExperiences());
             }
 
+            // Update education entries
+            existingResume.getEducationList().clear();
+            if (resume.getEducationList() != null) {
+                resume.getEducationList().forEach(education -> education.setResume(existingResume));
+                existingResume.getEducationList().addAll(resume.getEducationList());
+            }
+
             // Save the updated resume
             Resume updatedResume = resumeRepository.save(existingResume);
             return convertToDTO(updatedResume);
@@ -59,6 +66,9 @@ public class ResumeServiceImpl implements ResumeService {
             if (resume.getWorkExperiences() != null) {
                 // Set resume reference for each new work experience
                 resume.getWorkExperiences().forEach(workExperience -> workExperience.setResume(resume));
+            }
+            if (resume.getEducationList() != null) {
+                resume.getEducationList().forEach(education -> education.setResume(resume));
             }
             Resume savedResume = resumeRepository.save(resume);
             return convertToDTO(savedResume);
@@ -101,7 +111,6 @@ public class ResumeServiceImpl implements ResumeService {
         dto.setId(resume.getId());
         dto.setTitle(resume.getTitle());
         dto.setSummary(resume.getSummary());
-        dto.setEducation(resume.getEducation());
         dto.setLocation(resume.getLocation());
         dto.setSkills(resume.getSkills());
 
@@ -110,6 +119,12 @@ public class ResumeServiceImpl implements ResumeService {
                 .map(WorkExperienceDTO::fromWorkExperience)
                 .collect(Collectors.toList());
         dto.setWorkExperiences(workExperienceDTOs);
+
+        // Convert education
+        List<EducationDTO> educationDTOS = resume.getEducationList().stream()
+                .map(EducationDTO::fromEducation)
+                .collect(Collectors.toList());
+        dto.setEducationList(educationDTOS);
 
         return dto;
     }

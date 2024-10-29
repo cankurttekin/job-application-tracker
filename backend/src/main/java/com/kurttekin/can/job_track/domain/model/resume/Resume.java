@@ -5,10 +5,7 @@ import com.kurttekin.can.job_track.domain.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -25,7 +22,9 @@ public class Resume {
     private String title;
     private String summary;
 
-    private String education;
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Education> educationList = new ArrayList<>(); // List for multiple education entries
+
     private String location;
 
 

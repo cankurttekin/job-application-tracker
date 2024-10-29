@@ -19,11 +19,11 @@ public class ResumeDTO {
     private Long id;
     private String title;
     private String summary;
-    private String education;
     private String location;
     private Set<String> skills;
     private LocalDateTime createdAt;
     private List<WorkExperienceDTO> workExperiences;
+    private List<EducationDTO> educationList;
 
     // Factory method to create a ResumeDTO from a Resume entity
     public static ResumeDTO fromResume(Resume resume) {
@@ -31,11 +31,13 @@ public class ResumeDTO {
                 .id(resume.getId())
                 .title(resume.getTitle())
                 .summary(resume.getSummary())
-                .education(resume.getEducation())
                 .location(resume.getLocation())
                 .skills(resume.getSkills())
                 .workExperiences(resume.getWorkExperiences().stream()
                         .map(WorkExperienceDTO::fromWorkExperience)
+                        .collect(Collectors.toList()))
+                .educationList(resume.getEducationList().stream()
+                        .map(EducationDTO::fromEducation)
                         .collect(Collectors.toList()))
                 .build();
     }
