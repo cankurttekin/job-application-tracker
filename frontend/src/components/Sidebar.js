@@ -158,7 +158,7 @@ const Navbar = () => {
                 {isLoggedIn && <div>Logged in as <strong>{user}</strong></div>}
                 <NavbarItem onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
                     <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
-                    {isLoggedIn ? 'Logout' : 'Login'}
+                    {isLoggedIn ? 'Logout' : 'Log in'}
                 </NavbarItem>
             </NavbarRight>
             </NavbarItems>

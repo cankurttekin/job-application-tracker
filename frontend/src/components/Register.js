@@ -10,7 +10,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f9f9f9; /* Lighter background for the whole page */
+  //background-color: #f9f9f9; /* Lighter background for the whole page */
 `;
 
 const FormWrapper = styled.div`
@@ -44,11 +44,11 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  background-color: #333;
+  background-color: black;
   margin: 0;
 
   &:hover {
-    background-color: black;
+    background-color: #333;
   }
 `;
 
