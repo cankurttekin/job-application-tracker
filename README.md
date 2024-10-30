@@ -105,6 +105,12 @@ docker-compose up --build
 - Postgres DB
 - React
 - OpenAPI Swagger
+- Docker Compose
+- JavaScript
+- HTML/CSS
+- RESTful APIs
+- OOP
+- DDD
 
 ## Structure
 <img src="/assets/structure.png"
@@ -119,13 +125,16 @@ docker-compose up --build
      alt="sequence"
      height="500">
 
-### Resources I have been using during the development phase:
+### Resources Bookmark:
 - [Jackson – Bidirectional Relationships (baeldung)](https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion)
 - [Hibernate – Different Cascade Types (geeksforgeeks)](https://www.geeksforgeeks.org/hibernate-different-cascade-types/)
 - [Working with Relationships in Spring Data REST (baeldung)](https://www.baeldung.com/spring-data-rest-relationships)
 - [Spring Boot Testing (baeldung)](https://www.baeldung.com/spring-boot-testing)
 - [JUnit Annotations (JUnit Documentation)](https://junit.org/junit5/docs/current/user-guide/#writing-tests-annotations)
 - [Java Configuration (Spring Docs)](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html)
+
+## Support
+<a href="https://www.buymeacoffee.com/cankurttekin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Contributing
 I would happily accept any help, PRs and suggestions.
