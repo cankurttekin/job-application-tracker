@@ -12,15 +12,15 @@
 > Keep Track of Your Job Applications in one place
 
 ## Features
-- Add jobs and details
+- Log your job application and details
 - Write comments on jobs
-- Filter and sort your applications
-- Use graphs to observe your data
-- Edit/update currently added applications
-- ...
+- Ability to search, filter and sort your applications
+- Graphs that show your application stats
+- Update applications
+- Generate interview questions with AI using your resume and job details
 
-[job-application-tracker-silk.vercel.app](https://job-application-tracker-silk.vercel.app/)
-> Note: Because its deployed on free tier on vercel for frontend and render for backend, instance spins down with inactivity, which can delay requests by 50 seconds or more. I dont recommend using it from deployment since its not very reliable, if you want to use it follow Docker section to run locally.
+[atsfs.kurttekin.com](https://atsfs.kurttekin.com/)
+> It is currently in development state.
 
 <br />
 
@@ -29,9 +29,6 @@ alt="homepage">
 
 <img src="/assets/screenshot-atsfs.png"
 alt="applications">
-
-<img src="/assets/screenshot-atsfs-charts.png"
-alt="graphs">
 
 ## Endpoints
 <details>
@@ -68,6 +65,19 @@ Delete single job application
 `DELETE`
 /api/job-applications/all (JWT Auth)
 Delete all job applications
+
+`GET`
+/api/resumes (JWT Auth)
+
+`POST`
+/api/resumes (JWT Auth)
+
+`POST`
+/api/llm/generate-quiz (JWT Auth)
+
+`POST`
+/api/llm/generate-interview (JWT Auth)
+
 </details>
 
 ## Docker
@@ -83,9 +93,9 @@ docker-compose up --build
 - Spring Boot 3
 - Spring Security
 - Spring Web Reactive
-- JWT
 - Postgres DB
 - React
+- OpenAPI Swagger
 
 ## Structure
 <img src="/assets/structure.png"
