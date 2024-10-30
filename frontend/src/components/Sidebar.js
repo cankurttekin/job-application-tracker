@@ -45,6 +45,10 @@ const NavbarToggle = styled.button`
     font-size: 24px;
     cursor: pointer;
     color: #2f2f2f;
+    border-radius: 5px;
+    width: 10%;
+    margin: 0px;
+    padding: 0;
 
     @media (max-width: 768px) {
         display: block;
@@ -68,13 +72,10 @@ const NavbarRight = styled.div`
 `;
 
 const NavbarItem = styled.div`
-    //margin: 10px;
-    //margin-left: 10px;
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
     display: flex;
-    //align-items: center;
 
     &:hover {
         background-color: #dedede;
@@ -113,15 +114,14 @@ const Navbar = () => {
 
     return (
         <NavbarContainer>
+            <AppName onClick={() => navigate('/')}>
+                <img src={atsfsIcon} alt="Icon" style={{ marginRight: '10px', width: '40px' }} />
+                ATSFS
+            </AppName>
             <NavbarToggle onClick={toggleDropdown}>
                 <span className="material-icons">menu</span>
             </NavbarToggle>
             <NavbarItems isOpen={isOpen}>
-
-            <AppName onClick={() => navigate('/')}>
-                    <img src={atsfsIcon} alt="Icon" style={{ marginRight: '10px', width: '40px' }} />
-                    ATSFS
-                </AppName>
                 {isLoggedIn && (
                     <>
                         <NavbarItem onClick={() => navigate('/job-applications')}>
@@ -151,16 +151,14 @@ const Navbar = () => {
                     </>
                 )}
 
-
-            <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-
-            <NavbarRight>
-                {isLoggedIn && <div>Logged in as <strong>{user}</strong></div>}
-                <NavbarItem onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
-                    <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
-                    {isLoggedIn ? 'Logout' : 'Log in'}
-                </NavbarItem>
-            </NavbarRight>
+                <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                <NavbarRight>
+                    {isLoggedIn && <div>Logged in as <strong>{user}</strong></div>}
+                    <NavbarItem onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
+                        <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
+                        {isLoggedIn ? 'Logout' : 'Log in'}
+                    </NavbarItem>
+                </NavbarRight>
             </NavbarItems>
         </NavbarContainer>
     );
