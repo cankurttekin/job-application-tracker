@@ -11,6 +11,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Charts from './components/Charts';
 import AITools from './components/AITools';
 import Resume from "./components/Resume";
+import MainContent from './components/layout/MainContent';
 
 const PrivateRoute = ({ isLoggedIn, children }) => {
     return isLoggedIn ? children : <Navigate to="/login" />;
@@ -20,11 +21,7 @@ const Container = styled.div`
     display: flex;
 `;
 
-const MainContent = styled.div`
-    flex: 1;
-    padding-left: 280px;
-    background-color: #ffff;
-`;
+
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

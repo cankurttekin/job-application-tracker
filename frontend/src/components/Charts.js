@@ -12,7 +12,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column; /* Stack charts vertically */
     align-items: flex-start; /* Center charts horizontally */
-    margin: 20px;
+    margin-top: 28px;
     box-sizing: border-box;
 `;
 
