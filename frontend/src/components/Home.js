@@ -7,6 +7,17 @@ import goalsImage from '../assets/goal.png';
 import buyMeACoffeeImage from '../assets/buy-me-a-beer.png';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import styled from "styled-components";
+
+const Button = styled.button`
+    margin-right: 0;
+    margin-left: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+      background-color: #333;
+  }
+`;
 
 const Home = () => {
     const navigate = useNavigate();
@@ -26,9 +37,9 @@ const Home = () => {
                 <div className="right-column">
                     <h3 className="small-text">Make your job hunt more organized — in one place.</h3>
                     {!isLoggedIn && (
-                        <button className="register-button" onClick={handleRegisterClick}>
-                            Register
-                        </button>
+                        <Button className="register-button" onClick={handleRegisterClick}>
+                            Get ATSFS free
+                        </Button>
                     )}
                 </div>
             </div>
@@ -57,7 +68,7 @@ const Home = () => {
                     <img
                         src={buyMeACoffeeImage}
                         alt="Buy Me a Coffee"
-                        style={{height: '60px', width: 'auto', marginRight: '10px'}}
+                        style={{height: '60px', width: 'auto'}}
                     />
                 </a>
                 <p style={{maxWidth: '600px', margin: 0}}>
@@ -82,12 +93,13 @@ const Home = () => {
                             You can freely use, modify, and distribute it under the same terms.
                         </p>
                         <br/>
-                        <p>
-                            <a href="https://github.com/cankurttekin/job-application-tracker" target="_blank"
-                               rel="noopener noreferrer">
-                                Source Code
-                            </a>
-                        </p>
+                <p style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <a href="https://github.com/cankurttekin/job-application-tracker" target="_blank"
+                       rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center'}}>
+                        <span className="material-icons" style={{marginRight: '5px'}}>code</span>
+                        Source Code
+                    </a>
+                </p>
 
             </footer>
         </div>

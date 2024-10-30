@@ -26,10 +26,12 @@ const GlobalStyle = createGlobalStyle`
       background-color: black;
       color: white;
       padding: 12px;
+      padding-left: 24px;
+      padding-right: 24px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      width: 100%;
+      //width: 100%;
       margin: 10px;
       //font-size: 16px;
   }

@@ -42,12 +42,13 @@ const NavbarToggle = styled.button`
     display: none;
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
     color: #2f2f2f;
-    border-radius: 5px;
-    width: 10%;
-    margin: 0px;
+    border-radius: 0px;
+    width: 22px;
+    height:100%;
+    margin: 0;
     padding: 0;
 
     @media (max-width: 768px) {
@@ -55,7 +56,7 @@ const NavbarToggle = styled.button`
     }
 
     &:hover {
-        background-color: #dedede;
+        background-color: transparent;
     }
 `;
 
