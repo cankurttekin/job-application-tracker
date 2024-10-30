@@ -8,14 +8,14 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9; /* Lighter background for the whole page */
+  height: 91vh;
+  //background-color: #f9f9f9; /* Lighter background for the whole page */
 `;
 
 const FormWrapper = styled.div`
   width: 100%;
-  max-width: 400px; /* Maximum width of form */
-  padding: 0 20px;
+  max-width: 380px; /* Maximum width of form */
+  //padding: 0 20px;
 `;
 
 const Title = styled.h2`

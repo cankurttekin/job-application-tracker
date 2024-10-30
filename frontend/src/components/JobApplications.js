@@ -228,13 +228,12 @@ const JobApplications = () => {
                     <tr>
                       <td colSpan="8" style={styles.commentRow}>
                         {/* Display comments here */}
-                        {app.comments.length > 0 ? (
+                        {app.comments && app.comments.length > 0 ? (
                             <Comment>{app.comments}</Comment>
-
                         ) : (
                             <Comment>No comments available.</Comment>
                         )}
-                        {/* a form can be added to add new comments here */}
+                        {/* A form can be added to add new comments here */}
                       </td>
                     </tr>
                 )}

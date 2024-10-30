@@ -6,6 +6,7 @@
 
 .header-container {
     display: flex;
+    flex-wrap: wrap; /* Allows stacking on smaller screens */
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
@@ -15,61 +16,89 @@
     flex: 1;
     max-width: 300px;
     padding: 10px;
+    text-align: center;
 }
 
 .right-column {
     flex: 1;
     max-width: 400px;
     padding: 10px;
-    margin-left: 120px;
+    margin: 20px;
+    text-align: center;
 }
 
 .big-text {
-    font-size: 3em;
+    font-size: 2.5em;
     margin: 10px 0;
-    text-align: left;
 }
 
 .big-text2 {
     font-size: 1.5em;
-    text-align: left;
     color: #666;
 }
 
-.small-text {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+/* Media query for small devices */
+@media (max-width: 768px) {
+    .big-text {
+        font-size: 1.8em;
+    }
+
+    .big-text2 {
+        font-size: 1.2em;
+    }
+
+    .illustrations-container {
+        flex-direction: column; /* Stack illustrations vertically */
+        align-items: center;
+    }
+
+    .illustration-item {
+        margin: 15px 0;
+    }
+
+    .support-container {
+        flex-direction: column;
+        text-align: center;
+        scale: 1; /* Reset scaling on smaller screens */
+    }
+
+    .register-button {
+        width: 100%; /* Full-width button on mobile */
+        padding: 15px;
+    }
 }
 
-.register-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: black;
-    border: none;
-    color: white;
-    text-decoration: none;
+@media (max-width: 480px) {
+    .home-container {
+        margin-top: 40px;
+    }
+
+    .big-text {
+        font-size: 1.6em;
+    }
+
+    .big-text2 {
+        font-size: 1em;
+    }
 }
 
-.register-button:hover {
-    background-color: #333;
-}
-
-
+/* Illustration styling */
 .illustrations-container {
-    display: flex; /* Use flexbox for side-by-side layout */
-    justify-content: space-between; /* Equal spacing between items */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Adds spacing between items */
     margin: 20px;
-    scale: 0.9;
 }
 
 .illustration-item {
+    flex: 1 1 200px; /* Flexible width, minimum size */
+    max-width: 250px;
     text-align: center;
-    flex: 1;
-    margin: 0 5px;
 }
 
 .illustration {
-    width: 60%;
+    width: 80%;
     height: auto;
 }
 
@@ -79,20 +108,13 @@
     font-weight: bold;
 }
 
-.support-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-    scale: 0.9;
-    color: #666;
-    text-align: left;
-    align-items: center;
-}
-
+/* Footer adjustments */
 .footer {
     margin-top: 20px;
     font-size: 0.7em;
     color: #666;
+    text-align: center;
+    padding: 0 10px;
 }
 
 a {
@@ -102,5 +124,5 @@ a {
 }
 
 a:hover {
-    color: #555; 
+    color: #555;
 }

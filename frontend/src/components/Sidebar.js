@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
@@ -11,7 +11,7 @@ const NavbarContainer = styled.div`
     left: 0;
     right: 0;
     height: 60px;
-    background-color: #ebebeb;
+    background-color: white;
     padding: 0 20px;
     color: #2f2f2f;
     display: flex;
@@ -31,7 +31,7 @@ const NavbarItems = styled.div`
         top: 60px;
         left: 0;
         right: 0;
-        background-color: #ebebeb;
+        background-color: white;
         padding: 10px 0;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         z-index: 1001;
@@ -49,11 +49,10 @@ const NavbarToggle = styled.button`
     @media (max-width: 768px) {
         display: block;
     }
-`;
 
-const NavbarLeft = styled.div`
-    display: flex;
-    align-items: center;
+    &:hover {
+        background-color: #dedede;
+    }
 `;
 
 const NavbarRight = styled.div`
@@ -69,7 +68,8 @@ const NavbarRight = styled.div`
 `;
 
 const NavbarItem = styled.div`
-    margin: 10px;
+    //margin: 10px;
+    //margin-left: 10px;
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
@@ -91,18 +91,8 @@ const AppName = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
-`;
-
-const ProfileButton = styled.button`
-    background: none;
-    border: none;
-    color: #2f2f2f;
-    cursor: pointer;
-    padding: 1px;
-
-    &:hover {
-        color: #333;
-    }
+    margin-right: 20px;
+    margin-left: 10px;
 `;
 
 const Navbar = () => {

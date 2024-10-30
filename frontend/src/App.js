@@ -21,8 +21,6 @@ const Container = styled.div`
     display: flex;
 `;
 
-
-
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
