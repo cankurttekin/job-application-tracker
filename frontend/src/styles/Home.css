@@ -1,8 +1,13 @@
 .home-container {
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Space between header and footer */
+    min-height: 100vh; /* Ensure it occupies the full height of the viewport */
     text-align: center;
     padding: 20px;
     margin-top: 80px;
 }
+
 
 .header-container {
     display: flex;
@@ -143,4 +148,50 @@ a {
 
 a:hover {
     color: #555;
+}
+
+.screenshot-section {
+    display: flex;
+    align-items: flex-start; /* Align items to the start */
+    margin: 20px;
+    color: #666;
+    text-align: left; /* Align text to the left */
+}
+
+/* New container for screenshot */
+.screenshot-container {
+    flex: 1; /* Allow the screenshot to take space */
+    max-width: 50%; /* Control the maximum width */
+    margin-right: 20px; /* Space between image and text */
+}
+
+/* Screenshot styling */
+.screenshot {
+    width: 100%; /* Full width within its container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional rounded corners */
+}
+
+/* Text container */
+.screenshot-text {
+    flex: 1; /* Allow text to take remaining space */
+    max-width: 50%; /* Control the maximum width */
+}
+
+/* Adjust media queries if necessary */
+@media (max-width: 768px) {
+    .screenshot-section {
+        flex-direction: column; /* Stack elements vertically on small screens */
+        align-items: center; /* Center items */
+        text-align: center; /* Center text */
+    }
+
+    .screenshot-container {
+        max-width: 100%; /* Full width on small screens */
+        margin: 0 0 20px 0; /* Space below the image */
+    }
+
+    .screenshot-text {
+        max-width: 100%; /* Full width on small screens */
+    }
 }

@@ -146,7 +146,7 @@ const Navbar = () => {
                         </NavbarItem>
                         <NavbarItem onClick={handleAddJobClick}>
                             <span className="material-icons">add</span>
-                            Add Application
+                            Add
                         </NavbarItem>
                         <NavbarItem onClick={() => navigate('/charts')}>
                             <span className="material-icons">bar_chart</span>
@@ -162,7 +162,7 @@ const Navbar = () => {
                         </NavbarItem>
                         <NavbarItem onClick={() => navigate('/exportData')}>
                             <span className="material-icons">file_download</span>
-                            Export Data
+                            Export
                         </NavbarItem>
                     </>
                 )}
