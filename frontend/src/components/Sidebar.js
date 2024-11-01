@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
@@ -17,8 +17,9 @@ const NavbarContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid ${({ scrolled }) => (scrolled ? '#e5e5e5' : 'transparent')}; /* Change border based on scrolled state */
     z-index: 1000;
+    transition: border-bottom 0.3s; /* Smooth transition for border */
 `;
 
 const NavbarItems = styled.div`
@@ -47,7 +48,7 @@ const NavbarToggle = styled.button`
     color: #2f2f2f;
     border-radius: 0px;
     width: 22px;
-    height:100%;
+    height: 100%;
     margin: 0;
     padding: 0;
 
@@ -102,6 +103,8 @@ const Navbar = () => {
     const { isLoggedIn, user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false); // Dropdown state
+    const [scrolled, setScrolled] = useState(false); // State to track scroll position
+
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const handleAddJobClick = () => {
@@ -113,8 +116,20 @@ const Navbar = () => {
         navigate('/login');
     };
 
+    // Scroll event listener to update the scrolled state
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 0); // Set scrolled to true if window is scrolled down
+        };
+
+        window.addEventListener('scroll', handleScroll); // Add scroll event listener
+        return () => {
+            window.removeEventListener('scroll', handleScroll); // Cleanup listener on unmount
+        };
+    }, []);
+
     return (
-        <NavbarContainer>
+        <NavbarContainer scrolled={scrolled}>
             <AppName onClick={() => navigate('/')}>
                 <img src={atsfsIcon} alt="Icon" style={{ marginRight: '10px', width: '40px' }} />
                 ATSFS
