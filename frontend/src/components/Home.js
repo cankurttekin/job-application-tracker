@@ -5,6 +5,7 @@ import filterImage from '../assets/filter.png';
 import starsImage from '../assets/stars.png';
 import goalsImage from '../assets/goal.png';
 import buyMeACoffeeImage from '../assets/buy-me-a-beer.png';
+import seperator from '../assets/seperator.png';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import styled from "styled-components";
@@ -99,6 +100,7 @@ const Home = () => {
             </div>
 
             <footer className="footer">
+                <img src={seperator} alt="seperator" className="seperator"/>
                 <p>
                     Application Tracking System For Suckers(ATSFS) made with despair and boredom by&nbsp;
                     <a href="https://can.kurttekin.com" target="_blank" rel="noopener noreferrer">cankurttekin</a>

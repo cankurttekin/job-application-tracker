@@ -8,7 +8,6 @@
     margin-top: 80px;
 }
 
-
 .header-container {
     display: flex;
     flex-wrap: wrap; /* Allows stacking on smaller screens */
@@ -48,7 +47,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     color: #666;
     text-align: center; /* Center-align text in the container */
     flex-wrap: wrap; /* Allow wrapping if needed */
@@ -76,13 +76,15 @@
     }
 
     .illustration-item {
-        margin: 15px 0;
+        margin: 2px 0;
     }
 
     .support-container {
         flex-direction: column;
         text-align: center;
-        scale: 0.8; /* Reset scaling on smaller screens */
+        scale: 0.8;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .register-button {
@@ -110,8 +112,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px; /* Adds spacing between items */
-    margin: 20px;
+    /*gap: 20px;  Adds spacing between items */
+    margin: 10px;
 }
 
 .illustration-item {
@@ -121,7 +123,7 @@
 }
 
 .illustration {
-    width: 80%;
+    width: 40%;
     height: auto;
 }
 
@@ -140,6 +142,10 @@
     padding: 0 10px;
 }
 
+.seperator {
+    scale: 0.6;
+}
+
 a {
     text-decoration: none;
     font-weight: bold;
@@ -154,11 +160,9 @@ a:hover {
     display: flex;
     align-items: flex-start; /* Align items to the start */
     margin: 20px;
-    color: #666;
-    text-align: left; /* Align text to the left */
+    text-align: left;
 }
 
-/* New container for screenshot */
 .screenshot-container {
     flex: 1; /* Allow the screenshot to take space */
     max-width: 50%; /* Control the maximum width */
@@ -178,7 +182,6 @@ a:hover {
     max-width: 50%; /* Control the maximum width */
 }
 
-/* Adjust media queries if necessary */
 @media (max-width: 768px) {
     .screenshot-section {
         flex-direction: column; /* Stack elements vertically on small screens */
