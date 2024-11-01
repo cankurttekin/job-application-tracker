@@ -1,5 +1,4 @@
-import React, {useContext, useState} from 'react';
-import { login } from '../services/authService';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; // Import the context
@@ -9,13 +8,11 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 91vh;
-  //background-color: #f9f9f9; /* Lighter background for the whole page */
 `;
 
 const FormWrapper = styled.div`
   width: 100%;
   max-width: 380px; /* Maximum width of form */
-  //padding: 0 20px;
 `;
 
 const Title = styled.h2`
@@ -64,12 +61,11 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // To store and display error messages
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Reset error
-    setError("");
+    setError(""); // Reset error state
 
     // Check if username or password is empty
     if (!username || !password) {
@@ -78,18 +74,10 @@ const Login = () => {
     }
 
     try {
-      const response = await login(username, password);
-      if (response.token) {
-        console.log(response);
-        //window.location.reload(false); // temporary
-        setIsLoggedIn(true);
-        navigate('/job-applications');
-      } else {
-        setError("Invalid username or password.");
-      }
+      await login(username, password); // Call the login function
+      navigate('/job-applications'); // Redirect after successful login
     } catch (error) {
-      setError("Login failed. Please try again.");
-      console.error("Error during login:", error.response ? error.response.data : error.message);
+      setError(error.message); // Handle login failure with specific message
     }
   };
 

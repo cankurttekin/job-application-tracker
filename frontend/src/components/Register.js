@@ -1,61 +1,58 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+import { register as registerService } from '../services/authService'; // Import the register function from authService
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  //background-color: #f9f9f9; /* Lighter background for the whole page */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 `;
 
 const FormWrapper = styled.div`
-  width: 100%;
-  max-width: 400px; /* Maximum width of form */
-  padding: 0 20px;
+    width: 100%;
+    max-width: 400px; /* Maximum width of form */
+    padding: 0 20px;
 `;
 
 const Title = styled.h2`
-  margin-bottom: 10px;
-  color: #333;
+    margin-bottom: 10px;
+    color: #333;
 `;
 
 const Info = styled.h2`
-  color: #666;
-  margin-bottom: 10px;
+    color: #666;
+    margin-bottom: 10px;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #f9f9f9;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
 
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-    background-color: #fff;
-  }
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+        background-color: #fff;
+    }
 `;
 
 const Button = styled.button`
-  background-color: black;
-  margin: 0;
+    background-color: black;
+    margin: 0;
 
-  &:hover {
-    background-color: #333;
-  }
+    &:hover {
+        background-color: #333;
+    }
 `;
 
 const Error = styled.p`
-  color: red;
-  margin-top: 10px;
-  text-align: center;
+    color: red;
+    margin-top: 10px;
+    text-align: center;
 `;
 
 const Register = () => {
@@ -67,15 +64,23 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(''); // Reset error message
+
+        // Check if fields are empty
+        if (!username || !email || !password) {
+            setError("All fields are required.");
+            return;
+        }
+
         try {
-            await axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, {
-                username,
-                email,
-                password,
-            });
+            await registerService(username, email, password); // Call the register function
             navigate('/login');
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            if (err.response && err.response.status === 400) {
+                setError(err.response.data); // Set error message from response
+            } else {
+                setError('Registration failed. Please try again.'); // General error message
+            }
         }
     };
 

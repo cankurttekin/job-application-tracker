@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { login as loginService } from '../services/authService'; // Import the login function from authService
 
 export const AuthContext = createContext();
 
@@ -13,24 +13,25 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      // Decode the JWT to extract the username
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      setUser(decodedToken.sub); // Set the username from the sub field
+      setUser(decodedToken.sub);
     }
   }, []);
 
-  const login = async (credentials) => {
+  const login = async (username, password) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/login', credentials);
-      const { token } = response.data;
-      localStorage.setItem('token', token);
-      setIsLoggedIn(true);
+      const response = await loginService(username, password);
+      const { token } = response;
 
-      // Decode the JWT to get the username
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      setUser(decodedToken.sub); // Set the username from the sub field
+      if (token) {
+        localStorage.setItem('token', token);
+        setIsLoggedIn(true); // Trigger re-render for components that depend on this state
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUser(decodedToken.sub);
+      }
     } catch (error) {
       console.error('Login failed', error);
+      throw error; // Re-throw the error to handle it in `Login.js`
     }
   };
 
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, login, logout }}>
+      <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
         {children}
       </AuthContext.Provider>
   );
