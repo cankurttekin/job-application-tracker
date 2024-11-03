@@ -64,20 +64,6 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="support-container">
-                <a href="https://www.buymeacoffee.com/cankurttekin" target="_blank" rel="noopener noreferrer">
-                    <img
-                        src={buyMeACoffeeImage}
-                        alt="Buy Me a Coffee"
-                        style={{height: '60px', width: 'auto'}}
-                    />
-                </a>
-                <p style={{maxWidth: '600px', margin: 0}}>
-                    This service is designed to help people in job hunt without any cost, if you want to support,
-                    here is donation button stuff.
-                </p>
-            </div>
-
             <div className="screenshot-section">
                 <div className="screenshot-container">
                     <img
@@ -97,6 +83,20 @@ const Home = () => {
                         <br/>
                     </p>
                 </div>
+            </div>
+
+            <div className="support-container">
+                <a href="https://www.buymeacoffee.com/cankurttekin" target="_blank" rel="noopener noreferrer">
+                    <img
+                        src={buyMeACoffeeImage}
+                        alt="Buy Me a Coffee"
+                        style={{height: '60px', width: 'auto'}}
+                    />
+                </a>
+                <p style={{maxWidth: '600px', margin: 0}}>
+                    This service is designed to help people in job hunt without any cost, if you want to support,
+                    here is donation button stuff.
+                </p>
             </div>
 
             <footer className="footer">

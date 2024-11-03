@@ -370,7 +370,7 @@ const styles = {
   searchInput: {
     padding: '10px',
     marginBottom: '20px',
-    borderRadius: '5px',
+    borderRadius: '16px',
     border: '1px solid #ccc',
     width: '100%',
   },

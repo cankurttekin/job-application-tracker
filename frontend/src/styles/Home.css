@@ -172,8 +172,7 @@ a:hover {
 /* Screenshot styling */
 .screenshot {
     width: 100%; /* Full width within its container */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Optional rounded corners */
+    height: auto;
 }
 
 /* Text container */

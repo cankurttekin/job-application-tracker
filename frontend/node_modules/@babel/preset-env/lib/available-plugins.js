@@ -4,8 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.minVersions = exports.legacyBabel7SyntaxPlugins = exports.default = void 0;
-var _pluginSyntaxImportAssertions = require("@babel/plugin-syntax-import-assertions");
-var _pluginSyntaxImportAttributes = require("@babel/plugin-syntax-import-attributes");
+var _babel7AvailablePlugins = require("./babel-7-available-plugins.cjs");
 var _pluginTransformAsyncGeneratorFunctions = require("@babel/plugin-transform-async-generator-functions");
 var _pluginTransformAsyncToGenerator = require("@babel/plugin-transform-async-to-generator");
 var _pluginTransformArrowFunctions = require("@babel/plugin-transform-arrow-functions");
@@ -45,6 +44,7 @@ var _pluginTransformPrivateMethods = require("@babel/plugin-transform-private-me
 var _pluginTransformPrivatePropertyInObject = require("@babel/plugin-transform-private-property-in-object");
 var _pluginTransformPropertyLiterals = require("@babel/plugin-transform-property-literals");
 var _pluginTransformRegenerator = require("@babel/plugin-transform-regenerator");
+var _pluginTransformRegexpModifiers = require("@babel/plugin-transform-regexp-modifiers");
 var _pluginTransformReservedWords = require("@babel/plugin-transform-reserved-words");
 var _pluginTransformShorthandProperties = require("@babel/plugin-transform-shorthand-properties");
 var _pluginTransformSpread = require("@babel/plugin-transform-spread");
@@ -78,8 +78,6 @@ const availablePlugins = exports.default = {
   "bugfix/transform-tagged-template-caching": () => _index4,
   "bugfix/transform-v8-spread-parameters-in-optional-chaining": () => _pluginBugfixV8SpreadParametersInOptionalChaining.default,
   "bugfix/transform-v8-static-class-fields-redefine-readonly": () => _pluginBugfixV8StaticClassFieldsRedefineReadonly.default,
-  "syntax-import-assertions": () => _pluginSyntaxImportAssertions.default,
-  "syntax-import-attributes": () => _pluginSyntaxImportAttributes.default,
   "transform-arrow-functions": () => _pluginTransformArrowFunctions.default,
   "transform-async-generator-functions": () => _pluginTransformAsyncGeneratorFunctions.default,
   "transform-async-to-generator": () => _pluginTransformAsyncToGenerator.default,
@@ -119,6 +117,7 @@ const availablePlugins = exports.default = {
   "transform-private-property-in-object": () => _pluginTransformPrivatePropertyInObject.default,
   "transform-property-literals": () => _pluginTransformPropertyLiterals.default,
   "transform-regenerator": () => _pluginTransformRegenerator.default,
+  "transform-regexp-modifiers": () => _pluginTransformRegexpModifiers.default,
   "transform-reserved-words": () => _pluginTransformReservedWords.default,
   "transform-shorthand-properties": () => _pluginTransformShorthandProperties.default,
   "transform-spread": () => _pluginTransformSpread.default,
@@ -139,29 +138,32 @@ let legacyBabel7SyntaxPlugins = exports.legacyBabel7SyntaxPlugins = void 0;
     "syntax-import-attributes": "7.22.0",
     "transform-class-static-block": "7.12.0",
     "transform-duplicate-named-capturing-groups-regex": "7.19.0",
-    "transform-private-property-in-object": "7.10.0"
+    "transform-private-property-in-object": "7.10.0",
+    "transform-regexp-modifiers": "7.19.0"
   });
-  const e = () => () => () => ({});
+  const syntax = name => () => () => ({
+    manipulateOptions: (_, p) => p.plugins.push(name)
+  });
   const legacyBabel7SyntaxPluginsLoaders = {
-    "syntax-async-generators": () => require("@babel/plugin-syntax-async-generators"),
-    "syntax-class-properties": () => require("@babel/plugin-syntax-class-properties"),
-    "syntax-class-static-block": () => require("@babel/plugin-syntax-class-static-block"),
-    "syntax-dynamic-import": () => require("@babel/plugin-syntax-dynamic-import"),
-    "syntax-export-namespace-from": () => require("@babel/plugin-syntax-export-namespace-from"),
-    "syntax-import-meta": () => require("@babel/plugin-syntax-import-meta"),
-    "syntax-json-strings": () => require("@babel/plugin-syntax-json-strings"),
-    "syntax-logical-assignment-operators": () => require("@babel/plugin-syntax-logical-assignment-operators"),
-    "syntax-nullish-coalescing-operator": () => require("@babel/plugin-syntax-nullish-coalescing-operator"),
-    "syntax-numeric-separator": () => require("@babel/plugin-syntax-numeric-separator"),
-    "syntax-object-rest-spread": () => require("@babel/plugin-syntax-object-rest-spread"),
-    "syntax-optional-catch-binding": () => require("@babel/plugin-syntax-optional-catch-binding"),
-    "syntax-optional-chaining": () => require("@babel/plugin-syntax-optional-chaining"),
-    "syntax-private-property-in-object": () => require("@babel/plugin-syntax-private-property-in-object"),
-    "syntax-top-level-await": () => require("@babel/plugin-syntax-top-level-await")
+    "syntax-async-generators": syntax("asyncGenerators"),
+    "syntax-class-properties": syntax("classProperties"),
+    "syntax-class-static-block": syntax("classStaticBlock"),
+    "syntax-dynamic-import": syntax("dynamicImport"),
+    "syntax-export-namespace-from": syntax("exportNamespaceFrom"),
+    "syntax-import-meta": syntax("importMeta"),
+    "syntax-json-strings": syntax("jsonStrings"),
+    "syntax-logical-assignment-operators": syntax("logicalAssignment"),
+    "syntax-nullish-coalescing-operator": syntax("nullishCoalescingOperator"),
+    "syntax-numeric-separator": syntax("numericSeparator"),
+    "syntax-object-rest-spread": syntax("objectRestSpread"),
+    "syntax-optional-catch-binding": syntax("optionalCatchBinding"),
+    "syntax-optional-chaining": syntax("optionalChaining"),
+    "syntax-private-property-in-object": syntax("privateIn"),
+    "syntax-top-level-await": syntax("topLevelAwait"),
+    "syntax-unicode-sets-regex": () => require("@babel/plugin-syntax-unicode-sets-regex"),
+    "syntax-import-assertions": _babel7AvailablePlugins["syntax-import-assertions"],
+    "syntax-import-attributes": _babel7AvailablePlugins["syntax-import-attributes"]
   };
-  {
-    legacyBabel7SyntaxPluginsLoaders["syntax-unicode-sets-regex"] = () => require("@babel/plugin-syntax-unicode-sets-regex");
-  }
   Object.assign(availablePlugins, legacyBabel7SyntaxPluginsLoaders);
   exports.legacyBabel7SyntaxPlugins = legacyBabel7SyntaxPlugins = new Set(Object.keys(legacyBabel7SyntaxPluginsLoaders));
 }
