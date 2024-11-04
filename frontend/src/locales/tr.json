@@ -1,0 +1,27 @@
+{
+  "header": {
+    "title": "İş Başvurularınızı Takip Edin",
+    "subtitle": "Application Tracking System For Suckers",
+    "description": "İş arama sürecinizi daha düzenli hale getirin — tek bir yerden.",
+    "buttonText": "Ücretsiz kaydolun"
+  },
+  "illustrations": {
+    "job_source": "İstediğiniz kaynaktan işler ekleyin",
+    "comment": "Başvurularınıza yorum yapın, favorilerinizi yıldızlayın",
+    "filter": "Başvurularınızı görüntülemek için filtreleyin ve/veya sıralayın",
+    "goal": "İş bulun (umarım)"
+  },
+  "support": {
+    "text": "Bu hizmet, iş arayan kişilere ücretsiz olarak yardımcı olmak için tasarlanmıştır, desteklemek isterseniz, işte bağış butonu."
+  },
+  "footer": {
+    "description": "Application Tracking System For Suckers (ATSFS) cankurttekin tarafından umutsuzluk ve sıkıntı ile yapıldı."
+  },
+  "hero": {
+    "title": "Ofis uygulamalarında tablolar veya not almak yerine neden ATSFS'yi kullanmalıyım?",
+    "point1": "<bold>Her yerden ve her cihazdan</bold> erişebileceğiniz tek bir yer.",
+    "point2": "<bold>Düzenli kalın</bold>, hiçbir fırsatı kaçırmayın.",
+    "point3": "<bold>Etkili hazırlanın</bold>; kişisel mülakat soruları oluşturun.",
+    "point4": "Başvuru istatistiklerinizi analiz edin."
+  }
+}

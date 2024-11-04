@@ -14,7 +14,6 @@ import java.util.Arrays;
 @Configuration
 public class CorsConfig {
 
-    // if no env var, default to localhost:3000 for react
     @Value("${ALLOWED_ORIGINS:http://localhost:3000}")
     private String allowedOrigins;
 

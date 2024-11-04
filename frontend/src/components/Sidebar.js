@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import AddJobApplication from './AddJobApplication';
 import { AuthContext } from '../contexts/AuthContext';
 import atsfsIcon from '../assets/atsfs.png';
+import LanguageSwitcher from "./LanguageSwitcher"; // Import the useTranslation hook
 
 const NavbarContainer = styled.div`
     position: fixed;
@@ -164,9 +165,11 @@ const Navbar = () => {
                             <span className="material-icons">file_download</span>
                             Export
                         </NavbarItem>
-                    </>
-                )}
 
+                    </>
+
+                )}
+                <LanguageSwitcher></LanguageSwitcher>
                 <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 <NavbarRight>
                     {isLoggedIn && <div>Logged in as <strong>{user}</strong></div>}
@@ -176,6 +179,7 @@ const Navbar = () => {
                     </NavbarItem>
                 </NavbarRight>
             </NavbarItems>
+
         </NavbarContainer>
     );
 };

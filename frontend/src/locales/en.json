@@ -1,0 +1,29 @@
+{
+  "header": {
+    "title": "Keep Track of Your Job Applications",
+    "subtitle": "Application Tracking System For Suckers",
+    "description": "Make your job hunt more organized — in one place.",
+    "buttonText": "Get ATSFS free"
+  },
+  "illustrations": {
+    "job_source": "Add jobs from any source you want",
+    "comment": "Comment on your applications, star your favorites",
+    "filter": "Filter and/or sort to view your applications",
+    "goal": "Land a job (hopefully)"
+  },
+  "support": {
+    "text": "This service is designed to help people in job hunt without any cost, if you want to support, here is donation button stuff."
+  },
+  "footer": {
+    "description": "Application Tracking System For Suckers(ATSFS) made with despair and boredom by cankurttekin to help me and you."
+  },
+  "hero": {
+    "title": "Why use ATSFS instead of spreadsheets or just good old notes?",
+    "point1": "<bold>One convenient place</bold> you can access from anywhere and any device.",
+    "point2": "<bold>Stay organized</bold>, never miss an opportunity.",
+    "point3": "<bold>Generate</bold> personalized interview questions to prepare effectively.",
+    "point4": "<bold>Analyze</bold> your application stats."
+  }
+}
+
+
