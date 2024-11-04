@@ -10,8 +10,13 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/*.jar backend.jar
 
+# COPY keystore.p12 keystore.p12
+
 # Expose the port Spring Boot will run on
 EXPOSE 8080
+# EXPOSE 443
 
-# Command to run the Spring Boot application
+# urn the Spring Boot application
 ENTRYPOINT ["java", "-jar", "backend.jar"]
+#ENTRYPOINT ["java", "-jar", "backend.jar", "--server.ssl.enabled=true", "--server.ssl.key-store=keystore.p12", "--server.ssl.key-store-password=${KEY_STORE_PASS}", "--server.ssl.key-store-type=PKCS12", "--server.ssl.key-store-alias=${KEY_STORE_ALIAS}"]
+
