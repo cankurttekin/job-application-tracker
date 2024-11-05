@@ -20,6 +20,14 @@
 
 > Keep Track of Your Job Applications in one place
 
+
+[atsfs.kurttekin.com](https://atsfs.kurttekin.com/)
+> It is currently in development state.
+
+<img src="/assets/firefox.png"
+alt="firefox addon">
+> Firefox Addon to add jobs to ATSFS
+
 ## Features
 - Log your job application and details
 - Write comments on jobs
@@ -27,9 +35,8 @@
 - Graphs that show your application stats
 - Update applications
 - Generate interview questions with AI using your resume and job details
+- Browser Extension to add jobs from job posting site to ATSFS with single click
 
-[atsfs.kurttekin.com](https://atsfs.kurttekin.com/)
-> It is currently in development state.
 
 <br />
 

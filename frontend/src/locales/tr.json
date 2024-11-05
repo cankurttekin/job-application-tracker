@@ -24,5 +24,8 @@
     "point2": "<bold>Düzenli kalın</bold>, hiçbir fırsatı kaçırmayın.",
     "point3": "<bold>Etkili hazırlanın</bold>; kişisel mülakat soruları oluşturun.",
     "point4": "Başvuru istatistiklerinizi analiz edin."
+  },
+  "extension" : {
+    "description" : "Tarayı eklentisi ile tek bir tıkla iş ilanlarınızı ATSFS'e ekleyin."
   }
 }

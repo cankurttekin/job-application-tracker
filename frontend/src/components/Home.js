@@ -4,7 +4,8 @@ import organizeImage from '../assets/organize.png';
 import filterImage from '../assets/filter.png';
 import starsImage from '../assets/stars.png';
 import goalsImage from '../assets/goal.png';
-import aiImage from '../assets/ai.png';
+import aiImage from '../assets/ai.png'
+import firefoxExtImage from '../assets/firefox.png';
 import buyMeACoffeeImage from '../assets/buy-me-a-beer.png';
 import separator from '../assets/separator.png';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ import styled from "styled-components";
 import screenshotImage from '../assets/screenshot1.png';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
+
 const Button = styled.button`
     margin-right: 0;
     margin-left: 0;
@@ -29,6 +31,10 @@ const Home = () => {
 
     const handleRegisterClick = () => {
         navigate('/register');
+    };
+
+    const handleExtensionClick = () => {
+        window.open('https://addons.mozilla.org', '_blank');
     };
 
     return (
@@ -83,12 +89,19 @@ const Home = () => {
                 <div className="screenshot-text">
                     <h2 className="big-text">{t('hero.title')}</h2>
                     <p className="big-text2">
-                        ⚹<Trans i18nKey="hero.point1" components={{ bold: <b /> }} /><br/>
-                        ⚹<Trans i18nKey="hero.point2" components={{ bold: <b /> }} /><br/>
-                        ⚹<Trans i18nKey="hero.point3" components={{ bold: <b /> }} /><br/>
-                        ⚹<Trans i18nKey="hero.point4" components={{ bold: <b /> }} /><br/>
+                        ⚹<Trans i18nKey="hero.point1" components={{bold: <b/>}}/><br/>
+                        ⚹<Trans i18nKey="hero.point2" components={{bold: <b/>}}/><br/>
+                        ⚹<Trans i18nKey="hero.point3" components={{bold: <b/>}}/><br/>
+                        ⚹<Trans i18nKey="hero.point4" components={{bold: <b/>}}/><br/>
                     </p>
                 </div>
+            </div>
+
+            <div className="extension-section"
+                 style={{textAlign: 'center', padding: '20px 0'}}>
+                <img src={firefoxExtImage} alt="Get Firefox Extension" onClick={handleExtensionClick}
+                     style={{height: '128px', width: 'auto', marginBottom: '10px'}}/>
+                <p className="illustration-text">{t('extension.description')}</p>
             </div>
 
             <div className="support-container">
@@ -118,12 +131,14 @@ const Home = () => {
                 </p>
                 <br/>
                 <p style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <a href="https://github.com/cankurttekin/job-application-tracker" target="_blank" rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center'}}> <span className="material-icons" style={{marginRight: '5px'}}>code</span> Source Code </a>
+                    <a href="https://github.com/cankurttekin/job-application-tracker" target="_blank"
+                       rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center'}}> <span
+                        className="material-icons" style={{marginRight: '5px'}}>code</span> Source Code </a>
                 </p>
             </footer>
         </div>
 
-            );
-        };
+    );
+};
 
 export default Home;

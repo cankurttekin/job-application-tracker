@@ -24,6 +24,10 @@
     "point2": "<bold>Stay organized</bold>, never miss an opportunity.",
     "point3": "<bold>Generate</bold> personalized interview questions to prepare effectively.",
     "point4": "<bold>Analyze</bold> your application stats."
+  },
+
+  "extension" : {
+    "description" : "Browser extension let's you add jobs to ATSFS from job posting site(LinkedIn) with just a single click."
   }
 }
 
