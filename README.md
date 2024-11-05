@@ -24,7 +24,7 @@
 [atsfs.kurttekin.com](https://atsfs.kurttekin.com/)
 > It is currently in development state.
 
-<img src="/assets/firefox.png"
+<img height="128" src="/assets/firefox.png"
 alt="firefox addon">
 > Firefox Addon to add jobs to ATSFS
 
