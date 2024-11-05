@@ -6,10 +6,11 @@
     "buttonText": "Get ATSFS free"
   },
   "illustrations": {
-    "job_source": "Add jobs from any source you want",
-    "comment": "Comment on your applications, star your favorites",
-    "filter": "Filter and/or sort to view your applications",
-    "goal": "Land a job (hopefully)"
+    "job_source": "Add jobs from any source you want(LinkedIn, Indeed, Glassdoor ...)",
+    "comment": "Leave comments, star your favorites",
+    "filter": "Search, filter and sort your applications",
+    "goal": "Land a job (hopefully)",
+    "ai": "\"AI\" generated personalized interview questions"
   },
   "support": {
     "text": "This service is designed to help people in job hunt without any cost, if you want to support, here is donation button stuff."

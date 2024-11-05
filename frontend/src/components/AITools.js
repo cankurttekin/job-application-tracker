@@ -103,7 +103,8 @@ const AITools = () => {
                     setSelectedJobApplication(response.data[0]); // Set the first job application as selected
                 }
             } catch (error) {
-                console.error("Error fetching job applications:", error);
+                //console.error("Error fetching job applications:", error);
+                console.error("Error fetching job applications:");
             }
         };
 
@@ -135,12 +136,13 @@ const AITools = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            console.log("Interview Response Data:", response.data);
+            //console.log("Interview Response Data:", response.data);
 
             if (Array.isArray(response.data.questions)) {
                 setInterviewQuestions(response.data.questions);
             } else {
-                console.error("No interview questions found in response:", response.data);
+                //console.error("No interview questions found in response:", response.data);
+                console.error("No interview questions found in response:");
                 setInterviewQuestions([]);
             }
         } catch (error) {
@@ -166,7 +168,7 @@ const AITools = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            console.log("Quiz Response Data:", response.data);
+            //console.log("Quiz Response Data:", response.data);
 
             if (Array.isArray(response.data)) {
                 const formattedQuestions = response.data.map((q) => ({

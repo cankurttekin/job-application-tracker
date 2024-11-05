@@ -4,8 +4,9 @@ import organizeImage from '../assets/organize.png';
 import filterImage from '../assets/filter.png';
 import starsImage from '../assets/stars.png';
 import goalsImage from '../assets/goal.png';
+import aiImage from '../assets/ai.png';
 import buyMeACoffeeImage from '../assets/buy-me-a-beer.png';
-import separator from '../assets/seperator.png';
+import separator from '../assets/separator.png';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import styled from "styled-components";
@@ -61,9 +62,14 @@ const Home = () => {
                     <p className="illustration-text">{t('illustrations.filter')}</p>
                 </div>
                 <div className="illustration-item">
+                    <img src={aiImage} alt="Illustration 4" className="illustration"/>
+                    <p className="illustration-text">{t('illustrations.ai')}</p>
+                </div>
+                <div className="illustration-item">
                     <img src={goalsImage} alt="Illustration 4" className="illustration"/>
                     <p className="illustration-text">{t('illustrations.goal')}</p>
                 </div>
+
             </div>
 
             <div className="screenshot-section">
@@ -99,7 +105,7 @@ const Home = () => {
             </div>
 
             <footer className="footer">
-                <img src={separator} alt="seperator" className="seperator"/>
+                <img src={separator} alt="separator" className="separator"/>
                 <p>
                     {t('footer.description')}
                 </p>

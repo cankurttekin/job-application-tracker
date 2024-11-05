@@ -21,6 +21,7 @@
     max-width: 300px;
     padding: 10px;
     text-align: center;
+    margin-right: 20px;
 }
 
 .right-column {
@@ -123,26 +124,26 @@
 }
 
 .illustration {
-    width: 40%;
+    width: 56%;
     height: auto;
 }
 
 .illustration-text {
-    margin-top: 10px;
     font-size: 1em;
     font-weight: bold;
+    padding: 10px;
 }
 
 /* Footer adjustments */
 .footer {
     margin-top: 20px;
-    font-size: 0.7em;
+    font-size: 0.8em;
     color: #666;
     text-align: center;
     padding: 0 10px;
 }
 
-.seperator {
+.separator {
     scale: 0.6;
 }
 

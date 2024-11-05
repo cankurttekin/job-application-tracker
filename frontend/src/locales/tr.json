@@ -6,10 +6,11 @@
     "buttonText": "Ücretsiz kaydolun"
   },
   "illustrations": {
-    "job_source": "İstediğiniz kaynaktan işler ekleyin",
-    "comment": "Başvurularınıza yorum yapın, favorilerinizi yıldızlayın",
-    "filter": "Başvurularınızı görüntülemek için filtreleyin ve/veya sıralayın",
-    "goal": "İş bulun (umarım)"
+    "job_source": "İstediğiniz kaynaktan başvurularınızı ekleyin(LinkedIn, Indeed, Kariyer.net ...)",
+    "comment": "Notlar ekleyin, favorilerinizi yıldızlayın",
+    "filter": "Başvurularınızı görüntülemek için filtreleyin ve sıralayın",
+    "goal": "Kariyer hedeflerinize ulaşın (umarım)",
+    "ai": "Yapay zeka ile kişiselleştirilmiş mülakat soruları oluşturun"
   },
   "support": {
     "text": "Bu hizmet, iş arayan kişilere ücretsiz olarak yardımcı olmak için tasarlanmıştır, desteklemek isterseniz, işte bağış butonu."
