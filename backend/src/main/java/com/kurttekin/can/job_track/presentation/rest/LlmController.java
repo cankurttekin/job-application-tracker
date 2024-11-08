@@ -4,7 +4,7 @@ package com.kurttekin.can.job_track.presentation.rest;
 import com.kurttekin.can.job_track.application.dto.QuizRequest;
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.application.dto.WorkExperienceDTO;
-import com.kurttekin.can.job_track.domain.model.QuizQuestion;
+import com.kurttekin.can.job_track.domain.model.jobapplication.QuizQuestion;
 import com.kurttekin.can.job_track.domain.service.LlmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

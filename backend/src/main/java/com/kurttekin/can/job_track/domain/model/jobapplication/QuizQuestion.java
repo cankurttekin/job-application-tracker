@@ -1,4 +1,4 @@
-package com.kurttekin.can.job_track.domain.model;
+package com.kurttekin.can.job_track.domain.model.jobapplication;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

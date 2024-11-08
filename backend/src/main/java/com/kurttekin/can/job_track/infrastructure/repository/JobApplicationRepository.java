@@ -1,7 +1,7 @@
 package com.kurttekin.can.job_track.infrastructure.repository;
 
 import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
-import com.kurttekin.can.job_track.domain.model.JobApplication;
+import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

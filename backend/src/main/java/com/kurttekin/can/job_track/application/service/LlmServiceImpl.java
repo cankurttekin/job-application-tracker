@@ -1,9 +1,7 @@
-package com.kurttekin.can.job_track.application;
+package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.application.dto.WorkExperienceDTO;
-import com.kurttekin.can.job_track.domain.model.resume.Resume;
-import com.kurttekin.can.job_track.domain.model.resume.WorkExperience;
 import com.kurttekin.can.job_track.domain.service.LlmService;
 import okhttp3.*;
 import org.json.JSONArray;

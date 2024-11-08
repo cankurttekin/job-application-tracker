@@ -1,6 +1,6 @@
 package com.kurttekin.can.job_track.infrastructure.security.jwt;
 
-import com.kurttekin.can.job_track.application.CustomUserDetailsService;
+import com.kurttekin.can.job_track.application.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

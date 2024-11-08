@@ -1,6 +1,6 @@
 package com.kurttekin.can.job_track.domain.service;
 
-import com.kurttekin.can.job_track.domain.model.JobApplication;
+import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 
 import java.util.List;
 import java.util.Map;

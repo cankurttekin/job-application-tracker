@@ -1,8 +1,9 @@
 package com.kurttekin.can.job_track.application;
 
+import com.kurttekin.can.job_track.application.service.JobApplicationServiceImpl;
 import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
-import com.kurttekin.can.job_track.domain.model.JobApplication;
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepository;
 import org.junit.jupiter.api.BeforeEach;

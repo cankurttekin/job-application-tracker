@@ -2,7 +2,7 @@ package com.kurttekin.can.job_track.presentation.rest;
 
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.domain.model.resume.Resume;
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.ResumeService;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

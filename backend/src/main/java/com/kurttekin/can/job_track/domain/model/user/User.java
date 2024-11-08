@@ -1,11 +1,11 @@
-package com.kurttekin.can.job_track.domain.model;
+package com.kurttekin.can.job_track.domain.model.user;
 
 import com.fasterxml.jackson.annotation.*;
+import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 import com.kurttekin.can.job_track.domain.model.resume.Resume;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

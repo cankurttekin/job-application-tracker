@@ -1,9 +1,9 @@
-package com.kurttekin.can.job_track.application;
+package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
-import com.kurttekin.can.job_track.domain.model.Role;
+import com.kurttekin.can.job_track.domain.model.user.Role;
 import com.kurttekin.can.job_track.domain.service.UserService;
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

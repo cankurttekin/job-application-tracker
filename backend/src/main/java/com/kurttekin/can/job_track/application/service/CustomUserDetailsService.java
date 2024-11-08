@@ -1,6 +1,6 @@
-package com.kurttekin.can.job_track.application;
+package com.kurttekin.can.job_track.application.service;
 
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

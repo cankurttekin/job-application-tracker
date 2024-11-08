@@ -1,7 +1,7 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
-import com.kurttekin.can.job_track.domain.model.JobApplication;
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import org.junit.jupiter.api.BeforeEach;

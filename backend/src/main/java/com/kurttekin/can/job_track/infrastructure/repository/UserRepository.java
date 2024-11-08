@@ -1,6 +1,6 @@
 package com.kurttekin.can.job_track.infrastructure.repository;
 
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

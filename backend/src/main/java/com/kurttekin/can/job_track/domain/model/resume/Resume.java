@@ -1,7 +1,7 @@
 package com.kurttekin.can.job_track.domain.model.resume;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.kurttekin.can.job_track.domain.model.User;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

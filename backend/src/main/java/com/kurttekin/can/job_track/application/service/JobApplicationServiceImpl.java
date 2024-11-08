@@ -1,7 +1,7 @@
-package com.kurttekin.can.job_track.application;
+package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
-import com.kurttekin.can.job_track.domain.model.JobApplication;
+import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
 import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

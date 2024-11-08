@@ -1,4 +1,4 @@
-package com.kurttekin.can.job_track.application;
+package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.application.dto.EducationDTO;
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
