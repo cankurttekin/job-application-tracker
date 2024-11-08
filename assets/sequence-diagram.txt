@@ -1,0 +1,20 @@
+title sequence diagram https://github.com/cankurttekin/job-application-tracker 
+
+participant User
+participant JobApplicationController
+participant JobApplicationService
+participant JobApplicationRepository
+participant DB
+participant PostgresDB
+
+User->JobApplicationController:1. POST /api/job-applications
+JobApplicationController->JobApplicationService:2. createJobApplication()
+JobApplicationService->JobApplicationRepository:3. validateApplication() 
+JobApplicationService->JobApplicationRepository:4. call jobApplicationRepo()
+JobApplicationRepository->DB:5. saveJobApplication() 
+DB->PostgresDB:6. Store Data 
+DB->JobApplicationRepository:7. return saved entity
+JobApplicationRepository->JobApplicationService:
+JobApplicationService->JobApplicationController: 8. return JobApplication() 
+JobApplicationController->User: 9. Response (JobApplication)
+
