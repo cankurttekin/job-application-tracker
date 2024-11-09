@@ -3,6 +3,7 @@ package com.kurttekin.can.job_track.presentation.rest;
 import com.kurttekin.can.job_track.application.dto.JwtResponse;
 import com.kurttekin.can.job_track.application.dto.LoginRequest;
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
+import com.kurttekin.can.job_track.application.service.EmailService;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.infrastructure.security.jwt.JwtProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +45,9 @@ class AuthControllerTest {
     @Mock
     private JwtProvider jwtProvider;
 
+    @Mock
+    private EmailService emailService;
+
     private LoginRequest loginRequest;
     private UserRegistrationRequest userRegistrationRequest;
     private String token;
@@ -74,12 +78,16 @@ class AuthControllerTest {
 
     @Test
     public void testRegisterUser_Success() {
+        // Mock the behavior of the service method
         doNothing().when(userService).registerUser(any(UserRegistrationRequest.class));
+        doNothing().when(emailService).sendVerificationEmail(anyString(),anyString()); // Mock email sending
 
+        // Call the registerUser method in the controller
         ResponseEntity<String> response = authController.registerUser(userRegistrationRequest);
 
+        // Check the status and response body
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("User registered successfully!", response.getBody());
+        assertEquals("User registered successfully! Please verify your email before logging in.", response.getBody());
     }
 
     @Test
