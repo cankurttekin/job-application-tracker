@@ -75,7 +75,6 @@ const Home = () => {
                     <img src={goalsImage} alt="Illustration 4" className="illustration"/>
                     <p className="illustration-text">{t('illustrations.goal')}</p>
                 </div>
-
             </div>
 
             <div className="screenshot-section">

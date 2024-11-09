@@ -5,7 +5,7 @@
     min-height: 100vh; /* Ensure it occupies the full height of the viewport */
     text-align: center;
     padding: 20px;
-    margin-top: 80px;
+    margin-top: 10px;
 }
 
 .header-container {
@@ -179,7 +179,7 @@ a:hover {
 /* Text container */
 .screenshot-text {
     flex: 1; /* Allow text to take remaining space */
-    max-width: 20%; /* Control the maximum width */
+    max-width: 34%; /* Control the maximum width */
 }
 
 @media (max-width: 768px) {
