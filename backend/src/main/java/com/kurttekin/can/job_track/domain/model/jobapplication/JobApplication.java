@@ -34,4 +34,5 @@ public class JobApplication {
     @JsonBackReference
     private User user;
 
+    private boolean starred;
 }
