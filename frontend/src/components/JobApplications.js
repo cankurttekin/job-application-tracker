@@ -27,9 +27,14 @@ const StarCell = styled.td`
   cursor: pointer;
 `;
 
+const Star = styled.div`
+  font-size: 24px;
+  color: ${({ starred }) => (starred ? 'gold' : 'grey')};
+  cursor: pointer;
+`;
+
 const CommentCell = styled.td`
   padding: 10px;
-  //border: 1px solid #ddd;
   cursor: pointer;
 `;
 
@@ -41,6 +46,129 @@ const Comment = styled.div`
   font-style: oblique;
   position: relative;
 `;
+
+
+// Function to get background color based on status
+const getStatusBackgroundColor = (status) => {
+  switch (status.toLowerCase()) {
+    case 'applied':
+      return '#7F8C8D';
+    case 'interviewing':
+    case 'interview':
+      return '#E67E22';
+    case 'rejected':
+      return '#C0392B';
+    case 'ats reject':
+      return '#E74C3C';
+    case 'hired':
+      return '#2ECC71';
+    default:
+      return 'grey';
+  }
+};
+
+const getPlatformBackgroundColor = (platform) => {
+  switch (platform.toLowerCase()) {
+    case 'linkedin':
+      return '#0A66C2';
+    case 'kariyer':
+    case 'kariyer.net':
+    case 'kariyernet':
+      return '#8316b5';
+    case 'indeed':
+      return '#003a9b';
+    case 'glassdoor':
+      return '#0caa41';
+    case 'mail':
+    case 'email':
+    case 'e-mail':
+      return 'grey';
+    default:
+      return 'transparent';
+  }
+};
+
+const JobApplicationsContainer = styled.div`
+  margin: 20px;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const styles = {
+  header: {
+    textAlign: 'center',
+    marginBottom: '10px',
+  },
+  searchInput: {
+    padding: '10px',
+    marginBottom: '20px',
+    borderRadius: '26px',
+    border: '1px solid #ccc',
+    width: '100%',
+  },
+  tableHeader: {
+    cursor: 'pointer',
+    color: '#333',
+    padding: '10px',
+    textAlign: 'left',
+  },
+  tableRow: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#f1f1f1',
+    },
+  },
+  tableCell: {
+    padding: '10px',
+    //border: '1px solid #ddd',
+  },
+  deleteIcon: {
+    color: 'grey',
+    cursor: 'pointer',
+  },
+  commentRow: {
+    backgroundColor: '#f9f9f9',
+  },
+};
+
+const Card = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const CardField = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 16px;
+
+  .label {
+    font-weight: bold;
+    color: #555;
+  }
+
+  .value {
+    text-align: right;
+    color: #333;
+  }
+`;
+
 
 const JobApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -176,7 +304,7 @@ const JobApplications = () => {
   };
 
   return (
-      <div style={styles.container}>
+        <JobApplicationsContainer>
         <h2 style={styles.header}>Job Applications</h2>
         <input
             type="text"
@@ -185,7 +313,7 @@ const JobApplications = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             style={styles.searchInput}
         />
-        <table style={styles.table}>
+        <Table>
           <thead>
           <tr>
             <th></th>
@@ -257,7 +385,52 @@ const JobApplications = () => {
               </React.Fragment>
           ))}
           </tbody>
-        </table>
+        </Table>
+
+          {filteredApplications.map((app) => (
+              <Card key={app.id} onClick={() => handleRowClick(app)}>
+                <Star starred={app.starred} onClick={(e) => handleToggleStar(app.id, e)}>
+                  {app.starred ? '★' : '☆'}
+                </Star>
+                <CardField>
+                  <div className="label">Company:</div>
+                  <div className="value">{app.companyName}</div>
+                </CardField>
+                <CardField>
+                  <div className="label">Position:</div>
+                  <div className="value">{app.jobTitle}</div>
+                </CardField>
+                <CardField>
+                  <div className="label">Status:</div>
+                  <StatusCell status={app.status}>{app.status}</StatusCell>
+                </CardField>
+                <CardField>
+                  <div className="label">Application Date:</div>
+                  <div className="value">{new Date(app.applicationDate).toLocaleDateString()}</div>
+                </CardField>
+                <CardField>
+                  <div className="label">Response Date:</div>
+                  <div className="value">
+                    {app.responseDate ? new Date(app.responseDate).toLocaleDateString() : '-'}
+                  </div>
+                </CardField>
+                <CardField>
+                  <div className="label">Platform:</div>
+                  <PlatformCell platform={app.platform}>{app.platform}</PlatformCell>
+                </CardField>
+                <CardField>
+                  <div className="label">Comments:</div>
+                  <div className="value" onClick={(e) => handleToggleComments(app.id, e)}>
+                    {expandedComments[app.id] ? 'Hide' : 'Show'} Comments
+                  </div>
+                </CardField>
+                {expandedComments[app.id] && (
+                    <div style={{ marginTop: '10px', color: '#333' }}>
+                      {app.comments || 'No comments available.'}
+                    </div>
+                )}
+              </Card>
+          ))}
 
         {/* Edit Modal */}
         {isModalOpen && selectedApplication && (
@@ -353,93 +526,8 @@ const JobApplications = () => {
               </modal-content>
             </Modal>
         )}
-      </div>
+        </JobApplicationsContainer>
   );
-};
-
-// Function to get background color based on status
-const getStatusBackgroundColor = (status) => {
-  switch (status.toLowerCase()) {
-    case 'applied':
-      return '#7F8C8D';
-    case 'interviewing':
-    case 'interview':
-      return '#E67E22';
-    case 'rejected':
-      return '#C0392B';
-    case 'ats reject':
-      return '#E74C3C';
-    case 'hired':
-      return '#2ECC71';
-    default:
-      return 'grey';
-  }
-};
-
-const getPlatformBackgroundColor = (platform) => {
-  switch (platform.toLowerCase()) {
-    case 'linkedin':
-      return '#0A66C2';
-    case 'kariyer':
-    case 'kariyer.net':
-    case 'kariyernet':
-      return '#8316b5';
-    case 'indeed':
-      return '#003a9b';
-    case 'glassdoor':
-      return '#0caa41';
-    case 'mail':
-    case 'email':
-    case 'e-mail':
-      return 'grey';
-    default:
-      return 'transparent';
-  }
-};
-
-const styles = {
-  container: {
-    margin: '20px',
-  },
-  header: {
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  searchInput: {
-    padding: '10px',
-    marginBottom: '20px',
-    borderRadius: '26px',
-    border: '1px solid #ccc',
-    width: '100%',
-  },
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-  },
-  tableHeader: {
-    cursor: 'pointer',
-    //backgroundColor: '#333',
-    color: '#333',
-    padding: '10px',
-    textAlign: 'left',
-  },
-  tableRow: {
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#f1f1f1',
-    },
-  },
-  tableCell: {
-    padding: '10px',
-    //border: '1px solid #ddd',
-  },
-  deleteIcon: {
-    color: 'grey',
-    cursor: 'pointer',
-  },
-  commentRow: {
-    backgroundColor: '#f9f9f9',
-  },
 };
 
 export default JobApplications;
