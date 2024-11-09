@@ -160,6 +160,11 @@ const JobApplications = () => {
       )
   );
 
+  // Adjusted render for dates to display empty if null or invalid
+  const renderDate = (date) => {
+    return date ? new Date(date).toLocaleDateString() : '';
+  };
+
   return (
       <div style={styles.container}>
         <h2 style={styles.header}>Job Applications</h2>
@@ -203,8 +208,8 @@ const JobApplications = () => {
                   <StatusCell status={app.status}>
                     {app.status}
                   </StatusCell>
-                  <td style={styles.tableCell}>{new Date(app.applicationDate).toLocaleDateString()}</td>
-                  <td style={styles.tableCell}>{new Date(app.responseDate).toLocaleDateString()}</td>
+                  <td style={styles.tableCell}>{renderDate(app.applicationDate)}</td>
+                  <td style={styles.tableCell}>{renderDate(app.responseDate)}</td>
                   <td style={styles.tableCell}>{app.platform}</td>
                   <td style={styles.tableCell}>
                     <a href={app.jobUrl} target="_blank" rel="noopener noreferrer">
