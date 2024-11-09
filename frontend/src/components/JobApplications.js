@@ -89,7 +89,7 @@ const getPlatformBackgroundColor = (platform) => {
 };
 
 const JobApplicationsContainer = styled.div`
-  margin: 20px;
+  margin-top: 20px;
 `;
 
 const Table = styled.table`
@@ -425,20 +425,27 @@ const JobApplications = () => {
                   </div>
                 </CardField>
                 {expandedComments[app.id] && (
-                    <div style={{ marginTop: '10px', color: '#333' }}>
+                    <div style={{marginTop: '10px', color: '#333'}}>
                       {app.comments || 'No comments available.'}
                     </div>
                 )}
+                <span
+                    className="material-icons"
+                    style={styles.deleteIcon}
+                    onClick={(e) => handleDelete(app.id, e)}
+                >
+                    delete
+                  </span>
               </Card>
           ))}
 
-        {/* Edit Modal */}
-        {isModalOpen && selectedApplication && (
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                style={{
-                  overlay: {
+          {/* Edit Modal */}
+          {isModalOpen && selectedApplication && (
+              <Modal
+                  isOpen={isModalOpen}
+                  onRequestClose={closeModal}
+                  style={{
+                    overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.7)',
                   },
                   content: {
