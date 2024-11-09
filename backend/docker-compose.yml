@@ -7,6 +7,7 @@ services:
       - "8080:8080"
       - "443:443"
     environment:
+      APP_URL: ${APP_URL}
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/job_app_tracker
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASS}

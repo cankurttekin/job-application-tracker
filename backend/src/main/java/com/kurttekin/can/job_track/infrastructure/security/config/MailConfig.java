@@ -1,5 +1,6 @@
 package com.kurttekin.can.job_track.infrastructure.security.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+@Slf4j
 @Configuration
 public class MailConfig {
 
@@ -26,6 +28,7 @@ public class MailConfig {
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        log.info("MAIL SERVER: " + mailHost+":"+mailPort+":"+mailUsername);
         mailSender.setHost(mailHost);
         mailSender.setPort(mailPort);
         mailSender.setUsername(mailUsername);

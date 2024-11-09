@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
         // Generate verification token and send email
         String token = verificationService.generateToken(user);
-        emailService.sendVerificationEmail(user.getEmail(), token);
+        emailService.sendVerificationEmail(user.getEmail(), user.getUsername(), token);
     }
 
     @Override

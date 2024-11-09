@@ -80,7 +80,7 @@ class AuthControllerTest {
     public void testRegisterUser_Success() {
         // Mock the behavior of the service method
         doNothing().when(userService).registerUser(any(UserRegistrationRequest.class));
-        doNothing().when(emailService).sendVerificationEmail(anyString(),anyString()); // Mock email sending
+        doNothing().when(emailService).sendVerificationEmail(anyString(),anyString(), anyString()); // Mock email sending
 
         // Call the registerUser method in the controller
         ResponseEntity<String> response = authController.registerUser(userRegistrationRequest);
