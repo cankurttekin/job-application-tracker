@@ -10,7 +10,17 @@ const StatusCell = styled.td`
   border: 0px solid #ddd;
   background-color: ${({ status }) => getStatusBackgroundColor(status)};
   color: white;
-  border-radius: 0px;
+  border-radius: 26px;
+  text-align: center;
+`;
+
+const PlatformCell = styled.td`
+  padding: 10px;
+  border: 0px solid #ddd;
+  background-color: ${({ platform }) => getPlatformBackgroundColor(platform)};
+  color: white;
+  border-radius: 26px;
+  text-align: center;
 `;
 
 const StarCell = styled.td`
@@ -210,7 +220,9 @@ const JobApplications = () => {
                   </StatusCell>
                   <td style={styles.tableCell}>{renderDate(app.applicationDate)}</td>
                   <td style={styles.tableCell}>{renderDate(app.responseDate)}</td>
-                  <td style={styles.tableCell}>{app.platform}</td>
+                  <PlatformCell platform={app.platform}>
+                    {app.platform}
+                  </PlatformCell>
                   <td style={styles.tableCell}>
                     <a href={app.jobUrl} target="_blank" rel="noopener noreferrer">
                       {app.jobUrl.length > 15 ? `${app.jobUrl.substring(0, 20)}...` : app.jobUrl}
@@ -364,6 +376,27 @@ const getStatusBackgroundColor = (status) => {
   }
 };
 
+const getPlatformBackgroundColor = (platform) => {
+  switch (platform.toLowerCase()) {
+    case 'linkedin':
+      return '#0A66C2';
+    case 'kariyer':
+    case 'kariyer.net':
+    case 'kariyernet':
+      return '#8316b5';
+    case 'indeed':
+      return '#003a9b';
+    case 'glassdoor':
+      return '#0caa41';
+    case 'mail':
+    case 'email':
+    case 'e-mail':
+      return 'grey';
+    default:
+      return 'transparent';
+  }
+};
+
 const styles = {
   container: {
     margin: '20px',
@@ -375,7 +408,7 @@ const styles = {
   searchInput: {
     padding: '10px',
     marginBottom: '20px',
-    borderRadius: '16px',
+    borderRadius: '26px',
     border: '1px solid #ccc',
     width: '100%',
   },

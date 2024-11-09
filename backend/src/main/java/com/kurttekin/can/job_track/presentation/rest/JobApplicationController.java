@@ -84,6 +84,7 @@ public class JobApplicationController {
         jobApplication.setComments(updatedJobApplication.getComments());
         jobApplication.setResponseDate(updatedJobApplication.getResponseDate());
         jobApplication.setStarred(updatedJobApplication.isStarred());
+        jobApplication.setPlatform(updatedJobApplication.getPlatform());
 
         JobApplication savedJobApplication = jobApplicationService.updateJobApplication(jobApplication);
         return ResponseEntity.ok(savedJobApplication);
