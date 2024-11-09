@@ -96,7 +96,7 @@
 
 @media (max-width: 480px) {
     .home-container {
-        margin-top: 40px;
+        margin-top: 20px;
     }
 
     .big-text {
@@ -160,14 +160,14 @@ a:hover {
 .screenshot-section {
     display: flex;
     align-items: flex-start; /* Align items to the start */
-    margin: 20px;
+    margin: 6px;
     text-align: left;
 }
 
 .screenshot-container {
     flex: 1; /* Allow the screenshot to take space */
-    max-width: 50%; /* Control the maximum width */
-    margin-right: 20px; /* Space between image and text */
+    max-width: 100%; /* Control the maximum width */
+    margin-right: 6px; /* Space between image and text */
 }
 
 /* Screenshot styling */
@@ -179,7 +179,7 @@ a:hover {
 /* Text container */
 .screenshot-text {
     flex: 1; /* Allow text to take remaining space */
-    max-width: 50%; /* Control the maximum width */
+    max-width: 20%; /* Control the maximum width */
 }
 
 @media (max-width: 768px) {
