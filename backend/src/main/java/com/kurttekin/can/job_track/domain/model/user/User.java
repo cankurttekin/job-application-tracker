@@ -38,4 +38,6 @@ public class User {
     //@JoinColumn(name = "resume_id", referencedColumnName = "id")
     @JsonBackReference
     private Resume resume;
+
+    private boolean verified = false;
 }

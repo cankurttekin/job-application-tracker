@@ -4,8 +4,11 @@ import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
 import com.kurttekin.can.job_track.domain.model.user.Role;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.model.user.User;
+import com.kurttekin.can.job_track.domain.service.VerificationService;
 import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
+import com.kurttekin.can.job_track.infrastructure.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,18 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    private VerificationService verificationService;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public void registerUser(UserRegistrationRequest userRequest) {
@@ -33,9 +48,13 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setVerified(false);
         user.setRole(Role.USER);
-
         userRepository.save(user);
+
+        // Generate verification token and send email
+        String token = verificationService.generateToken(user);
+        emailService.sendVerificationEmail(user.getEmail(), token);
     }
 
     @Override

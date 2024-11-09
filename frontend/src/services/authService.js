@@ -22,18 +22,17 @@ export const login = async (username, password) => {
     if (error.response) {
       // Check for specific response status
       if (error.response.status === 401) {
-        throw new Error("Invalid username or password."); // Customize error message
+        throw new Error("Invalid username or password.");
+      } else if (error.response.status === 403) {
+        throw new Error(error.response.data.message || "Email not verified. Please verify your email before logging in.");
       } else {
-        throw new Error("An error occurred during login."); // General error message
+        throw new Error(error.response.data.message || "An error occurred during login.");
       }
     } else {
-      throw new Error("Network error. Please try again later."); // Handle network errors
+      throw new Error("Network error. Please try again later.");
     }
   }
 };
-
-
-
 
 export const register = async (username, email, password) => {
   return axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, { username, email, password });

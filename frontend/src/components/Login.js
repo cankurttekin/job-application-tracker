@@ -77,7 +77,7 @@ const Login = () => {
       await login(username, password); // Call the login function
       navigate('/job-applications'); // Redirect after successful login
     } catch (error) {
-      setError(error.message); // Handle login failure with specific message
+      setError(error.message); // Set the error message
     }
   };
 

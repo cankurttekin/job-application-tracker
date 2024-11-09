@@ -60,11 +60,13 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState(''); // State for success message
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); // Reset error message
+        setSuccessMessage(''); // Reset success message
 
         // Check if fields are empty
         if (!username || !email || !password) {
@@ -74,7 +76,9 @@ const Register = () => {
 
         try {
             await registerService(username, email, password); // Call the register function
-            navigate('/login');
+            setSuccessMessage('Registration successful. Please verify your email before logging in.');
+            setTimeout(() => navigate('/login'), 3000); // Redirect after 3 seconds
+            //navigate('/login');
         } catch (err) {
             if (err.response && err.response.status === 400) {
                 setError(err.response.data); // Set error message from response
@@ -110,6 +114,7 @@ const Register = () => {
                     />
                     <Button type="submit">Register</Button>
                     {error && <Error>{error}</Error>}
+                    {successMessage && <Info>{successMessage}</Info>} {/* Show success message */}
                 </form>
             </FormWrapper>
         </Container>
