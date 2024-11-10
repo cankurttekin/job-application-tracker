@@ -3,8 +3,6 @@ package com.kurttekin.can.job_track.domain.service;
 import com.kurttekin.can.job_track.application.dto.ResumeDTO;
 import com.kurttekin.can.job_track.domain.model.resume.Resume;
 
-import java.util.Optional;
-
 public interface ResumeService {
     ResumeDTO findById(Long id);
     ResumeDTO createResume(Resume resume);

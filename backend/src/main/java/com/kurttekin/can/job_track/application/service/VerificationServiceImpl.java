@@ -19,9 +19,6 @@ public class VerificationServiceImpl implements VerificationService {
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
-    @Autowired
-    private EmailService emailService;
-
     @Override
     public String generateToken(User user) {
         String token = UUID.randomUUID().toString();

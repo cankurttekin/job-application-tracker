@@ -6,5 +6,4 @@ import lombok.Data;
 public class QuizRequest {
     private String jobDescription;
     private String jobTitle;
-
 }

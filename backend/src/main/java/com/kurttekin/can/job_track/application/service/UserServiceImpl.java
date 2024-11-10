@@ -6,9 +6,7 @@ import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.VerificationService;
 import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
-import com.kurttekin.can.job_track.infrastructure.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +21,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private VerificationTokenRepository verificationTokenRepository;
-
-    @Autowired
     private VerificationService verificationService;
-
-    @Autowired
-    private JavaMailSender mailSender;
 
     @Autowired
     private EmailService emailService;

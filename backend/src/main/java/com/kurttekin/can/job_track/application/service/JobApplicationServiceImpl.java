@@ -7,7 +7,6 @@ import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepository;
-import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +21,6 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
