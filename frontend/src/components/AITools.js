@@ -68,7 +68,7 @@ const PersonalizationElement = styled.div`
 const CheckboxLabel = styled.label`
     //display: block;
     display: inline-block;
-    margin: 0px 40px;
+    margin: 0 40px;
 `;
 
 const PersonalizationHeader = styled.h4`

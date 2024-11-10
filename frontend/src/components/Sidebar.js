@@ -47,7 +47,7 @@ const NavbarToggle = styled.button`
     font-size: 28px;
     cursor: pointer;
     color: #2f2f2f;
-    border-radius: 0px;
+    border-radius: 0;
     width: 22px;
     height: 100%;
     margin: 0;

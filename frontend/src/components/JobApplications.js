@@ -7,7 +7,7 @@ const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
 
 const StatusCell = styled.td`
   padding: 10px;
-  border: 0px solid #ddd;
+  border: 0 solid #ddd;
   background-color: ${({ status }) => getStatusBackgroundColor(status)};
   color: white;
   border-radius: 26px;
@@ -16,9 +16,9 @@ const StatusCell = styled.td`
 
 const PlatformCell = styled.td`
   padding: 10px;
-  border: 0px solid #ddd;
+  border: 0 solid #ddd;
   background-color: ${({ platform }) => getPlatformBackgroundColor(platform)};
-  color: white;
+  color: ${({ platform }) => getPlatformBackgroundColor(platform) === 'transparent' ? 'black' : 'white'};
   border-radius: 26px;
   text-align: center;
 `;
@@ -157,16 +157,6 @@ const CardField = styled.div`
   justify-content: space-between;
   margin-bottom: 8px;
   font-size: 16px;
-
-  .label {
-    font-weight: bold;
-    color: #555;
-  }
-
-  .value {
-    text-align: right;
-    color: #333;
-  }
 `;
 
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import '../styles/AddJobApplication.css';
 import { useNavigate } from 'react-router-dom';
-import styled from "styled-components";
+//import styled from "styled-components";
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + '/api';
 

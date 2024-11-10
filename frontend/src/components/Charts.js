@@ -31,7 +31,7 @@ const ChartWrapper = styled.div`
     background-color: black;
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
