@@ -13,16 +13,16 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    @Value("${MAIL_HOST:smtp.testmailserver.com}")
+    @Value("${MAIL_HOST:smtp.gmail.com}")
     private String mailHost;
 
     @Value("${MAIL_PORT:587}")
     private int mailPort;
 
-    @Value("${MAIL_USER:testmailuser@atsfs.com}")
+    @Value("${MAIL_USER:atsfs.production@gmail.com}")
     private String mailUsername;
 
-    @Value("${MAIL_PASS:testmailpass}")
+    @Value("${MAIL_PASS:eije tulm apgy ougx}")
     private String mailPassword;
 
     @Bean

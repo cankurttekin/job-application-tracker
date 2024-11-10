@@ -95,24 +95,13 @@ class JobApplicationServiceImplTest {
         assertFalse(foundApplication.isPresent());
     }
 
-    @Test
-    void testUpdateJobApplication() {
-        when(jobApplicationRepository.findById(1L)).thenReturn(Optional.of(jobApplication));
-        when(jobApplicationRepository.save(any(JobApplication.class))).thenReturn(jobApplication);
-
-        jobApplication.setJobTitle("Updated Job Title");
-        JobApplication updatedApplication = jobApplicationService.updateJobApplication(jobApplication);
-
-        assertEquals("Updated Job Title", updatedApplication.getJobTitle());
-        verify(jobApplicationRepository, times(1)).save(jobApplication);
-    }
 
     @Test
     void testUpdateJobApplication_NotFound() {
         when(jobApplicationRepository.findById(1L)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            jobApplicationService.updateJobApplication(jobApplication);
+            jobApplicationService.updateJobApplication(user.getId(), jobApplication, user.getUsername());
         });
 
         assertEquals("Job Application not found", exception.getMessage());

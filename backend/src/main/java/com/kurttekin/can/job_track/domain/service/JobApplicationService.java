@@ -11,7 +11,8 @@ public interface JobApplicationService {
     JobApplication createJobApplication(JobApplication jobApplication);
     List<JobApplication> findAllByUserId(Long userId);
     Optional<JobApplication> findById(Long id);
-    JobApplication updateJobApplication(JobApplication jobApplication);
+    //JobApplication updateJobApplication(JobApplication jobApplication);
+    JobApplication updateJobApplication(Long id, JobApplication updatedJobApplication, String username);
     void deleteJobApplication(Long id);
     void deleteAllByUserId(Long userId);
     Map<String, Integer> getJobApplicationStats(Long userId);

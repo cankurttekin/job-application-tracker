@@ -88,18 +88,62 @@ class JobApplicationControllerTest {
 
     @Test
     void updateJobApplication() {
+        // Mock the user details and the user service response
         when(userDetails.getUsername()).thenReturn("testuser");
         when(userService.findUserByUsername("testuser")).thenReturn(Optional.of(user));
+
+        // Mock the job application response from the service
         when(jobApplicationService.findById(1L)).thenReturn(Optional.of(jobApplication));
-        when(jobApplicationService.updateJobApplication(any(JobApplication.class))).thenReturn(jobApplication);
 
-        jobApplication.setCompanyName("Updated Company");
-        ResponseEntity<JobApplication> response = jobApplicationController.updateJobApplication(1L, jobApplication, userDetails);
+        // Set up the job application to be updated with new values
+        JobApplication updatedJobApplication = new JobApplication();
+        updatedJobApplication.setCompanyName("Updated Company");
+        updatedJobApplication.setJobTitle("Updated Job Title");
+        updatedJobApplication.setStatus("Updated Status");
+        updatedJobApplication.setJobUrl("Updated Job Url");
+        updatedJobApplication.setDescription("Updated Description");
+        updatedJobApplication.setApplicationDate(LocalDate.now());
+        updatedJobApplication.setResponseDate(LocalDate.now());
+        updatedJobApplication.setPlatform("Updated Platform");
+        updatedJobApplication.setStarred(true);
+        updatedJobApplication.setComments("Updated Comments");
 
+        // Mock the updated job application to be returned by the service
+        JobApplication mockUpdatedJobApplication = new JobApplication();
+        mockUpdatedJobApplication.setCompanyName("Updated Company");
+        mockUpdatedJobApplication.setJobTitle("Updated Job Title");
+        mockUpdatedJobApplication.setStatus("Updated Status");
+        mockUpdatedJobApplication.setJobUrl("Updated Job Url");
+        mockUpdatedJobApplication.setDescription("Updated Description");
+        mockUpdatedJobApplication.setApplicationDate(LocalDate.now());
+        mockUpdatedJobApplication.setResponseDate(LocalDate.now());
+        mockUpdatedJobApplication.setPlatform("Updated Platform");
+        mockUpdatedJobApplication.setStarred(true);
+        mockUpdatedJobApplication.setComments("Updated Comments");
+
+        // When the controller method is called, it delegates to the service update method
+        when(jobApplicationService.updateJobApplication(1L, updatedJobApplication, "testuser"))
+                .thenReturn(mockUpdatedJobApplication);
+
+        // Call the controller method
+        ResponseEntity<JobApplication> response = jobApplicationController.updateJobApplication(1L, updatedJobApplication, userDetails);
+
+        // Assert that the response status is OK (200)
         assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        // Assert that the job application was updated
         assertEquals("Updated Company", response.getBody().getCompanyName());
-        verify(jobApplicationService, times(1)).updateJobApplication(any(JobApplication.class));
+        assertEquals("Updated Job Title", response.getBody().getJobTitle());
+        assertEquals("Updated Status", response.getBody().getStatus());
+        assertEquals("Updated Job Url", response.getBody().getJobUrl());
+        assertEquals("Updated Description", response.getBody().getDescription());
+        assertEquals("Updated Platform", response.getBody().getPlatform());
+        assertEquals("Updated Comments", response.getBody().getComments());
+
+        // Verify that the service method was called with the correct arguments
+        verify(jobApplicationService, times(1)).updateJobApplication(1L, updatedJobApplication, "testuser");
     }
+
 
     @Test
     void deleteJobApplication() {

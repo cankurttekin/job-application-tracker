@@ -1,9 +1,13 @@
 package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
+import com.kurttekin.can.job_track.domain.exception.UnauthorizedAccessException;
 import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
+import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.infrastructure.repository.JobApplicationRepository;
+import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +22,12 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Transactional
     @Override
@@ -45,14 +55,36 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Transactional
     @Override
-    public JobApplication updateJobApplication(JobApplication jobApplication) {
-        // Check if the job application exists
-        jobApplicationRepository.findById(jobApplication.getId())
-                .orElseThrow(() -> new JobApplicationNotFoundException("Job Application not found"));
+    public JobApplication updateJobApplication(Long id, JobApplication updatedJobApplication, String username) {
+        // First, check if the job application exists
+        JobApplication jobApplication = jobApplicationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job Application not found"));
 
-        // If it exists, save and return the updated application
+        // Then, check if the user exists
+        User user = userService.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Ensure the job application belongs to the user
+        if (!jobApplication.getUser().getId().equals(user.getId())) {
+            throw new UnauthorizedAccessException("You do not have permission to update this job application.");
+        }
+
+        // Proceed with the update
+        jobApplication.setCompanyName(updatedJobApplication.getCompanyName());
+        jobApplication.setJobTitle(updatedJobApplication.getJobTitle());
+        jobApplication.setStatus(updatedJobApplication.getStatus());
+        jobApplication.setJobUrl(updatedJobApplication.getJobUrl());
+        jobApplication.setDescription(updatedJobApplication.getDescription());
+        jobApplication.setApplicationDate(updatedJobApplication.getApplicationDate());
+        jobApplication.setResponseDate(updatedJobApplication.getResponseDate());
+        jobApplication.setPlatform(updatedJobApplication.getPlatform());
+        jobApplication.setStarred(updatedJobApplication.isStarred());
+        jobApplication.setComments(updatedJobApplication.getComments());
+
+        // Save and return the updated job application
         return jobApplicationRepository.save(jobApplication);
     }
+
 
     @Transactional
     @Override

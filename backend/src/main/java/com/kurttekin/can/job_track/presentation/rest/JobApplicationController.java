@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/job-applications")
 public class JobApplicationController {
-
+// REFACTOR THIS SHIT, move bus. logic to service
     @Autowired
     private JobApplicationService jobApplicationService;
 
@@ -33,10 +33,6 @@ public class JobApplicationController {
             @RequestBody JobApplication jobApplication,
             @AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
-
-        //String username = authentication.getName(); // Get the username from the Authentication
-        // User user = userService.findUserByUsername(username)
-        //        .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Find the user in the database
         User user = userService.findUserByUsername(username)
@@ -62,33 +58,15 @@ public class JobApplicationController {
             @PathVariable Long id,
             @RequestBody JobApplication updatedJobApplication,
             @AuthenticationPrincipal UserDetails userDetails) {
+
         String username = userDetails.getUsername();
 
-        // Find the user in the database
-        User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        // Call the service to handle the update
+        JobApplication updatedJob = jobApplicationService.updateJobApplication(id, updatedJobApplication, username);
 
-        JobApplication jobApplication = jobApplicationService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job Application not found"));
-
-        // Ensure the job application belongs to the user
-        if (!jobApplication.getUser().getId().equals(user.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        // Update the job application details
-        jobApplication.setCompanyName(updatedJobApplication.getCompanyName());
-        jobApplication.setJobTitle(updatedJobApplication.getJobTitle());
-        jobApplication.setApplicationDate(updatedJobApplication.getApplicationDate());
-        jobApplication.setStatus(updatedJobApplication.getStatus());
-        jobApplication.setComments(updatedJobApplication.getComments());
-        jobApplication.setResponseDate(updatedJobApplication.getResponseDate());
-        jobApplication.setStarred(updatedJobApplication.isStarred());
-        jobApplication.setPlatform(updatedJobApplication.getPlatform());
-
-        JobApplication savedJobApplication = jobApplicationService.updateJobApplication(jobApplication);
-        return ResponseEntity.ok(savedJobApplication);
+        return ResponseEntity.ok(updatedJob);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJobApplication(
