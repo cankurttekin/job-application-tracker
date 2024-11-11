@@ -6,35 +6,33 @@ import styled from 'styled-components';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import { REACT_APP_BACKEND_URL } from '../config';
 
-// Styled Components
 const Container = styled.div`
     display: flex;
-    flex-direction: column; /* Stack charts vertically */
-    align-items: flex-start; /* Center charts horizontally */
-    margin-top: 28px;
+    flex-direction: column;
+    margin: 20px auto;
     box-sizing: border-box;
+    //width: 100%;
 `;
 
 const Title = styled.h2`
     text-align: center;
-    align-self: center;
     margin-bottom: 10px;
 `;
 
-const Header = styled.h2`
-    text-align: center;
-    margin-bottom: 6px;
+const Header = styled.h3`
+    margin-bottom: 8px;
+    color: #4a4a4a;
+    padding-bottom: 4px;
 `;
 
 const ChartWrapper = styled.div`
-    background-color: black;
     padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border: 1px solid #ddd;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-bottom: 30px; /* Space between charts */
+    margin-bottom: 30px;
+    flex-direction: column;
 `;
 
 const GitHubContributionsChart = ({ applicationsByDay }) => {
@@ -46,7 +44,14 @@ const GitHubContributionsChart = ({ applicationsByDay }) => {
     }).reverse();
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(53, 20px)', gap: '4px' }}>
+        <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(53, 20px)',
+            gap: '2px',
+            overflowX: 'auto',
+            paddingBottom: '18px',
+            justifyContent: 'center',
+        }}>
             {days.map((day) => {
                 const applications = applicationsByDay[day] || 0;
                 const color = applications > 0 ? `rgba(57, 211, 83, ${Math.min(applications / 3, 1)})` : 'rgba(22, 28, 34, 1)'; // Adjust the divisor for color intensity
@@ -54,15 +59,14 @@ const GitHubContributionsChart = ({ applicationsByDay }) => {
                     <div
                         key={day}
                         style={{
-                            width: '20px',
-                            height: '20px',
+                            width: '18px',
+                            height: '18px',
                             backgroundColor: color,
                             borderRadius: '4px',
-                            position: 'relative', // Position for the label
+                            position: 'relative',
                         }}
                         title={`${applications} Applications on ${new Date(day).toLocaleDateString()}`}
                     >
-                        {/* Display day of the month */}
                         <span style={{
                             position: 'absolute',
                             bottom: '-18px',
@@ -73,7 +77,6 @@ const GitHubContributionsChart = ({ applicationsByDay }) => {
                         }}>
                             {new Date(day).getDate()}
                         </span>
-                        {/* Display month name on the first box of each week */}
                         {day.endsWith('01') && (
                             <span style={{
                                 position: 'absolute',
@@ -102,15 +105,15 @@ const JobPositionPieChart = ({ jobPositions }) => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF6384', '#36A2EB', '#FFCE56'];
 
     return (
-        <ChartWrapper style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ flex: '0 0 300px' }}> {/* Fixed width for the pie chart */}
-                <PieChart width={300} height={460}>
+        <ChartWrapper>
+            <ResponsiveContainer width="100%" height={360}>
+                <PieChart>
                     <Tooltip />
                     <Legend />
                     <Pie
                         data={data}
-                        cx={150}
-                        cy={150}
+                        cx="50%"
+                        cy="50%"
                         innerRadius={60}
                         outerRadius={80}
                         fill="#8884d8"
@@ -122,7 +125,7 @@ const JobPositionPieChart = ({ jobPositions }) => {
                         ))}
                     </Pie>
                 </PieChart>
-            </div>
+            </ResponsiveContainer>
         </ChartWrapper>
     );
 };
@@ -167,18 +170,14 @@ const Charts = () => {
     return (
         <Container>
             <Title>Your Stats</Title>
-            <Header>Total Applications: {totalApplications}</Header>
+            <Header>{totalApplications} Job Applications in the last year</Header>
             <ChartWrapper>
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%">
                     <GitHubContributionsChart applicationsByDay={applicationsByDay} />
                 </ResponsiveContainer>
             </ChartWrapper>
             <Header>Positions</Header>
-            <ChartWrapper>
-                <ResponsiveContainer width="100%" height="100%">
-                    <JobPositionPieChart jobPositions={jobPositions} />
-                </ResponsiveContainer>
-            </ChartWrapper>
+            <JobPositionPieChart jobPositions={jobPositions} />
         </Container>
     );
 };
