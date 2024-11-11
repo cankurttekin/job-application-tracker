@@ -25,9 +25,8 @@ const PersonalizationHeader = styled.h4`
 `;
 
 const Container = styled.div`
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 768px;
+    margin: 20px auto;
 `;
 
 const SelectionContainer = styled.div`
