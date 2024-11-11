@@ -34,29 +34,6 @@ export const login = async (username, password) => {
   }
 };
 
-export const handleGoogleLoginCallback = async (code) => {
-  try {
-    const response = await axios.post(
-        `${REACT_APP_BACKEND_URL}/auth/oauth2/callback/google`,
-        { code },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-    );
-
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);  // Store JWT token
-    }
-    return response.data;
-  } catch (error) {
-    console.error('Google login failed:', error);
-    throw new Error('Google login failed. Please try again.');
-  }
-};
-
-
 export const register = async (username, email, password) => {
   return axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, { username, email, password });
 };
