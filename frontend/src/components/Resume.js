@@ -8,9 +8,8 @@ const SUMMARY_LENGTH = 255;
 
 // Styled Components for Layout
 const Container = styled.div`
-    padding: 40px;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 768px;
+    margin: 20px auto;
     color: #333;
 `;
 
@@ -26,7 +25,6 @@ const SectionTitle = styled.h3`
 `;
 
 const Skill = styled.span`
-    //background: #e0e0e0;
     padding: 8px 8px;
     margin: 0 4px 4px 0;
     border-radius: 6px;

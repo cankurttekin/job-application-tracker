@@ -117,6 +117,11 @@ const Navbar = () => {
         navigate('/login');
     };
 
+    const handleNavigation = (path) => {
+        toggleDropdown();  // Always toggle the dropdown before navigating
+        navigate(path);    // Then navigate to the provided path
+    };
+
     // Scroll event listener to update the scrolled state
     useEffect(() => {
         const handleScroll = () => {
@@ -141,27 +146,27 @@ const Navbar = () => {
             <NavbarItems isOpen={isOpen}>
                 {isLoggedIn && (
                     <>
-                        <NavbarItem onClick={() => navigate('/job-applications')}>
+                        <NavbarItem onClick={() => handleNavigation('/job-applications')}>
                             <span className="material-icons">work</span>
                             Applications
                         </NavbarItem>
-                        <NavbarItem onClick={handleAddJobClick}>
+                        <NavbarItem onClick={() => {toggleDropdown(); handleAddJobClick();}}>
                             <span className="material-icons">add</span>
                             Add
                         </NavbarItem>
-                        <NavbarItem onClick={() => navigate('/charts')}>
+                        <NavbarItem onClick={() => handleNavigation('/charts')}>
                             <span className="material-icons">bar_chart</span>
                             Charts
                         </NavbarItem>
-                        <NavbarItem onClick={() => navigate('/ai-tools')}>
+                        <NavbarItem onClick={() => handleNavigation('/ai-tools')}>
                             <span className="material-icons">build</span>
                             AI Tools
                         </NavbarItem>
-                        <NavbarItem onClick={() => navigate('/resume')}>
+                        <NavbarItem onClick={() => handleNavigation('/resume')}>
                             <span className="material-icons">assignment_ind</span>
                             Resume
                         </NavbarItem>
-                        <NavbarItem onClick={() => navigate('/exportData')}>
+                        <NavbarItem onClick={() => handleNavigation('/exportData')}>
                             <span className="material-icons">file_download</span>
                             Export
                         </NavbarItem>
