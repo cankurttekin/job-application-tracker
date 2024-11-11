@@ -10,44 +10,6 @@ const styles = {
     },
 }
 
-const Container = styled.div`
-    padding: 20px;
-`;
-
-const SelectionContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-`;
-
-const Dropdown = styled.select`
-    margin-top: 10px;
-    margin-right: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: auto;
-`;
-
-const QuestionsContainer = styled.div`
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: #f9f9f9;
-`;
-
-const QuestionList = styled.ul`
-    list-style-type: none;
-    padding: 0;
-`;
-
-const QuestionItem = styled.li`
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    &:last-child {
-        border-bottom: none;
-    }
-`;
-
 const JobDetails = styled.h3`
     margin-bottom: 24px;
 `;
@@ -55,6 +17,40 @@ const JobDetails = styled.h3`
 const ResultMessage = styled.p`
     margin-top: 20px;
     font-weight: bold;
+`;
+
+const PersonalizationHeader = styled.h4`
+    cursor: pointer;
+    //text-decoration: underline;
+`;
+
+const Container = styled.div`
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+`;
+
+const SelectionContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+`;
+
+const Dropdown = styled.select`
+    margin-top: 10px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: auto;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        margin-right: 0;
+    }
 `;
 
 const PersonalizationSection = styled.div`
@@ -71,18 +67,56 @@ const PersonalizationElement = styled.div`
 `;
 
 const CheckboxLabel = styled.label`
-    //display: block;
     display: inline-block;
-    margin: 0 40px;
+    margin: 0 20px;
+
+    @media (max-width: 768px) {
+        margin: 0 10px;
+        width: 100%;
+    }
 `;
 
-const PersonalizationHeader = styled.h4`
-    cursor: pointer;
-    //text-decoration: underline;
+const QuestionsContainer = styled.div`
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    width: 100%;
+
+    @media (max-width: 768px) {
+        padding: 15px;
+    }
+`;
+
+const QuestionList = styled.ul`
+    list-style-type: none;
+    padding: 0;
+`;
+
+const QuestionItem = styled.li`
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+        padding: 10px;
+        font-size: 14px;
+    }
 `;
 
 const Button = styled.button`
-  margin-right: 5px;
+    margin-right: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        margin-top: 5px;
+    }
 `;
 
 const AITools = () => {
@@ -252,7 +286,7 @@ const AITools = () => {
                         </Dropdown>
 
                         <Button onClick={handleGenerateQuestions}>Interview Questions</Button>
-                        <button onClick={handleGenerateQuiz}>Generate Quiz</button>
+                        <Button onClick={handleGenerateQuiz}>Generate Quiz</Button>
                     </SelectionContainer>
                 </>
             )}
