@@ -65,7 +65,7 @@ const NavbarToggle = styled.button`
 const NavbarRight = styled.div`
     display: flex;
     align-items: center;
-    margin-left: auto;
+    margin-left: 16px;
 
     @media (max-width: 768px) {
         justify-content: center;
@@ -172,7 +172,7 @@ const Navbar = () => {
                 <LanguageSwitcher></LanguageSwitcher>
                 <AddJobApplication isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 <NavbarRight>
-                    {isLoggedIn && <div>Logged in as <strong>{user}</strong></div>}
+                    {isLoggedIn && <div style={{marginRight: '2px',}}>Logged in as <strong>{user}</strong></div>}
                     <NavbarItem onClick={isLoggedIn ? handleLogout : () => navigate('/login')}>
                         <span className="material-icons">{isLoggedIn ? 'logout' : 'login'}</span>
                         {isLoggedIn ? 'Logout' : 'Log in'}

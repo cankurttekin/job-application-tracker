@@ -14,26 +14,34 @@ const GlobalStyle = createGlobalStyle`
   }
 
   input, input[type="date"], select {
-    border-radius: 5px;
+    border-radius: 6px;
     border: 1px solid #ccc;
-    padding: 12px;
+      padding: 6px;
     margin-bottom: 10px;
-    cursor: pointer;
     width: 100%;
+      
   }
 
   button {
       background-color: black;
       color: white;
-      padding: 12px;
+      padding: 6px;
       padding-left: 24px;
       padding-right: 24px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
-      //width: 100%;
-      margin: 10px;
-      //font-size: 16px;
+      font-weight: bold;
+  }
+  
+  select {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: transparent;
+      color: black;
+      width: 100%;
+      height: auto;
   }
 
   button:hover {
@@ -53,7 +61,6 @@ const GlobalStyle = createGlobalStyle`
       top: 2px;
       right: 2px;
       background: #ebebeb;
-      //border: 1px solid #333;
       color: #333;
       font-size: 26px;
       width: 30px;
@@ -67,7 +74,6 @@ const GlobalStyle = createGlobalStyle`
 
   close-button:hover {
       background-color: #dedede;
-      //color: white;
   }
 
   modal-content {

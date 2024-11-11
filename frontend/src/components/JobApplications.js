@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import styled from "styled-components";
-
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+import { REACT_APP_BACKEND_URL } from '../config';
 
 const StatusCell = styled.td`
   padding: 10px;
@@ -47,8 +46,6 @@ const Comment = styled.div`
   position: relative;
 `;
 
-
-// Function to get background color based on status
 const getStatusBackgroundColor = (status) => {
   switch (status.toLowerCase()) {
     case 'applied':
@@ -159,7 +156,6 @@ const CardField = styled.div`
   font-size: 16px;
 `;
 
-
 const JobApplications = () => {
   const [jobApplications, setJobApplications] = useState([]);
   const [sortColumn, setSortColumn] = useState('applicationDate');
@@ -199,9 +195,8 @@ const JobApplications = () => {
     Comments: 'comments',
   };
 
-
   const handleSort = (column) => {
-    const dataKey = columnMap[column]; // Get the corresponding data key
+    const dataKey = columnMap[column]; // Get the data key
     setSortColumn(dataKey);
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
@@ -368,7 +363,6 @@ const JobApplications = () => {
                         ) : (
                             <Comment>No comments available.</Comment>
                         )}
-                        {/* A form can be added to add new comments here */}
                       </td>
                     </tr>
                 )}
@@ -447,7 +441,6 @@ const JobApplications = () => {
                     transform: 'translate(-50%, -50%)',
                     padding: '20px',
                     borderRadius: '10px',
-                    //backgroundColor: '#f5f5f5',
                     backgroundColor: '#ffffff',
                     color: '#333',
                   },

@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { REACT_APP_BACKEND_URL } from '../config';
 
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + "/api";
+const styles = {
+    header: {
+        textAlign: 'center',
+        marginBottom: '10px',
+    },
+}
 
 const Container = styled.div`
     padding: 20px;
@@ -15,19 +21,17 @@ const SelectionContainer = styled.div`
 `;
 
 const Dropdown = styled.select`
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     margin-top: 10px;
     margin-right: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: auto;
 `;
 
 const QuestionsContainer = styled.div`
     margin-top: 20px;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
     background-color: #f9f9f9;
 `;
 
@@ -57,8 +61,9 @@ const PersonalizationSection = styled.div`
     margin-top: 10px;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f0f0f0;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    width: 100%;
 `;
 
 const PersonalizationElement = styled.div`
@@ -74,6 +79,10 @@ const CheckboxLabel = styled.label`
 const PersonalizationHeader = styled.h4`
     cursor: pointer;
     //text-decoration: underline;
+`;
+
+const Button = styled.button`
+  margin-right: 5px;
 `;
 
 const AITools = () => {
@@ -226,7 +235,7 @@ const AITools = () => {
 
     return (
         <Container>
-            <h2>AI Tools</h2>
+            <h2 style={styles.header}>AI Tools</h2>
 
             {jobApplications.length > 0 && (
                 <>
@@ -242,7 +251,7 @@ const AITools = () => {
                             ))}
                         </Dropdown>
 
-                        <button onClick={handleGenerateQuestions}>Interview Questions</button>
+                        <Button onClick={handleGenerateQuestions}>Interview Questions</Button>
                         <button onClick={handleGenerateQuiz}>Generate Quiz</button>
                     </SelectionContainer>
                 </>
@@ -256,143 +265,143 @@ const AITools = () => {
                 {showPersonalization && (
                     <>
                         <PersonalizationElement>
-                        <h4>Tone</h4>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="tone"
-                                value="friendly"
-                                onChange={handlePreferenceChange}
-                            />
-                            Friendly
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="tone"
-                                value="formal"
-                                onChange={handlePreferenceChange}
-                            />
-                            Formal
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="tone"
-                                value="casual"
-                                onChange={handlePreferenceChange}
-                            />
-                            Casual
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="tone"
-                                value="encouraging"
-                                onChange={handlePreferenceChange}
-                            />
-                            Encouraging
-                        </CheckboxLabel>
+                            <h4>Tone</h4>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="tone"
+                                    value="friendly"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Friendly
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="tone"
+                                    value="formal"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Formal
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="tone"
+                                    value="casual"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Casual
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="tone"
+                                    value="encouraging"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Encouraging
+                            </CheckboxLabel>
                         </PersonalizationElement>
                         <PersonalizationElement>
-                        <h4>Focus Areas</h4>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="focusAreas"
-                                value="teamwork"
-                                onChange={handlePreferenceChange}
-                            />
-                            Teamwork
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="focusAreas"
-                                value="leadership"
-                                onChange={handlePreferenceChange}
-                            />
-                            Leadership
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="focusAreas"
-                                value="communication"
-                                onChange={handlePreferenceChange}
-                            />
-                            Communication
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="focusAreas"
-                                value="problem-solving"
-                                onChange={handlePreferenceChange}
-                            />
-                            Problem Solving
-                        </CheckboxLabel>
+                            <h4>Focus Areas</h4>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="focusAreas"
+                                    value="teamwork"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Teamwork
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="focusAreas"
+                                    value="leadership"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Leadership
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="focusAreas"
+                                    value="communication"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Communication
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="focusAreas"
+                                    value="problem-solving"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Problem Solving
+                            </CheckboxLabel>
                         </PersonalizationElement>
                         <PersonalizationElement>
-                        <h4>Question Types</h4>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="questionTypes"
-                                value="technical"
-                                onChange={handlePreferenceChange}
-                            />
-                            Technical
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="questionTypes"
-                                value="behavioral"
-                                onChange={handlePreferenceChange}
-                            />
-                            Behavioral
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="checkbox"
-                                name="questionTypes"
-                                value="situational"
-                                onChange={handlePreferenceChange}
-                            />
-                            Situational
-                        </CheckboxLabel>
+                            <h4>Question Types</h4>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="questionTypes"
+                                    value="technical"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Technical
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="questionTypes"
+                                    value="behavioral"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Behavioral
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="checkbox"
+                                    name="questionTypes"
+                                    value="situational"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Situational
+                            </CheckboxLabel>
                         </PersonalizationElement>
                         <PersonalizationElement>
-                        <h4>Experience Level</h4>
-                        <CheckboxLabel>
-                            <input
-                                type="radio"
-                                name="experienceLevel"
-                                value="junior"
-                                onChange={handlePreferenceChange}
-                            />
-                            Junior Level
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="radio"
-                                name="experienceLevel"
-                                value="mid"
-                                onChange={handlePreferenceChange}
-                            />
-                            Mid Level
-                        </CheckboxLabel>
-                        <CheckboxLabel>
-                            <input
-                                type="radio"
-                                name="experienceLevel"
-                                value="senior"
-                                onChange={handlePreferenceChange}
-                            />
-                            Senior Level
-                        </CheckboxLabel>
-                            </PersonalizationElement>
+                            <h4>Experience Level</h4>
+                            <CheckboxLabel>
+                                <input
+                                    type="radio"
+                                    name="experienceLevel"
+                                    value="junior"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Junior Level
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="radio"
+                                    name="experienceLevel"
+                                    value="mid"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Mid Level
+                            </CheckboxLabel>
+                            <CheckboxLabel>
+                                <input
+                                    type="radio"
+                                    name="experienceLevel"
+                                    value="senior"
+                                    onChange={handlePreferenceChange}
+                                />
+                                Senior Level
+                            </CheckboxLabel>
+                        </PersonalizationElement>
                     </>
                 )}
             </PersonalizationSection>

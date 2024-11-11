@@ -29,12 +29,17 @@ const App = () => {
                 <Container>
                     <Sidebar />
                     <MainContent>
+                        <Routes>
+                        <Route path="/login" element={<Login />} />
+                        </Routes>
                         <AuthContext.Consumer>
+
                             {({ isLoggedIn }) => (
                                 <Routes>
                                     <Route path="/" element={isLoggedIn ? <Navigate to="/job-applications" /> : <Home />} />
                                     <Route path="/register" element={<Register />} />
-                                    <Route path="/login" element={<Login />} />
+                                    <Route path="/job-applications" element={<JobApplications />} />
+
                                     <Route
                                         path="/job-applications"
                                         element={<PrivateRoute isLoggedIn={isLoggedIn}><JobApplications /></PrivateRoute>}

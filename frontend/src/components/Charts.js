@@ -4,8 +4,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { ResponsiveContainer } from 'recharts';
 import styled from 'styled-components';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
-
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + '/api';
+import { REACT_APP_BACKEND_URL } from '../config';
 
 // Styled Components
 const Container = styled.div`

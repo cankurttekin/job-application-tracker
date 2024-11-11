@@ -3,15 +3,11 @@ import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
 
 const Button = styled.button`
-    margin-right: 2px;
-    margin-left: 0;
     padding: 4px;
     background-color: transparent;
     color: black;
-    //border: 1px solid #333;
-    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     &:hover {
-        background-color: #f5f5f5;
+        background-color: #dedede;
     }
 `;
 

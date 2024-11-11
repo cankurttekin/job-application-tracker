@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+import { REACT_APP_BACKEND_URL } from '../config';
 
 export const login = async (username, password) => {
   try {

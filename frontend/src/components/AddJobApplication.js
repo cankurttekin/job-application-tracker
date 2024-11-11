@@ -4,8 +4,15 @@ import Modal from 'react-modal';
 import '../styles/AddJobApplication.css';
 import { useNavigate } from 'react-router-dom';
 //import styled from "styled-components";
+import { REACT_APP_BACKEND_URL } from '../config';
+import styled from "styled-components";
 
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + '/api';
+const styles = {
+  header: {
+    textAlign: 'center',
+    marginBottom: '10px',
+  },
+};
 
 const AddJobApplication = ({ isOpen, onClose }) => {
   const [companyName, setCompanyName] = useState('');
@@ -51,8 +58,9 @@ const AddJobApplication = ({ isOpen, onClose }) => {
 
       if (response.status === 201) {
         onClose(); // Close modal on success
-        navigate('/job-applications'); // Redirect to job applications page on success
         resetForm(); // Clear the form fields
+        navigate('/job-applications'); // Redirect to job applications page on success
+        window.location.reload(); // Refactoring needed
       }
     } catch (error) {
       console.error('Error adding job application:', error);
@@ -183,14 +191,5 @@ const AddJobApplication = ({ isOpen, onClose }) => {
       </Modal>
   );
 };
-
-const styles = {
-  header: {
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-
-};
-
 
 export default AddJobApplication;

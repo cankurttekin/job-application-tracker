@@ -26,32 +26,20 @@ const Info = styled.h2`
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
   background-color: #f9f9f9;
 
   &:focus {
-    outline: none;
-    border-color: #007bff;
     background-color: #fff;
   }
 `;
 
 const Button = styled.button`
-  background-color: #333;
   margin: 0;
-
-  &:hover {
-    background-color: black;
-  }
+  width: 100%;
 `;
 
 const Error = styled.p`
-  color: red;
+  color: #eb5b5b;
   margin-top: 10px;
   text-align: center;
 `;

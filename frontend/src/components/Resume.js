@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { REACT_APP_BACKEND_URL } from '../config';
 
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL + "/api";
+const COVER_LETTER_LENGTH = 2000;
+const SUMMARY_LENGTH = 255;
 
 // Styled Components for Layout
 const Container = styled.div`
@@ -24,11 +26,41 @@ const SectionTitle = styled.h3`
 `;
 
 const Skill = styled.span`
-    background: #e0e0e0;
+    //background: #e0e0e0;
     padding: 8px 8px;
     margin: 0 4px 4px 0;
     border-radius: 6px;
     display: inline-block;
+`;
+
+const SkillInput = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+
+    /* Pseudo element for the bullet point */
+    &::before {
+        content: '🞙';
+        color: black;  /* Color of the bullet point */
+        margin-right: 10px;  /* Space between bullet and input */
+    }
+
+    input {
+        border: none;
+        //padding: 5px;
+        padding-left: 5px;
+        padding-bottom: 2px;
+        //font-size: 14px;
+        font-size: 18px;
+        width: 180px;
+        outline: none;
+        //border-radius: 5px;
+        background-color: transparent;
+
+        &:focus {
+            //border-color: #007bff;
+        }
+    }
 `;
 
 const Resume = () => {
@@ -72,7 +104,12 @@ const Resume = () => {
         const { name, value } = e.target;
 
         // For coverLetter, enforce the length limit
-        if (name === "coverLetter" && value.length > 2000) {
+        if (name === "coverLetter" && value.length > COVER_LETTER_LENGTH) {
+            return; // Prevents updating the state if the limit is exceeded
+        }
+
+        // For summary, enforce the length limit
+        if (name === "summary" && value.length > SUMMARY_LENGTH) {
             return; // Prevents updating the state if the limit is exceeded
         }
 
@@ -162,8 +199,9 @@ const Resume = () => {
                     placeholder="Write a brief summary about yourself..."
                     value={resumeData.summary}
                     onChange={handleChange}
-                    rows={4}
+                    rows={3}
                 />
+                <p style={{color: '#4a4a4a',}}>{SUMMARY_LENGTH - resumeData.summary.length} characters remaining</p> {/* Character counter */}
             </Section>
 
             <Section>
@@ -209,7 +247,6 @@ const Resume = () => {
                 ))}
                 <button type="button" onClick={addEducation}>Add Education</button>
             </Section>
-
 
             <Section>
                 <SectionTitle>Work Experience</SectionTitle>
@@ -259,19 +296,22 @@ const Resume = () => {
                 <SectionTitle>Skills</SectionTitle>
                 {resumeData.skills.map((skill, index) => (
                     <Skill key={index}>
-                        <input
-                            type="text"
-                            placeholder="Skill"
-                            value={skill}
-                            onChange={(e) => handleSkillChange(e, index)}
-                        />
+                        <SkillInput>
+                            <input
+                                type="text"
+                                value={skill}
+                                onChange={(e) => handleSkillChange(e, index)}
+
+                                placeholder={`Skill`}
+                            />
+                        </SkillInput>
                     </Skill>
                 ))}
                 <button type="button" onClick={addSkill}>Add Skill</button>
             </Section>
 
             <Section>
-                <SectionTitle>Cover Letter</SectionTitle>
+            <SectionTitle>Cover Letter</SectionTitle>
                 <textarea
                     name="coverLetter"
                     placeholder="Cover letter..."
@@ -279,7 +319,7 @@ const Resume = () => {
                     onChange={handleChange}
                     rows={5}
                 />
-                <p>{2000 - resumeData.coverLetter.length} characters remaining</p> {/* Character counter */}
+                <p style={{color: '#4a4a4a',}}>{COVER_LETTER_LENGTH - resumeData.coverLetter.length} characters remaining</p> {/* Character counter */}
             </Section>
 
             <button type="submit" onClick={handleSubmit}>Submit Resume</button>

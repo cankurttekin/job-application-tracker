@@ -16,12 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 
 const Button = styled.button`
-    margin-right: 0;
-    margin-left: 0;
+    margin-top: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    &:hover {
-        background-color: #333;
-    }
 `;
 
 const Home = () => {
