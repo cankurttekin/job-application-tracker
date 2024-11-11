@@ -31,20 +31,6 @@ public class JwtProvider {
                 .compact();
     }
 
-    // Overloaded method for generating token with username directly for Google Auth
-    public String generateToken(String username) {
-        Date now = new Date();
-        Date expire = new Date(now.getTime() + jwtExpirationInMs);
-        log.info("Creating JWT for Google user: " + username);
-        log.info("Signing with key: " + secretKey);
-        return Jwts.builder()
-                .subject(username)
-                .issuedAt(now)
-                .expiration(expire)
-                .signWith(secretKey)
-                .compact();
-    }
-
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey)

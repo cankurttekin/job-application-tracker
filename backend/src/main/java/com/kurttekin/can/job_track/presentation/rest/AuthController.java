@@ -16,11 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -81,25 +77,5 @@ public class AuthController {
     public String verifyEmail(@RequestParam("token") String token) {
         boolean isValid = verificationService.verifyUser(token);
         return isValid ? "Email verified successfully. You can now log in." : "Invalid or expired verification token.";
-    }
-
-    @GetMapping("/oauth2/callback/google")
-    public ResponseEntity<?> googleLogin(OAuth2AuthenticationToken authenticationToken) {
-        // Extract the email from the OAuth2 token
-        String email = authenticationToken.getPrincipal().getAttribute("email");
-
-        // Check if the user already exists
-        Optional<User> optionalUser = userService.findUserByEmail(email);
-        User user;
-        if (optionalUser.isEmpty()) {
-            // Register new user with information from Google
-            user = userService.registerGoogleUser(email);
-        } else {
-            user = optionalUser.get();
-        }
-
-        // Generate a JWT token for the authenticated user
-        String jwt = jwtProvider.generateToken(user.getUsername());
-        return ResponseEntity.ok(new JwtResponse(jwt));
     }
 }

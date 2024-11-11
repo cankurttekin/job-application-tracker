@@ -9,7 +9,5 @@ public interface UserService {
     void registerUser(UserRegistrationRequest userRegistrationRequest);
     Optional<User> findUserById(Long userId);
     Optional<User> findUserByUsername(String username);
-    Optional<User> findUserByEmail(String email);
-    User registerGoogleUser(String email);
 }
 
