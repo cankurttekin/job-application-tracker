@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; // Import the context
 
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -56,6 +59,20 @@ const Error = styled.p`
   text-align: center;
 `;
 
+const GoogleButton = styled.button`
+  background-color: #4285f4;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  
+  &:hover {
+    background-color: #357ae8;
+  }
+`;
+
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -81,6 +98,11 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    // Redirect to the backend Google OAuth2 login route
+    window.location.href = `${REACT_APP_BACKEND_URL}/auth/oauth2/callback/google`;
+  };
+
   return (
       <Container>
         <FormWrapper>
@@ -102,6 +124,8 @@ const Login = () => {
             <Button type="submit">Login</Button>
             {error && <Error>{error}</Error>} {/* Display error message */}
           </form>
+          {/* Google login button */}
+          <GoogleButton onClick={handleGoogleLogin}>Log in with Google</GoogleButton>
         </FormWrapper>
       </Container>
   );

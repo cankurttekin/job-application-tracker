@@ -12,7 +12,7 @@ import Charts from './components/Charts';
 import AITools from './components/AITools';
 import Resume from "./components/Resume";
 import MainContent from './components/layout/MainContent';
-
+import GoogleCallback from './components/GoogleCallback';  // Import the Google callback component
 const PrivateRoute = ({ isLoggedIn, children }) => {
     return isLoggedIn ? children : <Navigate to="/login" />;
 };
@@ -35,6 +35,7 @@ const App = () => {
                                     <Route path="/" element={isLoggedIn ? <Navigate to="/job-applications" /> : <Home />} />
                                     <Route path="/register" element={<Register />} />
                                     <Route path="/login" element={<Login />} />
+                                    <Route path="/oauth2/callback/google" element={<GoogleCallback />} />
                                     <Route
                                         path="/job-applications"
                                         element={<PrivateRoute isLoggedIn={isLoggedIn}><JobApplications /></PrivateRoute>}
