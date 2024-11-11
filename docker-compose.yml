@@ -6,11 +6,23 @@ services:
     build: ./backend
     ports:
       - "8080:8080"
+      - "443:443"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/job_app_tracker
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APP_URL: ${APP_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
+      KEY_STORE_ALIAS: ${KEY_STORE_ALIAS}
+      KEY_STORE_PASS: ${KEY_STORE_PASS}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      PORT: ${PORT}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+
     depends_on:
       - db
     networks:
@@ -20,8 +32,8 @@ services:
     image: postgres:14
     environment:
       POSTGRES_DB: job_app_tracker
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     ports:
       - "5432:5432"
     volumes:
