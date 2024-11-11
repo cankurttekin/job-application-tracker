@@ -63,6 +63,7 @@
 
 /* Media query for small devices */
 @media (max-width: 768px) {
+
     .big-text {
         font-size: 1.8em;
     }
@@ -89,8 +90,7 @@
     }
 
     .register-button {
-        width: 100%; /* Full-width button on mobile */
-        padding: 15px;
+        padding: 12px;
     }
 }
 
@@ -159,8 +159,8 @@ a:hover {
 
 .screenshot-section {
     display: flex;
-    align-items: flex-start; /* Align items to the start */
-    margin: 6px;
+    align-items: center; /* Align items to the start */
+    margin: 16px;
     text-align: left;
 }
 
@@ -172,14 +172,14 @@ a:hover {
 
 /* Screenshot styling */
 .screenshot {
-    width: 100%; /* Full width within its container */
+    width: 80%; /* Full width within its container */
     height: auto;
 }
 
 /* Text container */
 .screenshot-text {
     flex: 1; /* Allow text to take remaining space */
-    max-width: 34%; /* Control the maximum width */
+    max-width: 38%; /* Control the maximum width */
 }
 
 @media (max-width: 768px) {
@@ -192,6 +192,12 @@ a:hover {
     .screenshot-container {
         max-width: 100%; /* Full width on small screens */
         margin: 0 0 20px 0; /* Space below the image */
+        transform: translateX(-140%); /* Shift image left by 25% */
+    }
+
+    .screenshot {
+        width: 250%; /* Increase width to maintain visibility */
+        height: auto;
     }
 
     .screenshot-text {
