@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; // Import the context
-import TurnstileWidget from './TurnstileWidget';
 import {REACT_APP_TURNSTILE_SITE_KEY} from "../config";
 import Turnstile from "react-turnstile";
 
@@ -98,7 +97,7 @@ const Login = () => {
             />
             <Turnstile
                 sitekey={REACT_APP_TURNSTILE_SITE_KEY}
-                onVerify={(token) => { console.log('Turnstile token:', token); setTurnstileToken(token)}}
+                onVerify={(token) => { setTurnstileToken(token) }}
             />
               <Button type="submit">Login</Button>
               {error && <Error>{error}</Error>} {/* Display error message */}

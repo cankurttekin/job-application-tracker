@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { register as registerService } from '../services/authService'; // Import the register function from authService
-import TurnstileWidget from './TurnstileWidget';
+import {REACT_APP_TURNSTILE_SITE_KEY} from "../config";
+import Turnstile from "react-turnstile";
 
-// Styled components for layout and styling
 const Container = styled.div`
     display: flex;
     justify-content: center;
@@ -108,10 +108,6 @@ const Register = () => {
         setIsPasswordFocused(false);
     };
 
-    const handleTurnstileChange = (token) => {
-        setTurnstileToken(token);
-    };
-
     // Handle form submit
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -194,7 +190,10 @@ const Register = () => {
                             </PasswordStrengthItem>
                         </PasswordStrengthFeedback>
                     )}
-
+                    <Turnstile
+                        sitekey={REACT_APP_TURNSTILE_SITE_KEY}
+                        onVerify={(token) => { setTurnstileToken(token) }}
+                    />
                     <Button type="submit" disabled={!Object.values(passwordFeedback).every(Boolean)}>
                         Register
                     </Button>
