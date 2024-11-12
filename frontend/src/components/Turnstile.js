@@ -1,39 +1,45 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Turnstile = ({ siteKey, onVerify }) => {
+    const [captchaLoaded, setCaptchaLoaded] = useState(false);
+    const captchaRef = useRef(null);
+
     useEffect(() => {
-        // Check if Turnstile script is already loaded
-        if (!document.querySelector("script[src='https://challenges.cloudflare.com/turnstile/v0/api.js']")) {
-            const script = document.createElement("script");
-            script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+        // Ensure the script is loaded and Turnstile is initialized
+        const handleLoad = () => {
+            setCaptchaLoaded(true);
+        };
+
+        if (window.turnstile && window.turnstile.render) {
+            handleLoad();
+        } else {
+            // Check if the script is loaded
+            const script = document.createElement('script');
+            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
             script.async = true;
             script.defer = true;
+            script.onload = handleLoad;
             document.body.appendChild(script);
         }
 
-        // Initialize Turnstile widget after script loads
-        const onLoad = () => {
-            if (window.turnstile) {
-                window.turnstile.render('#turnstile-widget', {
+        return () => {
+            // Cleanup: we don't need to handle removal of the script as it's loaded only once globally
+        };
+    }, []);
+
+    useEffect(() => {
+        if (captchaLoaded && siteKey) {
+            // Render the Turnstile widget after the script has loaded
+            if (captchaRef.current) {
+                window.turnstile.render(captchaRef.current, {
                     sitekey: siteKey,
-                    callback: onVerify,
+                    callback: onVerify, // callback when captcha is successfully verified
                 });
             }
-        };
-
-        // Check if script has already loaded
-        if (window.turnstile) {
-            onLoad();
-        } else {
-            window.addEventListener("load", onLoad);
         }
+    }, [captchaLoaded, siteKey, onVerify]);
 
-        return () => {
-            window.removeEventListener("load", onLoad);
-        };
-    }, [siteKey, onVerify]);
-
-    return <div id="turnstile-widget" className="cf-turnstile"></div>;
+    return <div ref={captchaRef} />;
 };
 
 export default Turnstile;

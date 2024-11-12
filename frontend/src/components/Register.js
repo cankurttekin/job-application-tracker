@@ -77,7 +77,7 @@ const Register = () => {
         specialChar: false,
     });
     const [isPasswordFocused, setIsPasswordFocused] = useState(false); // Track if the password field is focused
-    const [turnstileToken, setTurnstileToken] = useState(null);
+    const [turnstileToken, setTurnstileToken] = useState('');
     const navigate = useNavigate();
 
     // Password validation function
