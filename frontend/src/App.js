@@ -12,6 +12,7 @@ import Charts from './components/Charts';
 import AITools from './components/AITools';
 import Resume from "./components/Resume";
 import MainContent from './components/layout/MainContent';
+import ExportData from "./components/ExportData";
 
 const PrivateRoute = ({ isLoggedIn, children }) => {
     return isLoggedIn ? children : <Navigate to="/login" />;
@@ -47,6 +48,7 @@ const App = () => {
                                     <Route path="/charts" element={<PrivateRoute isLoggedIn={isLoggedIn}><Charts /></PrivateRoute>} />
                                     <Route path="/ai-tools" element={<PrivateRoute isLoggedIn={isLoggedIn}><AITools /></PrivateRoute>} />
                                     <Route path="/resume" element={<PrivateRoute isLoggedIn={isLoggedIn}><Resume /></PrivateRoute>} />
+                                    <Route path="/export" element={<PrivateRoute isLoggedIn={isLoggedIn}><ExportData /></PrivateRoute>} />
                                 </Routes>
                             )}
                         </AuthContext.Consumer>

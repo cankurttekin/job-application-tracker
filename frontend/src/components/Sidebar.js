@@ -166,7 +166,7 @@ const Navbar = () => {
                             <span className="material-icons">assignment_ind</span>
                             Resume
                         </NavbarItem>
-                        <NavbarItem onClick={() => handleNavigation('/exportData')}>
+                        <NavbarItem onClick={() => handleNavigation('/export')}>
                             <span className="material-icons">file_download</span>
                             Export
                         </NavbarItem>
