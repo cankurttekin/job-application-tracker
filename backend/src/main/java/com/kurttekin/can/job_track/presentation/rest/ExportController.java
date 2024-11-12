@@ -1,8 +1,9 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
-import com.kurttekin.can.job_track.application.service.ExportService;
+import com.kurttekin.can.job_track.application.service.ExportServiceImpl;
 import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 import com.kurttekin.can.job_track.domain.model.user.User;
+import com.kurttekin.can.job_track.domain.service.ExportService;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ExportController {
     @Autowired
     private UserService userService;
 
-    public ExportController(ExportService exportService, JobApplicationService jobApplicationService) {
+    public ExportController(ExportServiceImpl exportService, JobApplicationService jobApplicationService) {
         this.exportService = exportService;
         this.jobApplicationService = jobApplicationService;
     }

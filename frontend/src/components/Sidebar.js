@@ -34,7 +34,7 @@ const NavbarItems = styled.div`
         left: 0;
         right: 0;
         background-color: white;
-        padding: 10px 0;
+        padding: 10px 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         z-index: 1001;
     }
@@ -96,7 +96,7 @@ const AppName = styled.div`
     align-items: center;
     cursor: pointer;
     margin-right: 20px;
-    margin-left: 10px;
+    margin-left: 2px;
 `;
 
 const Navbar = () => {

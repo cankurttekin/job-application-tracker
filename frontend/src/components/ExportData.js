@@ -8,7 +8,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin: 20px auto;
 `;
 
 const Title = styled.h2`
@@ -55,10 +55,10 @@ const ExportData = () => {
         <Container>
             <Title>Export Your Data</Title>
             <p>Choose the format you would like to export your data:</p>
-            <FormatButton onClick={() => handleExport('csv')}>Export as CSV</FormatButton>
+            <FormatButton onClick={() => handleExport('csv')}>CSV</FormatButton>
             Will be implemented:
-            <FormatButton onClick={() => handleExport('pdf')}>Export as PDF</FormatButton>
-            <FormatButton onClick={() => handleExport('json')}>Export as JSON</FormatButton>
+            <FormatButton onClick={() => handleExport('pdf')}>PDF</FormatButton>
+            <FormatButton onClick={() => handleExport('json')}>JSON</FormatButton>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </Container>
     );
