@@ -53,8 +53,9 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const [turnstileToken, setTurnstileToken] = useState(null);
 
-  const handleTurnstileChange = (token) => {
-    setTurnstileToken(token);
+  const handleTurnstileChange = (turnstileToken) => {
+    setTurnstileToken(turnstileToken);
+    console.log('Turnstile token:', turnstileToken);
   };
 
   const handleSubmit = async (e) => {
