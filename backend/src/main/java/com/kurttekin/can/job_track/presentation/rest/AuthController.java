@@ -2,7 +2,6 @@ package com.kurttekin.can.job_track.presentation.rest;
 
 import com.kurttekin.can.job_track.application.dto.ErrorResponse;
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
-import com.kurttekin.can.job_track.application.service.TurnstileVerificationService;
 import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.service.VerificationService;
@@ -35,19 +34,9 @@ public class AuthController {
     @Autowired
     private VerificationService verificationService;
 
-    @Autowired
-    private TurnstileVerificationService turnstileVerificationService;
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest,
-                                   @RequestParam String turnstileToken) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // Verify Turnstile token
-            boolean isTokenValid = turnstileVerificationService.verifyToken(turnstileToken);
-            if (!isTokenValid) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("CAPTCHA failed."));
-            }
-
             User user = userService.findUserByUsername(loginRequest.getUsername())
                     .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
@@ -75,14 +64,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest userRequest,
-                                               @RequestParam String turnstileToken) {
+    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest userRequest) {
         try {
-            // Verify Turnstile token
-            boolean isTokenValid = turnstileVerificationService.verifyToken(turnstileToken);
-            if (!isTokenValid) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("CAPTCHA failed.");
-            }
             userService.registerUser(userRequest);
             return ResponseEntity.ok("User registered successfully! Please verify your email before logging in.");
         } catch (Exception e) {

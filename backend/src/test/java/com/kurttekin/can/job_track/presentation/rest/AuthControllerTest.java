@@ -4,7 +4,6 @@ import com.kurttekin.can.job_track.application.dto.JwtResponse;
 import com.kurttekin.can.job_track.application.dto.LoginRequest;
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
 import com.kurttekin.can.job_track.application.service.EmailService;
-import com.kurttekin.can.job_track.application.service.TurnstileVerificationService;
 import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.infrastructure.security.jwt.JwtProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,13 +48,10 @@ class AuthControllerTest {
     @Mock
     private EmailService emailService;
 
-    @Mock
-    private TurnstileVerificationService turnstileVerificationService;
-
     private LoginRequest loginRequest;
     private UserRegistrationRequest userRegistrationRequest;
     private String token;
-    private String turnstileToken;
+
 
     @BeforeEach
     public void setUp() {
@@ -64,19 +60,14 @@ class AuthControllerTest {
 
         userRegistrationRequest = new UserRegistrationRequest("testuser", "testuser@test.com", "testpassword");
         token = "test.jwt.token";
-        turnstileToken= "test.jwt.turnstile";
     }
 
     @Test
     public void testLogin_InvalidCredentials() {
-        // Mock Turnstile verification logic
-        //when(turnstileVerificationService.verifyToken(anyString())).thenReturn(true);
-        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
-
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new BadCredentialsException("Invalid credentials"));
 
-        ResponseEntity<?> response = authController.login(loginRequest, turnstileToken);
+        ResponseEntity<?> response = authController.login(loginRequest);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertEquals("Invalid credentials", response.getBody());
@@ -91,10 +82,8 @@ class AuthControllerTest {
         doNothing().when(userService).registerUser(any(UserRegistrationRequest.class));
         doNothing().when(emailService).sendVerificationEmail(anyString(),anyString(), anyString()); // Mock email sending
 
-        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
-
         // Call the registerUser method in the controller
-        ResponseEntity<String> response = authController.registerUser(userRegistrationRequest, turnstileToken);
+        ResponseEntity<String> response = authController.registerUser(userRegistrationRequest);
 
         // Check the status and response body
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -105,9 +94,7 @@ class AuthControllerTest {
     public void testRegisterUser_Failure() {
         doThrow(new RuntimeException("Registration failed")).when(userService).registerUser(any(UserRegistrationRequest.class));
 
-        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
-
-        ResponseEntity<String> response = authController.registerUser(userRegistrationRequest, turnstileToken);
+        ResponseEntity<String> response = authController.registerUser(userRegistrationRequest);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Registration failed", response.getBody());

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { register as registerService } from '../services/authService'; // Import the register function from authService
-import Turnstile from "./Turnstile";
-import {REACT_APP_TURNSTILE_SITE_KEY} from "../config";
 
 // Styled components for layout and styling
 const Container = styled.div`
@@ -77,7 +75,7 @@ const Register = () => {
         specialChar: false,
     });
     const [isPasswordFocused, setIsPasswordFocused] = useState(false); // Track if the password field is focused
-    const [turnstileToken, setTurnstileToken] = useState('');
+
     const navigate = useNavigate();
 
     // Password validation function
@@ -126,13 +124,8 @@ const Register = () => {
             return;
         }
 
-        if (!turnstileToken) {
-            setError("Please complete the CAPTCHA.");
-            return;
-        }
-
         try {
-            await registerService(username, email, password, turnstileToken); // Call the register function
+            await registerService(username, email, password); // Call the register function
             setError('Registration successful. Please verify your email before logging in.');
             setTimeout(() => navigate('/login'), 1500); // Redirect after 1.5 seconds
         } catch (err) {
@@ -192,10 +185,6 @@ const Register = () => {
                         </PasswordStrengthFeedback>
                     )}
 
-                    <Turnstile
-                        siteKey={REACT_APP_TURNSTILE_SITE_KEY}
-                        onVerify={(token) => setTurnstileToken(token)}
-                    />
                     <Button type="submit" disabled={!Object.values(passwordFeedback).every(Boolean)}>
                         Register
                     </Button>

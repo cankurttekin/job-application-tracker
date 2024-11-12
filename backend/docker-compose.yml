@@ -21,7 +21,6 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       MAIL_USER: ${MAIL_USER}
       MAIL_PASS: ${MAIL_PASS}
-      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
 
     depends_on:
       - db
