@@ -7,6 +7,7 @@ const TurnstileWidget = ({ onChange }) => {
 
     const handleTurnstileChange = (turnstileToken) => {
         setTurnstileToken(turnstileToken);
+        console.log('Turnstile widget received token:', turnstileToken);
         if (onChange) {
             onChange(turnstileToken); // Pass token back to parent component
         }
@@ -16,7 +17,8 @@ const TurnstileWidget = ({ onChange }) => {
         <div>
             <Turnstile
                 sitekey={REACT_APP_TURNSTILE_SITE_KEY}
-                onChange={handleTurnstileChange}
+                //onChange={handleTurnstileChange}
+                onVerify={handleTurnstileChange}
             />
         </div>
     );

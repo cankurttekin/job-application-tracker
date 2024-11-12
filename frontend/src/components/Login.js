@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; // Import the context
 import TurnstileWidget from './TurnstileWidget';
+import {REACT_APP_TURNSTILE_SITE_KEY} from "../config";
+import Turnstile from "react-turnstile";
 
 const Container = styled.div`
   display: flex;
@@ -53,11 +55,6 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const [turnstileToken, setTurnstileToken] = useState(null);
 
-  const handleTurnstileChange = (turnstileToken) => {
-    setTurnstileToken(turnstileToken);
-    console.log('Turnstile token:', turnstileToken);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Reset error state
@@ -99,9 +96,12 @@ const Login = () => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />
-            <TurnstileWidget onChange={handleTurnstileChange} />
-            <Button type="submit">Login</Button>
-            {error && <Error>{error}</Error>} {/* Display error message */}
+            <Turnstile
+                sitekey={REACT_APP_TURNSTILE_SITE_KEY}
+                onVerify={(token) => { console.log('Turnstile token:', token); setTurnstileToken(token)}}
+            />
+              <Button type="submit">Login</Button>
+              {error && <Error>{error}</Error>} {/* Display error message */}
           </form>
         </FormWrapper>
       </Container>
