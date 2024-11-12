@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; // Import the context
+import TurnstileWidget from './TurnstileWidget';
 
 const Container = styled.div`
   display: flex;
@@ -50,6 +51,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // To store and display error messages
   const { login } = useContext(AuthContext);
+  const [turnstileToken, setTurnstileToken] = useState(null);
+
+  const handleTurnstileChange = (token) => {
+    setTurnstileToken(token);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,8 +67,13 @@ const Login = () => {
       return;
     }
 
+    if (!turnstileToken) {
+      setError("Please complete the CAPTCHA.");
+      return;
+    }
+
     try {
-      await login(username, password); // Call the login function
+      await login(username, password, turnstileToken); // Call the login function
       navigate('/job-applications'); // Redirect after successful login
     } catch (error) {
       setError(error.message); // Set the error message
@@ -87,6 +98,7 @@ const Login = () => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />
+            <TurnstileWidget onChange={handleTurnstileChange} />
             <Button type="submit">Login</Button>
             {error && <Error>{error}</Error>} {/* Display error message */}
           </form>

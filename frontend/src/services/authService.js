@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { REACT_APP_BACKEND_URL } from '../config';
 
-export const login = async (username, password) => {
+export const login = async (username, password, turnstileToken) => {
   try {
     const response = await axios.post(
         `${REACT_APP_BACKEND_URL}/auth/login`,
-        { username, password },
+        { username, password, turnstileToken },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -33,8 +33,8 @@ export const login = async (username, password) => {
   }
 };
 
-export const register = async (username, email, password) => {
-  return axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, { username, email, password });
+export const register = async (username, email, password, turnstileToken) => {
+  return axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, { username, email, password, turnstileToken });
 };
 
 export const logout = () => {

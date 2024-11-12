@@ -1,1 +1,2 @@
 export const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL+'/api';
+export const REACT_APP_TURNSTILE_SITE_KEY = process.env.REACT_APP_TURNSTILE_SITE_KEY;
