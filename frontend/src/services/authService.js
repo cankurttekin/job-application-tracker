@@ -4,8 +4,8 @@ import { REACT_APP_BACKEND_URL } from '../config';
 export const login = async (username, password, turnstileToken) => {
   try {
     const response = await axios.post(
-        `${REACT_APP_BACKEND_URL}/auth/login`,
-        { username, password, turnstileToken },
+        `${REACT_APP_BACKEND_URL}/auth/login?turnstileToken=${turnstileToken}`,
+        { username, password },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const login = async (username, password, turnstileToken) => {
 };
 
 export const register = async (username, email, password, turnstileToken) => {
-  return axios.post(`${REACT_APP_BACKEND_URL}/auth/register`, { username, email, password, turnstileToken });
+  return axios.post(`${REACT_APP_BACKEND_URL}/auth/register?turnstileToken=${turnstileToken}`, { username, email, password });
 };
 
 export const logout = () => {
