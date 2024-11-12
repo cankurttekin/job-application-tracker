@@ -18,9 +18,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (username, password) => {
+  const login = async (username, password, turnstileToken) => {
     try {
-      const response = await loginService(username, password);
+      const response = await loginService(username, password, turnstileToken);
       const { token } = response;
 
       if (token) {
