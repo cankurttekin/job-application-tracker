@@ -4,30 +4,28 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import styled from "styled-components";
 import { REACT_APP_BACKEND_URL } from '../config';
-import { Done, Schedule, Cancel, CheckCircle, Work } from '@mui/icons-material'; // Import the icons
 
 const statusIcons = {
-  Applied: <Schedule />,
-  Interviewing: <Work />,
-  Rejected: <Cancel />,
-  Offered: <CheckCircle />,
-  Hired: <Done />,
+  Applied: 'schedule',
+  Interviewing: 'work',
+  Rejected: 'cancel',
+  Offered: 'check_circle',
+  Hired: 'done',
 };
 
 const StatusCell = styled.td`
-  //padding: 10px;
-  //border: 0 solid #ddd;
   color: #494742;
   padding: 10px;
-  //text-align: center;
 `;
 
 const PlatformCell = styled.td`
-  //padding: 10px;
-  //border: 1px solid #ddd;
   padding: 10px;
   color: white;
-  //text-align: center; 
+`;
+
+const CommentCell = styled.td`
+  padding: 10px;
+  color: grey;
 `;
 
 // Wrapper for text with background color
@@ -38,25 +36,10 @@ const TextWrapper = styled.span`
   display: inline-block;
 `;
 
-const StarCell = styled.td`
-  cursor: pointer;
-`;
 
-const Star = styled.div`
-  font-size: 24px;
-  color: ${({ starred }) => (starred ? 'gold' : 'grey')};
-  cursor: pointer;
-`;
-
-const CommentCell = styled.td`
-  padding: 10px;
-  color: grey;
-  cursor: pointer;
-`;
 
 const Comment = styled.div`
   padding: 10px;
-  margin-left: 10px;
   display: flex;
   flex-direction: column;
   font-style: oblique;
@@ -73,7 +56,7 @@ const getStatusBackgroundColor = (status) => {
     case 'rejected':
       return '#ffe2dd';
     case 'ats reject':
-      return '#702f2d';
+      return '#b64c49';
     case 'hired':
       return '#dbeddb';
     default:
@@ -98,7 +81,6 @@ const getPlatformBackgroundColor = (platform) => {
     case 'e-mail':
       return 'grey';
     default:
-      //return 'transparent';
       return 'black';
   }
 };
@@ -115,10 +97,8 @@ const Table = styled.table`
   }
 `;
 
-
 const KanbanBoard = styled.div`
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
@@ -135,7 +115,7 @@ const styles = {
     padding: '10px',
     marginBottom: '20px',
     borderRadius: '26px',
-    border: '1px solid #ccc',
+    border: '1px solid #ebebea',
     width: '100%',
   },
   tableHeader: {
@@ -153,8 +133,6 @@ const styles = {
   tableCell: {
     padding: '10px',
     border: '1px solid #ebebea',
-
-//border: '1px solid #ddd',
   },
   deleteIcon: {
     color: 'grey',
@@ -164,7 +142,6 @@ const styles = {
     backgroundColor: '#f9f9f9',
   },
 };
-
 
 const Column = styled.div`
   flex: 1;
@@ -183,10 +160,8 @@ const Header = styled.h3`
   font-weight: normal;
 `;
 
-
 const KanbanCard = styled.div`
-  background: #ffffff;
-  border: 1px solid #ddd;
+  border: 1px solid #ebebea;
   border-radius: 10px;
   margin-bottom: 15px;
   padding: 15px;
@@ -199,7 +174,7 @@ const Card = styled.div`
   @media (max-width: 768px) {
     display: block;
     background: #ffffff;
-    border: 1px solid #ddd;
+    border: 1px solid #ebebea;
     border-radius: 10px;
     margin-bottom: 15px;
     padding: 15px;
@@ -367,10 +342,14 @@ const JobApplications = () => {
           {viewMode === 'table' ? (
               filteredApplications.map((app) => (
                   <Card key={app.id} onClick={() => handleRowClick(app)}>
-                    <p>test</p>
-                    <Star starred={app.starred} onClick={(e) => handleToggleStar(app.id, e)}>
-                      {app.starred ? '★' : '☆'}
-                    </Star>
+                    <div style={{cursor:"pointer"}} starred={app.starred} onClick={(e) => handleToggleStar(app.id, e)}>
+                      {app.starred ? (
+                          <span className="material-icons" style={{color: 'gold'}}>star</span>
+                      ) : (
+                          <span className="material-icons">star_border</span>
+                      )}
+
+                    </div>
                     <CardField>
                       <div className="label">Company:</div>
                       <div className="value">{app.companyName}</div>
@@ -456,13 +435,13 @@ const JobApplications = () => {
           {filteredApplications.map(app => (
               <React.Fragment key={app.id}>
                 <tr style={styles.tableRow} onClick={() => handleRowClick(app)}>
-                  <StarCell onClick={(e) => handleToggleStar(app.id, e)}>
+                  <td onClick={(e) => handleToggleStar(app.id, e)}>
                     {app.starred ? (
                         <span className="material-icons" style={{color: 'gold'}}>star</span>
                     ) : (
                         <span className="material-icons">star_border</span>
                     )}
-                  </StarCell>
+                  </td>
                   <td style={styles.tableCell}>{app.companyName}</td>
                   <td style={styles.tableCell}>{app.jobTitle}</td>
                   <StatusCell>
@@ -519,7 +498,9 @@ const JobApplications = () => {
                     <Column key={status}>
                       <Header color={getStatusBackgroundColor(status)}                      >
             <span style={{ display: 'flex', alignItems: 'center' }}>
-              {React.cloneElement(statusIcons[status], { sx: { fontSize: '1rem' } })}
+<span className="material-icons" style={{ fontSize: '1rem', marginRight: '8px' }}>
+      {statusIcons[status]}
+    </span>
               {status}
             </span>
                       </Header>
