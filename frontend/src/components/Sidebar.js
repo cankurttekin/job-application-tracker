@@ -156,11 +156,11 @@ const Navbar = () => {
                         </NavbarItem>
                         <NavbarItem onClick={() => handleNavigation('/charts')}>
                             <span className="material-icons">bar_chart</span>
-                            Charts
+                            Stats
                         </NavbarItem>
                         <NavbarItem onClick={() => handleNavigation('/ai-tools')}>
                             <span className="material-icons">build</span>
-                            AI Tools
+                            AI
                         </NavbarItem>
                         <NavbarItem onClick={() => handleNavigation('/resume')}>
                             <span className="material-icons">assignment_ind</span>

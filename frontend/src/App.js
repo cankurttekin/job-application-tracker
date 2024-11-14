@@ -13,6 +13,7 @@ import AITools from './components/AITools';
 import Resume from "./components/Resume";
 import MainContent from './components/layout/MainContent';
 import ExportData from "./components/ExportData";
+import Dashboard from "./components/Dashboard";
 
 const PrivateRoute = ({ isLoggedIn, children }) => {
     return isLoggedIn ? children : <Navigate to="/login" />;

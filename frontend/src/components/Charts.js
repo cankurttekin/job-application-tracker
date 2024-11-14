@@ -5,6 +5,7 @@ import { ResponsiveContainer } from 'recharts';
 import styled from 'styled-components';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import { REACT_APP_BACKEND_URL } from '../config';
+import Dashboard from "./Dashboard";
 
 const Container = styled.div`
     display: flex;
@@ -44,6 +45,7 @@ const GitHubContributionsChart = ({ applicationsByDay }) => {
     }).reverse();
 
     return (
+
         <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(53, 20px)',
@@ -170,14 +172,17 @@ const Charts = () => {
     return (
         <Container>
             <Title>Your Stats</Title>
-            <Header>{totalApplications} Job Applications in the last year</Header>
+            <Dashboard></Dashboard>
             <ChartWrapper>
+                <Header>{totalApplications} Applications in the last year</Header>
+
                 <ResponsiveContainer width="100%">
                     <GitHubContributionsChart applicationsByDay={applicationsByDay} />
                 </ResponsiveContainer>
             </ChartWrapper>
-            <Header>Positions</Header>
-            <JobPositionPieChart jobPositions={jobPositions} />
+            {/*<Header>Positions</Header>*/}
+            <JobPositionPieChart jobPositions={jobPositions}>
+            </JobPositionPieChart>
         </Container>
     );
 };
