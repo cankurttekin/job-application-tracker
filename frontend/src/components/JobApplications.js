@@ -1,25 +1,41 @@
+// THIS MESS NEEDS REFACTORING ASAP
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import styled from "styled-components";
 import { REACT_APP_BACKEND_URL } from '../config';
+import { Done, Schedule, Cancel, CheckCircle, Work } from '@mui/icons-material'; // Import the icons
+
+const statusIcons = {
+  Applied: <Schedule />,
+  Interviewing: <Work />,
+  Rejected: <Cancel />,
+  Offered: <CheckCircle />,
+  Hired: <Done />,
+};
 
 const StatusCell = styled.td`
+  //padding: 10px;
+  //border: 0 solid #ddd;
+  color: #494742;
   padding: 10px;
-  border: 0 solid #ddd;
-  background-color: ${({ status }) => getStatusBackgroundColor(status)};
-  color: white;
-  border-radius: 26px;
-  text-align: center;
+  //text-align: center;
 `;
 
 const PlatformCell = styled.td`
+  //padding: 10px;
+  //border: 1px solid #ddd;
   padding: 10px;
-  border: 0 solid #ddd;
-  background-color: ${({ platform }) => getPlatformBackgroundColor(platform)};
-  color: ${({ platform }) => getPlatformBackgroundColor(platform) === 'transparent' ? 'black' : 'white'};
+  color: white;
+  //text-align: center; 
+`;
+
+// Wrapper for text with background color
+const TextWrapper = styled.span`
+  background-color: ${({ color }) => color};
   border-radius: 26px;
-  text-align: center;
+  padding: 5px 10px;
+  display: inline-block;
 `;
 
 const StarCell = styled.td`
@@ -34,6 +50,7 @@ const Star = styled.div`
 
 const CommentCell = styled.td`
   padding: 10px;
+  color: grey;
   cursor: pointer;
 `;
 
@@ -49,18 +66,18 @@ const Comment = styled.div`
 const getStatusBackgroundColor = (status) => {
   switch (status.toLowerCase()) {
     case 'applied':
-      return '#7F8C8D';
+      return '#fdecc8';
     case 'interviewing':
     case 'interview':
-      return '#E67E22';
+      return '#fadec9';
     case 'rejected':
-      return '#C0392B';
+      return '#ffe2dd';
     case 'ats reject':
-      return '#E74C3C';
+      return '#702f2d';
     case 'hired':
-      return '#2ECC71';
+      return '#dbeddb';
     default:
-      return 'grey';
+      return '#e6e6e4';
   }
 };
 
@@ -81,7 +98,8 @@ const getPlatformBackgroundColor = (platform) => {
     case 'e-mail':
       return 'grey';
     default:
-      return 'transparent';
+      //return 'transparent';
+      return 'black';
   }
 };
 
@@ -92,9 +110,19 @@ const JobApplicationsContainer = styled.div`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-
   @media (max-width: 768px) {
     display: none;
+  }
+`;
+
+
+const KanbanBoard = styled.div`
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
@@ -124,7 +152,9 @@ const styles = {
   },
   tableCell: {
     padding: '10px',
-    //border: '1px solid #ddd',
+    border: '1px solid #ebebea',
+
+//border: '1px solid #ddd',
   },
   deleteIcon: {
     color: 'grey',
@@ -134,6 +164,34 @@ const styles = {
     backgroundColor: '#f9f9f9',
   },
 };
+
+
+const Column = styled.div`
+  flex: 1;
+  min-width: 200px;
+  padding: 10px;
+  border-radius: 8px;
+`;
+
+const Header = styled.h3`
+  text-align: left;
+  background-color: ${({ color }) => color};
+  color: #494742;
+  padding-left: 8px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-weight: normal;
+`;
+
+
+const KanbanCard = styled.div`
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
 
 const Card = styled.div`
   display: none;
@@ -164,6 +222,7 @@ const JobApplications = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedComments, setExpandedComments] = useState({});
+  const [viewMode, setViewMode] = useState('table'); // 'table' or 'board'
 
   useEffect(() => {
     const fetchData = async () => {
@@ -193,6 +252,10 @@ const JobApplications = () => {
     Platform: 'platform',
     Url: 'jobUrl',
     Comments: 'comments',
+  };
+
+  const handleToggleViewMode = () => {
+    setViewMode(viewMode === 'table' ? 'board' : 'table');
   };
 
   const handleSort = (column) => {
@@ -298,6 +361,80 @@ const JobApplications = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             style={styles.searchInput}
         />
+          <button onClick={handleToggleViewMode}>
+            Table/Board
+          </button>
+          {viewMode === 'table' ? (
+              filteredApplications.map((app) => (
+                  <Card key={app.id} onClick={() => handleRowClick(app)}>
+                    <p>test</p>
+                    <Star starred={app.starred} onClick={(e) => handleToggleStar(app.id, e)}>
+                      {app.starred ? '★' : '☆'}
+                    </Star>
+                    <CardField>
+                      <div className="label">Company:</div>
+                      <div className="value">{app.companyName}</div>
+                    </CardField>
+                    <CardField>
+                      <div className="label">Position:</div>
+                      <div className="value">{app.jobTitle}</div>
+                    </CardField>
+                    <CardField>
+                      <div className="label">Status:</div>
+                      <StatusCell>
+                        <TextWrapper color={getStatusBackgroundColor(app.status)}>
+                          {app.status}
+                        </TextWrapper>
+                      </StatusCell>
+                    </CardField>
+                    <CardField>
+                      <div className="label">Application Date:</div>
+                      <div className="value">{new Date(app.applicationDate).toLocaleDateString()}</div>
+                    </CardField>
+                    <CardField>
+                      <div className="label">Response Date:</div>
+                      <div className="value">
+                        {app.responseDate ? new Date(app.responseDate).toLocaleDateString() : '-'}
+                      </div>
+                    </CardField>
+                    <CardField>
+                      <div className="label">Platform:</div>
+                      <PlatformCell>
+                        <TextWrapper color={getPlatformBackgroundColor(app.platform)}>
+                          {app.platform}
+                        </TextWrapper>
+                      </PlatformCell> </CardField>
+                    <CardField>
+                      <div className="label">Comments:</div>
+                      <div className="value" onClick={(e) => handleToggleComments(app.id, e)}>
+  <span className="material-icons" >
+    {expandedComments[app.id] ? 'visibility_off' : 'visibility'}
+  </span>
+
+                      </div>
+                    </CardField>
+                    {expandedComments[app.id] && (
+                        <div style={styles.commentRow}>
+                          {app.comments || 'No comments available.'}
+                        </div>
+                    )}
+                    <span
+                        className="material-icons"
+                        style={styles.deleteIcon}
+                        onClick={(e) => handleDelete(app.id, e)}
+                    >
+                    delete
+                  </span>
+                  </Card>
+              ))
+          ) : (
+                  <div >
+                  </div>
+          )}
+
+          {viewMode === 'table' ? (
+
+
         <Table>
           <thead>
           <tr>
@@ -328,13 +465,17 @@ const JobApplications = () => {
                   </StarCell>
                   <td style={styles.tableCell}>{app.companyName}</td>
                   <td style={styles.tableCell}>{app.jobTitle}</td>
-                  <StatusCell status={app.status}>
-                    {app.status}
+                  <StatusCell>
+                    <TextWrapper color={getStatusBackgroundColor(app.status)}>
+                      {app.status}
+                    </TextWrapper>
                   </StatusCell>
                   <td style={styles.tableCell}>{renderDate(app.applicationDate)}</td>
                   <td style={styles.tableCell}>{renderDate(app.responseDate)}</td>
-                  <PlatformCell platform={app.platform}>
-                    {app.platform}
+                  <PlatformCell>
+                    <TextWrapper color={getPlatformBackgroundColor(app.platform)}>
+                      {app.platform}
+                    </TextWrapper>
                   </PlatformCell>
                   <td style={styles.tableCell}>
                     <a href={app.jobUrl} target="_blank" rel="noopener noreferrer">
@@ -342,9 +483,11 @@ const JobApplications = () => {
                     </a>
                   </td>
                   <CommentCell onClick={(e) => handleToggleComments(app.id, e)}>
-                    {expandedComments[app.id] ? 'Hide' : 'Show'}
+  <span className="material-icons" style={styles.icon}>
+    {expandedComments[app.id] ? 'visibility' : 'visibility_off'}
+  </span>
                   </CommentCell>
-                  <td style={styles.tableCell}>
+                  <td>
                   <span
                       className="material-icons"
                       style={styles.deleteIcon}
@@ -370,58 +513,49 @@ const JobApplications = () => {
           ))}
           </tbody>
         </Table>
+          ) : (
+              <KanbanBoard>
+                {['Applied', 'Interviewing', 'Rejected', 'Offered', 'Hired'].map(status => (
+                    <Column key={status}>
+                      <Header color={getStatusBackgroundColor(status)}                      >
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              {React.cloneElement(statusIcons[status], { sx: { fontSize: '1rem' } })}
+              {status}
+            </span>
+                      </Header>
+                      {filteredApplications.filter(app => app.status.toLowerCase() === status.toLowerCase())
+                          .map(app => (
+                              <KanbanCard key={app.id}>
+                                <div><strong>Company:</strong> {app.companyName}</div>
+                                <div><strong>Position:</strong> {app.jobTitle}</div>
+                                <div><strong>Application Date:</strong> {renderDate(app.applicationDate)}</div>
+                              </KanbanCard>
+                          ))}
+                    </Column>
+                ))}
 
-          {filteredApplications.map((app) => (
-              <Card key={app.id} onClick={() => handleRowClick(app)}>
-                <Star starred={app.starred} onClick={(e) => handleToggleStar(app.id, e)}>
-                  {app.starred ? '★' : '☆'}
-                </Star>
-                <CardField>
-                  <div className="label">Company:</div>
-                  <div className="value">{app.companyName}</div>
-                </CardField>
-                <CardField>
-                  <div className="label">Position:</div>
-                  <div className="value">{app.jobTitle}</div>
-                </CardField>
-                <CardField>
-                  <div className="label">Status:</div>
-                  <StatusCell status={app.status}>{app.status}</StatusCell>
-                </CardField>
-                <CardField>
-                  <div className="label">Application Date:</div>
-                  <div className="value">{new Date(app.applicationDate).toLocaleDateString()}</div>
-                </CardField>
-                <CardField>
-                  <div className="label">Response Date:</div>
-                  <div className="value">
-                    {app.responseDate ? new Date(app.responseDate).toLocaleDateString() : '-'}
-                  </div>
-                </CardField>
-                <CardField>
-                  <div className="label">Platform:</div>
-                  <PlatformCell platform={app.platform}>{app.platform}</PlatformCell>
-                </CardField>
-                <CardField>
-                  <div className="label">Comments:</div>
-                  <div className="value" onClick={(e) => handleToggleComments(app.id, e)}>
-                    {expandedComments[app.id] ? 'Hide' : 'Show'} Comments
-                  </div>
-                </CardField>
-                {expandedComments[app.id] && (
-                    <div style={{marginTop: '10px', color: '#333'}}>
-                      {app.comments || 'No comments available.'}
-                    </div>
-                )}
-                <span
-                    className="material-icons"
-                    style={styles.deleteIcon}
-                    onClick={(e) => handleDelete(app.id, e)}
-                >
-                    delete
-                  </span>
-              </Card>
-          ))}
+                {/* Column for 'Others' */}
+                <Column key="Others">
+                  <Header style={{backgroundColor:"black", color:"white"}}>Others</Header>
+                  {filteredApplications.filter(app => !['Applied', 'Interviewing', 'Rejected', 'Hired'].includes(app.status))
+                      .map(app => (
+                          <KanbanCard key={app.id}>
+                            <div><strong>Company:</strong> {app.companyName}</div>
+                            <div><strong>Position:</strong> {app.jobTitle}</div>
+                            <div><strong>Application Date:</strong> {renderDate(app.applicationDate)}</div>
+                            <div><strong>Status:</strong> <span style={{
+                              backgroundColor: getStatusBackgroundColor(app.status),
+                              color: 'white',
+                              padding: '3px 8px',
+                              borderRadius: '8px'
+                            }}>{app.status}</span></div>
+
+                          </KanbanCard>
+                      ))}
+                </Column>
+              </KanbanBoard>
+          )}
+
 
           {/* Edit Modal */}
           {isModalOpen && selectedApplication && (
