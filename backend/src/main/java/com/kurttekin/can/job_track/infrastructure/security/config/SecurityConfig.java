@@ -50,10 +50,12 @@ public class SecurityConfig {
                                             ).permitAll()
                                 .anyRequest().authenticated()
                 );
-        // Add Rate Limitin Filter
+
+        // Add Rate Limiting Filter
         http.addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
         // Add JWT token filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

@@ -13,20 +13,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.time.Duration;
 
+import static java.time.Duration.ofSeconds;
+
 @Component
 public class RateLimitingFilter extends OncePerRequestFilter {
 
     private final Bucket bucket = Bucket.builder()
-            .addLimit(Bandwidth.classic(60, Refill.greedy(60, Duration.ofMinutes(1)))) // 10 requests per minute
+            .addLimit(limit -> limit.capacity(60).refillGreedy(60, Duration.ofMinutes(1)))
             .build();
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (bucket.tryConsume(1)) {
             filterChain.doFilter(request, response);
         } else {
-            response.setStatus(429); // HTTP 429 Too Many Requests
+            response.setStatus(429); // HTTP 429 TOO_MANY_REQUESTS
             response.getWriter().write("Too many requests. Please try again later.");
         }
 
