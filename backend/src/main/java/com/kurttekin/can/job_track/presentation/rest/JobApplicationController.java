@@ -1,5 +1,7 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
+import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
+import com.kurttekin.can.job_track.domain.exception.UserNotFoundException;
 import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
@@ -36,7 +38,7 @@ public class JobApplicationController {
 
         // Find the user in the database
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         jobApplication.setUser(user); // Set the user on the job application
         JobApplication createdJobApplication = jobApplicationService.createJobApplication(jobApplication);
@@ -47,7 +49,7 @@ public class JobApplicationController {
     public ResponseEntity<List<JobApplication>> getJobApplications(Authentication authentication) {
         String username = authentication.getName(); // Get the username from authentication
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         List<JobApplication> jobApplications = jobApplicationService.findAllByUserId(user.getId());
         return ResponseEntity.ok(jobApplications);
@@ -67,7 +69,6 @@ public class JobApplicationController {
         return ResponseEntity.ok(updatedJob);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJobApplication(
             @PathVariable Long id,
@@ -76,10 +77,10 @@ public class JobApplicationController {
 
         // Find the user in the database
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         JobApplication jobApplication = jobApplicationService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job Application not found"));
+                .orElseThrow(() -> new JobApplicationNotFoundException("Job Application not found"));
 
         // Ensure the job application belongs to the user
         if (!jobApplication.getUser().getId().equals(user.getId())) {
@@ -97,7 +98,7 @@ public class JobApplicationController {
 
         // Find the user in the database
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         jobApplicationService.deleteAllByUserId(user.getId());
         return ResponseEntity.noContent().build();
@@ -109,7 +110,7 @@ public class JobApplicationController {
 
         // Find the user in the database
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         // Get all job applications for the user
         List<JobApplication> jobApplications = jobApplicationService.findAllByUserId(user.getId());
@@ -129,5 +130,4 @@ public class JobApplicationController {
 
         return ResponseEntity.ok(stats);
     }
-
 }

@@ -2,6 +2,7 @@ package com.kurttekin.can.job_track.application.service;
 
 import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
 import com.kurttekin.can.job_track.domain.exception.UnauthorizedAccessException;
+import com.kurttekin.can.job_track.domain.exception.UserNotFoundException;
 import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
 import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.JobApplicationService;
@@ -54,11 +55,11 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     public JobApplication updateJobApplication(Long id, JobApplication updatedJobApplication, String username) {
         // First, check if the job application exists
         JobApplication jobApplication = jobApplicationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job Application not found"));
+                .orElseThrow(() -> new JobApplicationNotFoundException("Job Application not found"));
 
         // Then, check if the user exists
         User user = userService.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         // Ensure the job application belongs to the user
         if (!jobApplication.getUser().getId().equals(user.getId())) {
@@ -80,7 +81,6 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         // Save and return the updated job application
         return jobApplicationRepository.save(jobApplication);
     }
-
 
     @Transactional
     @Override
