@@ -29,22 +29,22 @@ alt="firefox addon">
 > Firefox Addon to add jobs to ATSFS
 
 ## Features
-- Log your job application and details
-- Write comments on jobs
-- Ability to search, filter and sort your applications
-- Graphs that show your application stats
-- Update applications
-- Generate interview questions with AI using your resume and job details
+- Creating account with minimal data (username, password, and verified email).
+- Add job postings from any source. (Job title, company, description, url, application date, response date, status) 
+- Mark favorites among job applications with a star.
+- Add comments to create notes for future reference.
+- Sort applications by clicking on columns in the table view.
+- View applications on a Kanban board, organized by application status.
+- Search within your applications using any keyword.
+- Generate interview questions using AI/LLM based on job postings, resume data, and personalization options.
+- Visualize your data with charts (position distribution pie chart, historical application graph, response rate, 365-day activity chart).
+- Add a resume, allowing any field to be left blank or without strict validation (some resume fields need to be filled, even if anonymized, for AI features to generate personalized recommendations).
+- Export data as CSV.
 - Browser Extension to add jobs from job posting site to ATSFS with single click
-
 
 <br />
 
-<img src="/assets/screenshot-atsfs-home.png"
-alt="homepage">
-
-<img src="/assets/screenshot-atsfs.png"
-alt="applications">
+<img src="/assets/atsfs.gif" alt="atsfs demo gif"/>
 
 ## Endpoints
 <details>
