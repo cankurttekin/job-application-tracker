@@ -92,12 +92,11 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="extension-section"
-                 style={{textAlign: 'center', padding: '20px 0'}}>
-                <img src={firefoxExtImage} alt="Get Firefox Extension" onClick={handleExtensionClick}
-                     style={{height: '128px', width: 'auto', marginBottom: '10px'}}/>
-                <p className="illustration-text">{t('extension.description')}</p>
-            </div>
+            <a href="https://www.producthunt.com/posts/atsfs?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-atsfs"
+               target="_blank" rel="noopener noreferrer"><img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=616464&theme=light"
+                alt="ATSFS - Application&#0032;tracking&#0032;system&#0032;for&#0032;suckers | Product Hunt"
+                style={{width: '250px', height: '54px'}}/></a>
 
             <div className="support-container">
                 <a href="https://www.buymeacoffee.com/cankurttekin" target="_blank" rel="noopener noreferrer">
@@ -110,6 +109,12 @@ const Home = () => {
                 <p style={{maxWidth: '600px', margin: 0}}>
                     {t('support.text')}
                 </p>
+            </div>
+
+            <div className="extension-section"
+                 style={{textAlign: 'center', padding: '20px 0'}}>
+                <img src={firefoxExtImage} alt="Get Firefox Extension" onClick={handleExtensionClick}
+                     style={{height: '128px', width: 'auto', marginBottom: '10px'}}/>
             </div>
 
             <footer className="footer">
