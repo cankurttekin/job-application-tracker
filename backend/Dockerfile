@@ -3,7 +3,7 @@ FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package
 
 # Stage 2: Run the application
 FROM openjdk:17-jdk-slim
@@ -16,7 +16,7 @@ COPY --from=build /app/target/*.jar backend.jar
 EXPOSE 8080
 # EXPOSE 443
 
-# urn the Spring Boot application
+# Run the Spring Boot application
 ENTRYPOINT ["java", "-jar", "backend.jar"]
 #ENTRYPOINT ["java", "-jar", "backend.jar", "--server.ssl.enabled=true", "--server.ssl.key-store=certificate.p12", "--server.ssl.key-store-password=${KEY_STORE_PASS}", "--server.ssl.key-store-type=PKCS12", "--server.ssl.key-store-alias=${KEY_STORE_ALIAS}"]
 
