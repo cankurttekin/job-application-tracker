@@ -1,4 +1,3 @@
-# ATSFS
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![CI/CD Pipeline](https://github.com/cankurttekin/job-application-tracker/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/cankurttekin/job-application-tracker/actions/workflows/ci-cd-pipeline.yml)
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/job-application-tracker-silk)
@@ -16,17 +15,10 @@
   <img height="64" src="/assets/atsfs.png">
 </p>
 
-# 
-
+## ATSFS - Application Tracking System For Suckers
 > Keep Track of Your Job Applications in one place
 
-
-[atsfs.kurttekin.com](https://atsfs.kurttekin.com/)
-> It is currently in development state.
-
-<img height="128" src="/assets/firefox.png"
-alt="firefox addon">
-> Firefox Addon to add jobs to ATSFS
+[https://atsfs.com](https://atsfs.com/)
 
 ## Features
 - Creating account with minimal data (username, password, and verified email).
@@ -45,6 +37,11 @@ alt="firefox addon">
 <br />
 
 <img src="/assets/atsfs.gif" alt="atsfs demo gif"/>
+
+<img height="128" src="/assets/firefox.png"
+alt="firefox addon">
+> Firefox Addon to add jobs to ATSFS
+
 
 ## Endpoints
 <details>
