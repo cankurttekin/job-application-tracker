@@ -26,7 +26,7 @@ jobs:
 
       # Copy backend files to EC2
       - name: Deploy Application to EC2
-        env:
+      	env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
