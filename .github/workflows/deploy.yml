@@ -1,6 +1,10 @@
 name: Deploy to AWS
 
 on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed # Trigger deploy when CI has completed
   push:
     branches:
       - main
@@ -11,11 +15,23 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: backend-aws
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Only run if CI succeeds
 
     steps:
       # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v2
+
+      # Check if there are changes in the backend directory
+      - name: Check for Changes in Backend
+        id: check_changes
+        run: |
+          git diff --exit-code --quiet backend/ || echo "Changes detected in backend directory" > changes.log
+
+      # Skip deploy if no changes in backend
+      - name: Skip deploy if no changes in backend
+        if: ${{ steps.check_changes.outputs.changes == 'no' }}
+        run: echo "No changes detected in the backend directory, skipping deploy."
 
       # Set up SSH Key for EC2 Access
       - name: Set Up SSH
