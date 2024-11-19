@@ -71,7 +71,7 @@ jobs:
           echo 'PORT=${PORT}' >> ~/job-application-tracker/backend/.env && \
           echo 'ALLOWED_ORIGINS=${ALLOWED_ORIGINS}' >> ~/job-application-tracker/backend/.env && \
           echo 'DB_USER=${DB_USER}' >> ~/job-application-tracker/backend/.env && \
-          echo 'DB_PASS=${DB_PASS}' >> ~/job-application-tracker/backend/.env && \
+          echo 'DB_PASS="${DB_PASS}"' >> ~/job-application-tracker/backend/.env && \
           echo 'GEMINI_API_KEY=${GEMINI_API_KEY}' >> ~/job-application-tracker/backend/.env && \
           echo 'KEY_STORE_PASS=${KEY_STORE_PASS}' >> ~/job-application-tracker/backend/.env && \
           echo 'KEY_STORE_ALIAS=${KEY_STORE_ALIAS}' >> ~/job-application-tracker/backend/.env && \
