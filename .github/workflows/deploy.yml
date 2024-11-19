@@ -5,11 +5,11 @@ on:
     workflows: ["CI Pipeline"]
     types:
       - completed # Trigger deploy when CI has completed
-  push:
-    branches:
-      - main
-    paths:
-      - 'backend/**'  # Trigger only on changes in the backend directory
+      #push:
+      #    branches:
+      #- main
+      #    paths:
+      #      - 'backend/**'  # Trigger only on changes in the backend directory
 
 jobs:
   deploy:
@@ -26,15 +26,17 @@ jobs:
       - name: Check for Changes in Backend
         id: check_changes
         run: |
-          git diff --exit-code --quiet backend/ || echo "Changes detected in backend directory" > changes.log
+          git diff --exit-code --quiet backend/
+          echo "changes=$(if [ $? -eq 0 ]; then echo 'no'; else echo 'yes'; fi)" >> $GITHUB_ENV
 
       # Skip deploy if no changes in backend
       - name: Skip deploy if no changes in backend
-        if: ${{ steps.check_changes.outputs.changes == 'no' }}
+        if: ${{ env.changes == 'no' }}
         run: echo "No changes detected in the backend directory, skipping deploy."
 
       # Set up SSH Key for EC2 Access
       - name: Set Up SSH
+        if: ${{ env.changes == 'yes' }}
         env:
           SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
@@ -45,6 +47,7 @@ jobs:
 
       # Copy backend files to EC2
       - name: Deploy Application to EC2
+        if: ${{ env.changes == 'yes' }}
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -58,6 +61,7 @@ jobs:
 
       # Create .env file on EC2
       - name: Configure Environment Variables
+        if: ${{ env.changes == 'yes' }}
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -93,6 +97,7 @@ jobs:
 
       # Start Application on EC2
       - name: Start Application
+        if: ${{ env.changes == 'yes' }}
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
