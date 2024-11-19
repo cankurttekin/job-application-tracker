@@ -48,6 +48,8 @@ jobs:
       # Create .env file on EC2
       - name: Configure Environment Variables
         env:
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
           APP_URL: ${{ secrets.APP_URL }}
           PORT: ${{ secrets.PORT }}
           ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
