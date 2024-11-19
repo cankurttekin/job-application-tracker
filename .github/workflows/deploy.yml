@@ -42,8 +42,9 @@ jobs:
           echo "Testing SSH Connection..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "echo 'Connected'"
           echo "Copying files to EC2..."
-          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -r backend/docker-compose.yml $EC2_USER@$EC2_HOST:~/job-application-tracker/
-
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa \
+          -r backend/ \
+          $EC2_USER@$EC2_HOST:~/job-application-tracker/backend/
 
       # Create .env file on EC2
       - name: Configure Environment Variables
@@ -65,20 +66,20 @@ jobs:
           TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
         run: |
           echo "Configuring environment variables on EC2..."
-          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p ~/job-application-tracker && \
-          echo 'APP_URL=${APP_URL}' > ~/job-application-tracker/.env && \
-          echo 'PORT=${PORT}' >> ~/job-application-tracker/.env && \
-          echo 'ALLOWED_ORIGINS=${ALLOWED_ORIGINS}' >> ~/job-application-tracker/.env && \
-          echo 'DB_USER=${DB_USER}' >> ~/job-application-tracker/.env && \
-          echo 'DB_PASS=${DB_PASS}' >> ~/job-application-tracker/.env && \
-          echo 'GEMINI_API_KEY=${GEMINI_API_KEY}' >> ~/job-application-tracker/.env && \
-          echo 'KEY_STORE_PASS=${KEY_STORE_PASS}' >> ~/job-application-tracker/.env && \
-          echo 'KEY_STORE_ALIAS=${KEY_STORE_ALIAS}' >> ~/job-application-tracker/.env && \
-          echo 'MAIL_HOST=${MAIL_HOST}' >> ~/job-application-tracker/.env && \
-          echo 'MAIL_PORT=${MAIL_PORT}' >> ~/job-application-tracker/.env && \
-          echo 'MAIL_USER=${MAIL_USER}' >> ~/job-application-tracker/.env && \
-          echo 'MAIL_PASS=${MAIL_PASS}' >> ~/job-application-tracker/.env && \
-          echo 'TURNSTILE_SECRET=${TURNSTILE_SECRET}' >> ~/job-application-tracker/.env"
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p ~/job-application-tracker/backend/ && \
+          echo 'APP_URL=${APP_URL}' > ~/job-application-tracker/backend/.env && \
+          echo 'PORT=${PORT}' >> ~/job-application-tracker/backend/.env && \
+          echo 'ALLOWED_ORIGINS=${ALLOWED_ORIGINS}' >> ~/job-application-tracker/backend/.env && \
+          echo 'DB_USER=${DB_USER}' >> ~/job-application-tracker/backend/.env && \
+          echo 'DB_PASS=${DB_PASS}' >> ~/job-application-tracker/backend/.env && \
+          echo 'GEMINI_API_KEY=${GEMINI_API_KEY}' >> ~/job-application-tracker/backend/.env && \
+          echo 'KEY_STORE_PASS=${KEY_STORE_PASS}' >> ~/job-application-tracker/backend/.env && \
+          echo 'KEY_STORE_ALIAS=${KEY_STORE_ALIAS}' >> ~/job-application-tracker/backend/.env && \
+          echo 'MAIL_HOST=${MAIL_HOST}' >> ~/job-application-tracker/backend/.env && \
+          echo 'MAIL_PORT=${MAIL_PORT}' >> ~/job-application-tracker/backend/.env && \
+          echo 'MAIL_USER=${MAIL_USER}' >> ~/job-application-tracker/backend/.env && \
+          echo 'MAIL_PASS=${MAIL_PASS}' >> ~/job-application-tracker/backend/.env && \
+          echo 'TURNSTILE_SECRET=${TURNSTILE_SECRET}' >> ~/job-application-tracker/backend/.env"
 
       # Start Application on EC2
       - name: Start Application
@@ -87,7 +88,7 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          cd ~/job-application-tracker
+          cd ~/job-application-tracker/backend
           docker-compose down || true
           docker-compose up --build -d
           EOF
