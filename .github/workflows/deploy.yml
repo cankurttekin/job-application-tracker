@@ -49,8 +49,8 @@ jobs:
         env:
           APP_URL: ${{ secrets.APP_URL }}
           PORT: ${{ secrets.PORT }}
-	  ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
-	  DB_USER: ${{ secrets.DB_USER }}
+          ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
+          DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           KEY_STORE_PASS: ${{ secrets.KEY_STORE_PASS }}
@@ -64,20 +64,20 @@ jobs:
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
           mkdir -p ~/job-application-tracker
           cat <<EOT > ~/job-application-tracker/.env
-          APP_URL=${APP_URL}
-          PORT=${PORT}
-          ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-          DB_USER=${DB_USER}
-          DB_PASS=${DB_PASS}
-          GEMINI_API_KEY=${GEMINI_API_KEY}
-          KEY_STORE_PASS=${KEY_STORE_PASS}
-          KEY_STORE_ALIAS=${KEY_STORE_ALIAS}
-          MAIL_HOST=${MAIL_HOST}
-          MAIL_PORT=${MAIL_PORT}
-          MAIL_USER=${MAIL_USER}
-          MAIL_PASS=${MAIL_PASS}
-          TURNSTILE_SECRET=${TURNSTILE_SECRET}
-          EOT
+APP_URL=${APP_URL}
+PORT=${PORT}
+ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+DB_USER=${DB_USER}
+DB_PASS=${DB_PASS}
+GEMINI_API_KEY=${GEMINI_API_KEY}
+KEY_STORE_PASS=${KEY_STORE_PASS}
+KEY_STORE_ALIAS=${KEY_STORE_ALIAS}
+MAIL_HOST=${MAIL_HOST}
+MAIL_PORT=${MAIL_PORT}
+MAIL_USER=${MAIL_USER}
+MAIL_PASS=${MAIL_PASS}
+TURNSTILE_SECRET=${TURNSTILE_SECRET}
+EOT
           EOF
 
       # Start Application on EC2
@@ -86,7 +86,7 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
           cd ~/job-application-tracker
           docker-compose down || true
           docker-compose up --build -d
