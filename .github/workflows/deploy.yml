@@ -25,7 +25,6 @@ jobs:
 
       # Copy backend files to EC2
       - name: Deploy Application to EC2
-        env:
         run: |
           echo "Copying backend directory to EC2..."
           ssh -v -o StrictHostKeyChecking=no -i github-ec2 ${EC2_USER}@${EC2_HOST} "echo Connected"
