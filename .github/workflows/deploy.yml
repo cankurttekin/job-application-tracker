@@ -17,17 +17,30 @@ jobs:
       # Set up SSH Key for EC2 Access
       - name: Set Up SSH
         env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
+          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
-          echo "$PRIVATE_KEY" > github-ec2 && chmod 600 github-ec2
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "SSH Key has been set up successfully"
+
+      # Debug Secrets
+      - name: Debug Secrets
+        run: |
+          echo "APP_URL=${{ secrets.APP_URL }}"
+          echo "EC2_USER=${{ secrets.EC2_USER }}"
+          echo "EC2_HOST=${{ secrets.EC2_HOST }}"
+          echo "AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}"
 
       # Copy backend files to EC2
       - name: Deploy Application to EC2
+        env:
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          echo "Copying backend directory to EC2..."
-          ssh -v -o StrictHostKeyChecking=no -i github-ec2 ${EC2_USER}@${EC2_HOST} "echo Connected"
+          echo "Testing SSH Connection..."
+          ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "echo 'Connected'"
+          echo "Copying files to EC2..."
           scp -o StrictHostKeyChecking=no -r backend/docker-compose.yml ${EC2_USER}@${EC2_HOST}:~/job-application-tracker/
 
       # Create .env file on EC2
@@ -47,29 +60,11 @@ jobs:
           MAIL_PASS: ${{ secrets.MAIL_PASS }}
           TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
         run: |
-          echo "Creating .env file on EC2..."
           ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
           mkdir -p ~/job-application-tracker
-          cat <<EOT > ~/job-application-tracker/.env
-          APP_URL=${APP_URL}
-          PORT=${PORT}
-          ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-
-          DB_USER=${DB_USER}
-          DB_PASS=${DB_PASS}
-
-          GEMINI_API_KEY=${GEMINI_API_KEY}
-
-          KEY_STORE_PASS=${KEY_STORE_PASS}
-          KEY_STORE_ALIAS=${KEY_STORE_ALIAS}
-
-          MAIL_HOST=${MAIL_HOST}
-          MAIL_PORT=${MAIL_PORT}
-          MAIL_USER=${MAIL_USER}
-          MAIL_PASS=${MAIL_PASS}
-
-          TURNSTILE_SECRET=${TURNSTILE_SECRET}
-          EOT
+          echo "APP_URL=${APP_URL}" > ~/job-application-tracker/.env
+          echo "PORT=${PORT}" >> ~/job-application-tracker/.env
+          ...
           EOF
 
       # Start Application on EC2
@@ -78,10 +73,9 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          echo "Deploying application on EC2..."
           ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
           cd ~/job-application-tracker
-          docker-compose down
+          docker-compose down || true
           docker-compose up --build -d
           EOF
 
