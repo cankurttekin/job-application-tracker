@@ -30,6 +30,7 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
           echo "Copying backend directory to EC2..."
+          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "echo Connected"
           scp -o StrictHostKeyChecking=no -r backend/docker-compose.yml $EC2_USER@$EC2_HOST:~/job-application-tracker/
 
       # Create .env file on EC2
