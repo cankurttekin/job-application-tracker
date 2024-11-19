@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/**'  # Trigger only on changes in the backend directory
 
 jobs:
   deploy:
@@ -24,14 +26,6 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "SSH Key has been set up successfully"
-
-      # Debug Secrets
-      - name: Debug Secrets
-        run: |
-          echo "APP_URL=${{ secrets.APP_URL }}"
-          echo "EC2_USER=${{ secrets.EC2_USER }}"
-          echo "EC2_HOST=${{ secrets.EC2_HOST }}"
-          echo "AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}"
 
       # Copy backend files to EC2
       - name: Deploy Application to EC2
