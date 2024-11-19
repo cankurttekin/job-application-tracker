@@ -132,6 +132,9 @@ docker-compose up --build
      alt="sequence"
      height="500">
 
+<img src="/assets/atsfs-db-er.png"
+     alt="er diagram">
+     
 ### Resources Bookmark:
 - [Jackson – Bidirectional Relationships (baeldung)](https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion)
 - [Hibernate – Different Cascade Types (geeksforgeeks)](https://www.geeksforgeeks.org/hibernate-different-cascade-types/)
