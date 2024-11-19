@@ -120,6 +120,10 @@ docker-compose up --build
 - DDD
 
 ## Structure
+<img src="/assets/draw.png"
+     alt="draw"
+     >
+ 
 <img src="/assets/structure.png"
      alt="tests"
      >
