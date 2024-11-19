@@ -44,6 +44,7 @@ jobs:
           echo "Copying files to EC2..."
           scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -r backend/docker-compose.yml $EC2_USER@$EC2_HOST:~/job-application-tracker/
 
+
       # Create .env file on EC2
       - name: Configure Environment Variables
         env:
@@ -61,24 +62,21 @@ jobs:
           MAIL_PASS: ${{ secrets.MAIL_PASS }}
           TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
         run: |
-          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          mkdir -p ~/job-application-tracker
-          cat <<EOT > ~/job-application-tracker/.env
-          APP_URL=${APP_URL}
-          PORT=${PORT}
-          ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-          DB_USER=${DB_USER}
-          DB_PASS=${DB_PASS}
-          GEMINI_API_KEY=${GEMINI_API_KEY}
-          KEY_STORE_PASS=${KEY_STORE_PASS}
-          KEY_STORE_ALIAS=${KEY_STORE_ALIAS}
-          MAIL_HOST=${MAIL_HOST}
-          MAIL_PORT=${MAIL_PORT}
-          MAIL_USER=${MAIL_USER}
-          MAIL_PASS=${MAIL_PASS}
-          TURNSTILE_SECRET=${TURNSTILE_SECRET}
-          EOT
-          EOF
+          echo "Configuring environment variables on EC2..."
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p ~/job-application-tracker && \
+          echo 'APP_URL=${APP_URL}' > ~/job-application-tracker/.env && \
+          echo 'PORT=${PORT}' >> ~/job-application-tracker/.env && \
+          echo 'ALLOWED_ORIGINS=${ALLOWED_ORIGINS}' >> ~/job-application-tracker/.env && \
+          echo 'DB_USER=${DB_USER}' >> ~/job-application-tracker/.env && \
+          echo 'DB_PASS=${DB_PASS}' >> ~/job-application-tracker/.env && \
+          echo 'GEMINI_API_KEY=${GEMINI_API_KEY}' >> ~/job-application-tracker/.env && \
+          echo 'KEY_STORE_PASS=${KEY_STORE_PASS}' >> ~/job-application-tracker/.env && \
+          echo 'KEY_STORE_ALIAS=${KEY_STORE_ALIAS}' >> ~/job-application-tracker/.env && \
+          echo 'MAIL_HOST=${MAIL_HOST}' >> ~/job-application-tracker/.env && \
+          echo 'MAIL_PORT=${MAIL_PORT}' >> ~/job-application-tracker/.env && \
+          echo 'MAIL_USER=${MAIL_USER}' >> ~/job-application-tracker/.env && \
+          echo 'MAIL_PASS=${MAIL_PASS}' >> ~/job-application-tracker/.env && \
+          echo 'TURNSTILE_SECRET=${TURNSTILE_SECRET}' >> ~/job-application-tracker/.env"
 
       # Start Application on EC2
       - name: Start Application
