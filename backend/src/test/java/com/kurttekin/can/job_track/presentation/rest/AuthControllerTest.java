@@ -1,6 +1,7 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
 import com.kurttekin.can.job_track.application.dto.ErrorResponse;
+import com.kurttekin.can.job_track.application.dto.JwtResponse;
 import com.kurttekin.can.job_track.application.dto.LoginRequest;
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
 import com.kurttekin.can.job_track.application.service.EmailService;
@@ -62,11 +63,27 @@ class AuthControllerTest {
         loginRequest = new LoginRequest("testuser", "testpassword");
 
         userRegistrationRequest = new UserRegistrationRequest("testuser", "testuser@test.com", "testpassword");
-        token = "test.jwt.token";
+        //token = "test.jwt.token";
         turnstileToken= "test.jwt.turnstile";
     }
 
     // === Login tests ===
+    @Test
+    public void testLogin_Success() {
+        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
+        User user = new User();
+        user.setVerified(true);
+
+        when(userService.findUserByUsername(loginRequest.getUsername())).thenReturn(Optional.of(user));
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
+        when(jwtProvider.generateToken(authentication)).thenReturn("jwtToken");
+
+        ResponseEntity<?> response = authController.login(loginRequest, turnstileToken);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("jwtToken", ((JwtResponse) Objects.requireNonNull(response.getBody())).getToken());
+    }
+
     @Test
     public void testLogin_InvalidCredentials() {
         // Mock Turnstile verification logic
