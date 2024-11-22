@@ -30,7 +30,6 @@ public class LlmController {
         // Retrieve personalization preferences
         Map<String, Object> personalization = (Map<String, Object>) payload.get("personalization");
 
-
         System.out.println("Received request for generating interview questions:");
         System.out.println("Job Title: " + jobTitle);
         System.out.println("Resume: " + resume);
@@ -78,7 +77,6 @@ public class LlmController {
         if (currentQuestion != null) {
             questions.add(new QuizQuestion(currentQuestion, options, null));
         }
-
         return questions;
     }
 
@@ -118,11 +116,9 @@ public class LlmController {
                     workExperiences.add(experience);
                 }
             }
-
             resume.setWorkExperiences(workExperiences);
         }
         return resume;
     }
-
 }
 
