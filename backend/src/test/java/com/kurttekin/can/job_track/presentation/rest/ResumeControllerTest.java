@@ -69,4 +69,51 @@ class ResumeControllerTest {
         verify(userService).findUserByUsername(user.getUsername());
         verify(resumeService).createOrUpdateResume(resume);
     }
+
+    @Test
+    public void testCreateOrUpdateResume_UserNotFound() {
+        // Mock userService behavior to return empty
+        when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.empty());
+
+        // Expect an exception when calling the method
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> resumeController.createOrUpdateResume(resume, userDetails));
+
+        assertEquals("User not found", exception.getMessage());
+        verify(userService).findUserByUsername(user.getUsername());
+        verifyNoInteractions(resumeService); // Ensure resumeService is not called
+    }
+
+    @Test
+    public void testGetResume_Success() {
+        // Mock userService behavior
+        when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+
+        // Mock resumeService behavior
+        when(resumeService.findById(user.getId())).thenReturn(resumeDTO);
+
+        // Call the controller method
+        ResponseEntity<ResumeDTO> response = resumeController.getResume(userDetails);
+
+        // Verify and assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(resumeDTO, response.getBody());
+        verify(userService).findUserByUsername(user.getUsername());
+        verify(resumeService).findById(user.getId());
+    }
+
+    @Test
+    public void testGetResume_UserNotFound() {
+        // Mock userService behavior to return empty
+        when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.empty());
+
+        // Expect an exception when calling the method
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> resumeController.getResume(userDetails));
+
+        assertEquals("User not found", exception.getMessage());
+        verify(userService).findUserByUsername(user.getUsername());
+        verifyNoInteractions(resumeService); // Ensure resumeService is not called
+    }
+
 }

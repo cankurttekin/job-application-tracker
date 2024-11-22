@@ -36,7 +36,7 @@ public class ResumeController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrUpdatedResume);
     }
-    
+
     @GetMapping
     public ResponseEntity<ResumeDTO> getResume(
             @AuthenticationPrincipal UserDetails userDetails) {
