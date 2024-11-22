@@ -75,13 +75,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest userRequest,
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest userRequest,
                                                @RequestParam String turnstileToken) {
         try {
             // Verify Turnstile token
             boolean isTokenValid = turnstileVerificationService.verifyToken(turnstileToken);
             if (!isTokenValid) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("CAPTCHA failed.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("CAPTCHA failed."));
             }
             userService.registerUser(userRequest);
             return ResponseEntity.ok("User registered successfully! Please verify your email before logging in.");

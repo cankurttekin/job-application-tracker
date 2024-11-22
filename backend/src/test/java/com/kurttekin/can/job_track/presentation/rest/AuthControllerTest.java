@@ -128,6 +128,7 @@ class AuthControllerTest {
         verify(jwtProvider, never()).generateToken(any(Authentication.class));
     }
 
+    // === Register tests ===
     @Test
     public void testRegisterUser_Success() {
         // Mock the behavior of the service method
@@ -137,7 +138,7 @@ class AuthControllerTest {
         when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
 
         // Call the registerUser method in the controller
-        ResponseEntity<String> response = authController.registerUser(userRegistrationRequest, turnstileToken);
+        ResponseEntity<?> response = authController.registerUser(userRegistrationRequest, turnstileToken);
 
         // Check the status and response body
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -145,12 +146,24 @@ class AuthControllerTest {
     }
 
     @Test
+    public void testRegisterUser_CAPTCHAFailed() {
+        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(false);
+
+        ResponseEntity<?> response = authController.registerUser(userRegistrationRequest, turnstileToken);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("CAPTCHA failed.", ((ErrorResponse) Objects.requireNonNull(response.getBody())).getMessage());
+    }
+
+    @Test
+    public void testRegisterUser_EmailAlreadyExists() {}
+
+    @Test
     public void testRegisterUser_Failure() {
         doThrow(new RuntimeException("Registration failed")).when(userService).registerUser(any(UserRegistrationRequest.class));
 
         when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
 
-        ResponseEntity<String> response = authController.registerUser(userRegistrationRequest, turnstileToken);
+        ResponseEntity<?> response = authController.registerUser(userRegistrationRequest, turnstileToken);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Registration failed", response.getBody());
