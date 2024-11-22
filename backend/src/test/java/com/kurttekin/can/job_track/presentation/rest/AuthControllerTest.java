@@ -5,7 +5,9 @@ import com.kurttekin.can.job_track.application.dto.LoginRequest;
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
 import com.kurttekin.can.job_track.application.service.EmailService;
 import com.kurttekin.can.job_track.application.service.TurnstileVerificationService;
+import com.kurttekin.can.job_track.domain.model.user.User;
 import com.kurttekin.can.job_track.domain.service.UserService;
+import com.kurttekin.can.job_track.infrastructure.security.jwt.JwtProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,9 +18,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,6 +44,12 @@ class AuthControllerTest {
 
     @Mock
     private TurnstileVerificationService turnstileVerificationService;
+
+    @Mock
+    private JwtProvider jwtProvider;
+
+    @Mock
+    private Authentication authentication;
 
     private LoginRequest loginRequest;
     private UserRegistrationRequest userRegistrationRequest;
@@ -82,6 +92,23 @@ class AuthControllerTest {
         ResponseEntity<?> response = authController.login(loginRequest, turnstileToken);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertEquals("CAPTCHA failed.", ((ErrorResponse) Objects.requireNonNull(response.getBody())).getMessage());
+    }
+
+    @Test
+    public void testLogin_EmailNotVerified() {
+        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setVerified(false);
+
+        when(userService.findUserByUsername(loginRequest.getUsername())).thenReturn(Optional.of(user));
+        ResponseEntity<?> response = authController.login(loginRequest, turnstileToken);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("Email not verified. Please verify your email before logging in.", ((ErrorResponse) Objects.requireNonNull(response.getBody())).getMessage());
+
+        // Never call jwtProvider.generateToken
+        verify(jwtProvider, never()).generateToken(any(Authentication.class));
     }
 
     @Test
