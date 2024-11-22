@@ -7,7 +7,6 @@ import goalsImage from '../assets/goal.png';
 import aiImage from '../assets/ai.png'
 import firefoxExtImage from '../assets/firefox.png';
 import buyMeACoffeeImage from '../assets/buy-me-a-beer.png';
-import separator from '../assets/separator.png';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import styled from "styled-components";
@@ -111,16 +110,17 @@ const Home = () => {
                 </p>
             </div>
 
-            <div className="extension-section"
+            <div
                  style={{textAlign: 'center', padding: '20px 0'}}>
                 <img src={firefoxExtImage} alt="Get Firefox Extension" onClick={handleExtensionClick}
                      style={{height: '128px', width: 'auto', marginBottom: '10px'}}/>
             </div>
 
             <footer className="footer">
-                <img src={separator} alt="separator" className="separator"/>
                 <p>
-                    {t('footer.description')}
+                    {/*{t('footer.description')}*/}
+                    <Trans i18nKey="footer.description" components={{bold: <b/>}}/><br/>
+
                 </p>
                 <br/>
                 <p>
@@ -135,6 +135,8 @@ const Home = () => {
                        rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center'}}> <span
                         className="material-icons" style={{marginRight: '5px'}}>code</span> Source Code </a>
                 </p>
+                <br/>
+                <p>Unfortunately, we will not be moving forward with your application, but we appreciate your time and interest in ATSFS.</p>
             </footer>
         </div>
 

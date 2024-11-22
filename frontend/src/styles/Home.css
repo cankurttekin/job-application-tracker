@@ -33,7 +33,7 @@
 }
 
 .big-text {
-    font-size: 2.5em;
+    font-size: 2.2em;
     margin: 10px 0;
     text-align: left;
 }
@@ -49,10 +49,10 @@
     justify-content: center;
     align-items: center;
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     color: #666;
     text-align: center; /* Center-align text in the container */
-    flex-wrap: wrap; /* Allow wrapping if needed */
+    flex-wrap: wrap; /* Allow wrapping */
 }
 
 .support-container p {
@@ -69,7 +69,7 @@
     }
 
     .big-text2 {
-        font-size: 1.2em;
+        font-size: 1em;
     }
 
     .illustrations-container {
@@ -136,11 +136,13 @@
 
 /* Footer adjustments */
 .footer {
-    margin-top: 20px;
     font-size: 0.8em;
-    color: #666;
+    color: #f5f5f5;
     text-align: center;
-    padding: 0 10px;
+    padding: 10px;
+    padding-top: 20px;
+    background-color: black;
+    margin: -40px;
 }
 
 .separator {
@@ -167,19 +169,19 @@ a:hover {
 .screenshot-container {
     flex: 1; /* Allow the screenshot to take space */
     max-width: 100%; /* Control the maximum width */
-    margin-right: 6px; /* Space between image and text */
+    margin-right: 2px; /* Space between image and text */
 }
 
 /* Screenshot styling */
 .screenshot {
-    width: 80%; /* Full width within its container */
+    width: 90%; /* Full width within its container */
     height: auto;
 }
 
 /* Text container */
 .screenshot-text {
     flex: 1; /* Allow text to take remaining space */
-    max-width: 38%; /* Control the maximum width */
+    max-width: 70%; /* Control the maximum width */
 }
 
 @media (max-width: 768px) {
