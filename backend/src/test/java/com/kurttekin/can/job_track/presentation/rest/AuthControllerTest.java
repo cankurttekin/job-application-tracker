@@ -155,7 +155,16 @@ class AuthControllerTest {
     }
 
     @Test
-    public void testRegisterUser_EmailAlreadyExists() {}
+    public void testRegisterUser_EmailAlreadyExists() {
+        when(turnstileVerificationService.verifyToken(turnstileToken)).thenReturn(true);
+        doThrow(new RuntimeException("Email already exists")).when(userService).registerUser(any(UserRegistrationRequest.class));
+
+        ResponseEntity<?> response = authController.registerUser(userRegistrationRequest, turnstileToken);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Email already exists", response.getBody());
+
+    }
 
     @Test
     public void testRegisterUser_Failure() {
