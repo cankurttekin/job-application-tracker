@@ -110,3 +110,4 @@ jobs:
           docker-compose down || true
           docker-compose up --build -d
           EOF
+
