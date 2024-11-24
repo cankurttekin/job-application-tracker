@@ -4,12 +4,7 @@ on:
   workflow_run:
     workflows: ["CI Pipeline"]
     types:
-      - completed # Trigger deploy when CI has completed
-      #push:
-      #    branches:
-      #- main
-      #    paths:
-      #      - 'backend/**'  # Trigger only on changes in the backend directory
+      - completed  # Trigger deploy when CI has completed
 
 jobs:
   deploy:
@@ -26,8 +21,16 @@ jobs:
       - name: Check for Changes in Backend
         id: check_changes
         run: |
-          git diff --exit-code --quiet backend/
-          echo "changes=$(if [ $? -eq 0 ]; then echo 'no'; else echo 'yes'; fi)" >> $GITHUB_ENV
+          git fetch origin main
+          CHANGES=$(git diff --name-only origin/main...${{ github.sha }} | grep -E '^backend/')
+          echo "Changes in backend: $CHANGES"
+          if [ -z "$CHANGES" ]; then
+            echo "No changes detected in the backend directory"
+            echo "changes=no" >> $GITHUB_ENV
+          else
+            echo "Changes detected in the backend directory"
+            echo "changes=yes" >> $GITHUB_ENV
+          fi
 
       # Skip deploy if no changes in backend
       - name: Skip deploy if no changes in backend
@@ -107,4 +110,3 @@ jobs:
           docker-compose down || true
           docker-compose up --build -d
           EOF
-
