@@ -1,13 +1,16 @@
 package com.kurttekin.can.job_track.infrastructure.security.jwt;
 
-import io.jsonwebtoken.*;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Date;
+import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
-import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -22,7 +25,6 @@ public class JwtProvider {
         Date now = new Date();
         Date expire = new Date(now.getTime() + jwtExpirationInMs);
         log.info("Creating JWT for user: " + authentication.getName());
-        log.info("Signing with key: " + secretKey);
         return Jwts.builder()
                 .subject(authentication.getName())
                 .issuedAt(new Date())
@@ -48,7 +50,8 @@ public class JwtProvider {
                     .parseSignedClaims(token);
             return true;
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
-            // Will be implemented, i hope...
+            log.error("Could not validate JWT - {}", ex);
+
         }
         return false;
     }
