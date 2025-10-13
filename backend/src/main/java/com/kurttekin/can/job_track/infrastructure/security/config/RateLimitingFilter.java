@@ -1,19 +1,14 @@
 package com.kurttekin.can.job_track.infrastructure.security.config;
 
-import io.github.bucket4j.Bandwidth;
+import java.io.IOException;
+import java.time.Duration;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.time.Duration;
-
-import static java.time.Duration.ofSeconds;
 
 @Component
 public class RateLimitingFilter extends OncePerRequestFilter {
