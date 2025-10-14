@@ -1,16 +1,16 @@
 package com.kurttekin.can.job_track.application.service;
 
+import java.util.Optional;
 import com.kurttekin.can.job_track.application.dto.UserRegistrationRequest;
 import com.kurttekin.can.job_track.domain.model.user.Role;
-import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.model.user.User;
+import com.kurttekin.can.job_track.domain.service.UserService;
 import com.kurttekin.can.job_track.domain.service.VerificationService;
 import com.kurttekin.can.job_track.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,9 +26,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmailService emailService;
 
+    @Value("${spring.profiles.active:dev}")
+    private String activeProfile;
+
     @Override
     public void registerUser(UserRegistrationRequest userRequest) {
-        // check username or email
+        // check username and email
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
@@ -40,13 +43,18 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        user.setVerified(false);
         user.setRole(Role.USER);
-        userRepository.save(user);
 
-        // Generate verification token and send email
-        String token = verificationService.generateToken(user);
-        emailService.sendVerificationEmail(user.getEmail(), user.getUsername(), token);
+        if ("dev".equals(activeProfile)) {
+            user.setVerified(true);
+            userRepository.save(user);
+        } else {
+            // if not dev env send verification
+            user.setVerified(false);
+            userRepository.save(user);
+            String token = verificationService.generateToken(user);
+            emailService.sendVerificationEmail(user.getEmail(), user.getUsername(), token);
+        }
     }
 
     @Override

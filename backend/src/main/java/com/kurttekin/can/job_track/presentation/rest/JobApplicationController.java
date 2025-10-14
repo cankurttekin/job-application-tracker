@@ -1,5 +1,10 @@
 package com.kurttekin.can.job_track.presentation.rest;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import com.kurttekin.can.job_track.domain.exception.JobApplicationNotFoundException;
 import com.kurttekin.can.job_track.domain.exception.UserNotFoundException;
 import com.kurttekin.can.job_track.domain.model.jobapplication.JobApplication;
@@ -12,18 +17,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/job-applications")
 public class JobApplicationController {
-// REFACTOR THIS SHIT, move bus. logic to service
     @Autowired
     private JobApplicationService jobApplicationService;
 
@@ -42,6 +47,7 @@ public class JobApplicationController {
 
         jobApplication.setUser(user); // Set the user on the job application
         JobApplication createdJobApplication = jobApplicationService.createJobApplication(jobApplication);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdJobApplication);
     }
 
@@ -63,7 +69,6 @@ public class JobApplicationController {
 
         String username = userDetails.getUsername();
 
-        // Call the service to handle the update
         JobApplication updatedJob = jobApplicationService.updateJobApplication(id, updatedJobApplication, username);
 
         return ResponseEntity.ok(updatedJob);
