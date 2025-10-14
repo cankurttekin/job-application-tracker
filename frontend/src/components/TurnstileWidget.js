@@ -7,7 +7,7 @@ const TurnstileWidget = ({ onChange }) => {
 
     const handleTurnstileChange = (turnstileToken) => {
         setTurnstileToken(turnstileToken);
-        console.log('Turnstile widget received token:', turnstileToken);
+        console.debug('Turnstile widget received token:', turnstileToken);
         if (onChange) {
             onChange(turnstileToken); // Pass token back to parent component
         }
